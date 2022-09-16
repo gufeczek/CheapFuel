@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Fuel</string>
     <string name="placeholder">placeholder</string>
-    <string name="login_welcome">Witaj w aplikacji X</string>
+    <string name="loginActivity_welcome">Witaj w aplikacji X</string>
 </resources>

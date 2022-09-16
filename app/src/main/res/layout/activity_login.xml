@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_welcome"
+        android:text="@string/loginActivity_welcome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,9 +20,11 @@
         android:fontFamily="@font/roboto_bold"
         android:textSize="32sp"
         android:textColor="@color/black"
-        android:textAppearance=""/>
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:id="@+id/loginActivity_welcome"/>
 
-    <!--TODO: change placeholder image-->
+    <!--TODO: change placeholder image and description-->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="350dp"
