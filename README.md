@@ -1,2 +1,2 @@
 # Fuel
-bz
+dekoracja tekstu tutorial - https://blog.mindorks.com/android-textview-decoration-tutorial
