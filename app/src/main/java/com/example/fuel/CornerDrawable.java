@@ -1,6 +1,8 @@
 package com.example.fuel;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -12,14 +14,19 @@ public class CornerDrawable extends GradientDrawable {
 
     private float percent;
 
-    public static CornerDrawable getInstance(float percent, int color) {
+    public static void roundCorners(View view, float percent) {
         CornerDrawable drawable = new CornerDrawable();
         drawable.setCornerRadiusPercent(percent);
-        drawable.setColor(color);
-        return drawable;
+        drawable.setColor(getColorFromView(view));
+        view.setBackground(drawable);
     }
 
-    public void setCornerRadiusPercent(float percent) {
+    private static int getColorFromView(View view) {
+        ColorDrawable colorDrawable = (ColorDrawable) view.getBackground();
+        return colorDrawable.getColor();
+    }
+
+    private void setCornerRadiusPercent(float percent) {
         this.percent = 100 / percent;
     }
 
