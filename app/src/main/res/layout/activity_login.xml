@@ -4,35 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
     android:padding="20dp"
-    style="Theme.AppCompat.Light.NoActionBar">
+    tools:context=".LoginActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginActivity_welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="32sp"
-        android:textColor="@color/black"
-        android:typeface="sans"
-        android:textStyle="bold"
-        android:id="@+id/loginActivity_welcome"/>
-
-    <!--TODO: change placeholder image and description-->
+    <!--TODO: change placeholder image and placeholder-->
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/todo"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1.2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background"
-        android:contentDescription="@string/placeholder"/>
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/loginActivity_tv_welcome"
+        style="@style/textShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/app_welcome"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <EditText
+            android:id="@+id/loginActivity_et_email"
+            style="@style/textShadow"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:autofillHints="emailAddress"
+            android:background="@color/light_gray"
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btnContinue"
+            style="@style/textShadow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/loginActivity_et_email"
+            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:backgroundTint="@color/light_red"
+            android:padding="10dp"
+            android:text="@string/_continue"
+            android:textAllCaps="false"
+            android:textColor="@color/light_gray" />
+
+        <Button
+            android:id="@+id/btnLoginWithFacebook"
+            style="@style/textShadow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/loginActivity_et_email"
+            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:backgroundTint="@color/facebook"
+            android:padding="10dp"
+            android:text="@string/loginWithFacebook"
+            android:textAllCaps="false"
+            android:textColor="@color/light_gray" />
+
+        <Button
+            android:id="@+id/btnLoginWithGoogle"
+            style="@style/textShadow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/loginActivity_et_email"
+            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="145dp"
+            android:backgroundTint="@color/google"
+            android:padding="10dp"
+            android:text="@string/loginWithGoogle"
+            android:textAllCaps="false"
+            android:textColor="@color/light_gray" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

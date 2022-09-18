@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Fuel</string>
     <string name="placeholder">placeholder</string>
-    <string name="loginActivity_welcome">Witaj w aplikacji X</string>
+    <string name="app_welcome">Witaj w aplikacji X</string>
+    <string name="todo">TODO</string>
+    <string name="email_address">Adres e-mail</string>
+    <string name="_continue">Kontynuuj</string>
+    <string name="loginWithFacebook">Zaloguj się kontem Facebook</string>
+    <string name="loginWithGoogle">Zaloguj się kontem Google</string>
 </resources>
