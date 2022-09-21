@@ -1,6 +1,7 @@
 ## Inspiracje wyglądu apki
 
-LoginActivity - https://uxcam.com/blog/login-screen-examples/#pinterest-login-design
+LoginActivity:
+![pinterest-login-design](images/pinterest_login.png)
 
 ## Tutoriale
 

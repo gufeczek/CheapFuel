@@ -61,7 +61,7 @@
             android:padding="10dp" />
 
         <Button
-            android:id="@+id/btnContinue"
+            android:id="@+id/btnRegister"
             style="@style/textShadow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_marginTop="45dp"
             android:backgroundTint="@color/light_red"
             android:padding="10dp"
-            android:text="@string/_continue"
+            android:text="@string/register"
             android:textAllCaps="false"
             android:textColor="@color/light_gray" />
 
