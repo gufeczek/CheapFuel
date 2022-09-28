@@ -50,27 +50,57 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/registerActivity_et_password"
-            style="@style/textShadow"
-            android:layout_width="300dp"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registerActivity_textInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="26dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             android:layout_marginTop="4dp"
-            android:autofillHints="password"
-            android:background="@color/light_gray"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:passwordToggleEnabled="true"
+            android:hint=" "
+            tools:ignore="HardcodedText">
+
+            <EditText
+                android:id="@+id/registerActivity_et_password"
+                style="@style/textShadow"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autofillHints="password"
+                android:background="@color/light_gray"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="16dp" />
+            app:layout_constraintGuide_begin="29dp" />
+
+        <Button
+            android:id="@+id/registerActivity_btnNextPage"
+            android:layout_height="wrap_content"
+            style="@style/textShadow"
+            android:layout_width="0dp"
+            android:backgroundTint="@color/light_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:text="@string/next_page"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
