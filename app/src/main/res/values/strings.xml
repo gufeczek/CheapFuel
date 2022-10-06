@@ -9,4 +9,5 @@
     <string name="loginWithFacebook">Zaloguj się kontem Facebook</string>
     <string name="loginWithGoogle">Zaloguj się kontem Google</string>
     <string name="set_password">Utwórz hasło</string>
+    <string name="next_page">Dalej</string>
 </resources>
