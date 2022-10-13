@@ -89,17 +89,19 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="29dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/registerActivity_btnNextPage"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/textShadow"
-            android:layout_width="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
-            android:text="@string/next_page"/>
+            android:backgroundTint="#808080"
+            android:text="@string/next_page"
+            app:cornerRadius="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

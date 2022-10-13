@@ -25,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
 
         etPassword = findViewById(R.id.registerActivity_et_password)
         toolbar = findViewById(R.id.registerActivity_toolbar)
-        btnNextPage = findViewById(R.id.registerActivity_btnNextPage)
+        //btnNextPage = findViewById(R.id.registerActivity_btnNextPage)
 
         CornerDrawable.roundCorners(etPassword, 20f)
 
