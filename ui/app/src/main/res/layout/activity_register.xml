@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:textColor="@color/black"
-            style="@style/textShadow"
             android:textSize="18sp"
             android:textAlignment="center"/>
 
@@ -37,7 +36,6 @@
 
         <TextView
             android:id="@+id/textView"
-            style="@style/textShadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
@@ -67,7 +65,6 @@
 
             <EditText
                 android:id="@+id/registerActivity_et_password"
-                style="@style/textShadow"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -92,7 +89,6 @@
         <Button
             android:id="@+id/registerActivity_btnNextPage"
             android:layout_height="wrap_content"
-            style="@style/textShadow"
             android:layout_width="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
