@@ -23,11 +23,11 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         supportActionBar?.hide()
 
-        etPassword = findViewById(R.id.registerActivity_et_password)
+        //etPassword = findViewById(R.id.registerActivity_et_password)
         toolbar = findViewById(R.id.registerActivity_toolbar)
         //btnNextPage = findViewById(R.id.registerActivity_btnNextPage)
 
-        CornerDrawable.roundCorners(etPassword, 20f)
+        //CornerDrawable.roundCorners(etPassword, 20f)
 
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
     }

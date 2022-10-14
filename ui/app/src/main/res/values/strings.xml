@@ -10,4 +10,6 @@
     <string name="loginWithGoogle">Zaloguj się kontem Google</string>
     <string name="set_password">Utwórz hasło</string>
     <string name="next_page">Dalej</string>
+    <string name="password_requirements_head">Hasło musi zawierać: </string>
+    <string name="password_requirements_tail">Minimum 8 znaków\nJedną dużą literę\nJeden znak specjalny</string>
 </resources>
