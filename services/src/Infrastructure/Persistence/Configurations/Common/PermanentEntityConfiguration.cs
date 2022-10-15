@@ -9,6 +9,8 @@ public abstract class PermanentEntityConfiguration<T> : IEntityTypeConfiguration
 {
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {
+        builder.HasQueryFilter(p => !p.Deleted);
+
         builder.Property(p => p.Deleted)
             .HasDefaultValue(false)
             .IsRequired();
