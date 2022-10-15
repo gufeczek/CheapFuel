@@ -19,6 +19,36 @@ namespace Infrastructure.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Domain.Entities.Favorite", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FuelStationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "FuelStationId");
+
+                    b.HasIndex("FuelStationId");
+
+                    b.ToTable("Favorite");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FuelAtStation", b =>
+                {
+                    b.Property<long>("FuelTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FuelStationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("FuelTypeId", "FuelStationId");
+
+                    b.HasIndex("FuelStationId");
+
+                    b.ToTable("FuelAtStation");
+                });
+
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
                 {
                     b.Property<long>("Id")
@@ -47,6 +77,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<long>("StationChainId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -55,7 +88,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelStations", (string)null);
+                    b.HasIndex("StationChainId");
+
+                    b.ToTable("FuelStations");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelType", b =>
@@ -71,7 +106,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelTypes", (string)null);
+                    b.ToTable("FuelTypes");
                 });
 
             modelBuilder.Entity("Domain.Entities.OpeningClosingTime", b =>
@@ -106,7 +141,22 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("FuelStationId", "DayOfWeek");
 
-                    b.ToTable("OpeningClosingTime", (string)null);
+                    b.ToTable("OpeningClosingTime");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FuelStationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "FuelStationId");
+
+                    b.HasIndex("FuelStationId");
+
+                    b.ToTable("OwnedStation");
                 });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
@@ -122,7 +172,22 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
+                {
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FuelStationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ServiceId", "FuelStationId");
+
+                    b.HasIndex("FuelStationId");
+
+                    b.ToTable("ServiceAtStation");
                 });
 
             modelBuilder.Entity("Domain.Entities.StationChain", b =>
@@ -138,7 +203,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StationChains", (string)null);
+                    b.ToTable("StationChains");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -195,12 +260,56 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Favorite", b =>
+                {
+                    b.HasOne("Domain.Entities.FuelStation", "FuelStation")
+                        .WithMany()
+                        .HasForeignKey("FuelStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FuelStation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FuelAtStation", b =>
+                {
+                    b.HasOne("Domain.Entities.FuelStation", "FuelStation")
+                        .WithMany()
+                        .HasForeignKey("FuelStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.FuelType", "FuelType")
+                        .WithMany()
+                        .HasForeignKey("FuelTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FuelStation");
+
+                    b.Navigation("FuelType");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
                 {
-                    b.OwnsOne("Domain.Entities.FuelStation.Address#Domain.Entities.Address", "Address", b1 =>
+                    b.HasOne("Domain.Entities.StationChain", "StationChain")
+                        .WithMany()
+                        .HasForeignKey("StationChainId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -230,13 +339,13 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations", (string)null);
+                            b1.ToTable("FuelStations");
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");
                         });
 
-                    b.OwnsOne("Domain.Entities.FuelStation.GeographicalCoordinates#Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
+                    b.OwnsOne("Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -253,7 +362,7 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations", (string)null);
+                            b1.ToTable("FuelStations");
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");
@@ -264,6 +373,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("GeographicalCoordinates")
                         .IsRequired();
+
+                    b.Navigation("StationChain");
                 });
 
             modelBuilder.Entity("Domain.Entities.OpeningClosingTime", b =>
@@ -275,6 +386,44 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("FuelStation");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
+                {
+                    b.HasOne("Domain.Entities.FuelStation", "FuelStation")
+                        .WithMany()
+                        .HasForeignKey("FuelStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FuelStation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
+                {
+                    b.HasOne("Domain.Entities.FuelStation", "FuelStation")
+                        .WithMany()
+                        .HasForeignKey("FuelStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FuelStation");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
