@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Service> Services => Set<Service>();
     public DbSet<StationChain> StationChains => Set<StationChain>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<FuelStation> FuelStations => Set<FuelStation>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
