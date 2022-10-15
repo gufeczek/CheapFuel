@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class User : TimedEntity
+public class User : PermanentEntity
 {
     public string? Username { get; set; }
     public string? Email { get; set; }

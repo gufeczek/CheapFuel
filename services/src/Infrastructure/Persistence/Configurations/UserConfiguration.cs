@@ -1,19 +1,16 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : PermanentEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasIndex(u => u.Username)
-            .IsUnique();
-
-        builder.HasIndex(u => u.Email)
-            .IsUnique();
-
+        base.Configure(builder);
+        
         builder.Property(u => u.Username)
             .HasMaxLength(32)
             .IsRequired();
@@ -39,12 +36,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Status)
             .HasConversion<string>()
-            .IsRequired();
-
-        builder.Property(u => u.CreatedAt)
-            .IsRequired();
-
-        builder.Property(u => u.UpdatedAt)
             .IsRequired();
     }
 }

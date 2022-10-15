@@ -1,6 +1,6 @@
 ﻿namespace Domain.Common.Interfaces;
 
-public interface IPermanent : ITracked
+public interface ISoftlyDeletable
 {
     bool Deleted { get; set; }
     long? DeletedBy { get; set; }

@@ -1,18 +1,18 @@
 ﻿using Domain.Entities;
-using Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
 
-public class FuelStationConfiguration : PermanentEntityConfiguration<FuelStation>
+public class FuelStationConfiguration : IEntityTypeConfiguration<FuelStation>
 {
-    public override void Configure(EntityTypeBuilder<FuelStation> builder)
+    public void Configure(EntityTypeBuilder<FuelStation> builder)
     {
-        base.Configure(builder);
-        
         builder.Property(f => f.Name)
             .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(f => f.StationChainId)
             .IsRequired();
 
         builder.OwnsOne(f => f.Address, a =>
