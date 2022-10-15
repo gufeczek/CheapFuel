@@ -36,11 +36,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.Role)
-            .HasConversion(new EnumToStringConverter<Role>())
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(u => u.Status)
-            .HasConversion(new EnumToStringConverter<AccountStatus>())
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(u => u.CreatedAt)

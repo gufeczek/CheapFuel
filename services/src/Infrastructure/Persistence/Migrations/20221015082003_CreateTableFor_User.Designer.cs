@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221015073621_CreateTableFor_User")]
+    [Migration("20221015082003_CreateTableFor_User")]
     partial class CreateTableFor_User
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,11 +99,13 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
