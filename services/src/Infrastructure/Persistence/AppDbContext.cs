@@ -17,6 +17,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<ServiceAtStation> ServiceAtStations => Set<ServiceAtStation>();
     public DbSet<OwnedStation> OwnedStations => Set<OwnedStation>();
     public DbSet<Review> Reviews => Set<Review>();
+    public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

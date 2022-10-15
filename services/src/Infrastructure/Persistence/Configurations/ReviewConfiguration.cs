@@ -20,7 +20,7 @@ public class ReviewConfiguration : PermanentEntityConfiguration<Review>
 
         builder.HasOne(r => r.FuelStation)
             .WithMany()
-            .OnDelete(DeleteBehavior.ClientSetNull);
+            .OnDelete(DeleteBehavior.ClientSetNull); // Should be change after changing FuelStation to permanent table
         
         builder.HasOne(r => r.User)
             .WithMany()
