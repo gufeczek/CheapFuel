@@ -37,7 +37,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelAtStation", b =>
@@ -58,7 +58,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("FuelAtStations");
+                    b.ToTable("FuelAtStations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelPrice", b =>
@@ -123,7 +123,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FuelPrices");
+                    b.ToTable("FuelPrices", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
@@ -156,7 +156,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("StationChainId");
 
-                    b.ToTable("FuelStations");
+                    b.ToTable("FuelStations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelType", b =>
@@ -184,7 +184,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelTypes");
+                    b.ToTable("FuelTypes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OpeningClosingTime", b =>
@@ -219,7 +219,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("FuelStationId", "DayOfWeek");
 
-                    b.ToTable("OpeningClosingTime");
+                    b.ToTable("OpeningClosingTime", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
@@ -240,7 +240,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("OwnedStations");
+                    b.ToTable("OwnedStations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Review", b =>
@@ -293,7 +293,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
@@ -321,7 +321,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
@@ -342,7 +342,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("ServiceAtStations");
+                    b.ToTable("ServiceAtStations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.StationChain", b =>
@@ -370,7 +370,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StationChains");
+                    b.ToTable("StationChains", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -438,7 +438,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
@@ -510,7 +510,7 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.Entities.FuelStation.Address#Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -540,13 +540,13 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations");
+                            b1.ToTable("FuelStations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");
                         });
 
-                    b.OwnsOne("Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
+                    b.OwnsOne("Domain.Entities.FuelStation.GeographicalCoordinates#Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -563,7 +563,7 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations");
+                            b1.ToTable("FuelStations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");

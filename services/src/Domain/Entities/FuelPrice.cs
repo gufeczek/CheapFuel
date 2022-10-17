@@ -6,7 +6,7 @@ namespace Domain.Entities;
 public class FuelPrice : PermanentEntity
 {
     public decimal Price { get; set; }
-    public bool Available { get; set; }
+    public bool? Available { get; set; }
     public FuelPriceStatus Status { get; set; }
     public bool Priority { get; set; }
 
