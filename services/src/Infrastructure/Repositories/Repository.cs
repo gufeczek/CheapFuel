@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +14,14 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         Context = context;
     }
     
-    public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> filter)
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter)
     {
         return await Context.Set<TEntity>()
             .Where(filter)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<TEntity>> GetAll()
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await Context.Set<TEntity>()
             .ToListAsync();

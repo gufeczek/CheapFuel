@@ -1,8 +1,8 @@
 ﻿using Domain.Common;
 
-namespace Domain.Interfaces;
+namespace Domain.Interfaces.Repositories;
 
 public interface IBaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    Task<TEntity?> Get(long id);
+    Task<TEntity?> GetAsync(long id);
 }

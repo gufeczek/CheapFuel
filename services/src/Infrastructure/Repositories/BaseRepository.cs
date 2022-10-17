@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,7 @@ public abstract class BaseRepository<TEntity> : Repository<TEntity>, IBaseReposi
 {
     protected BaseRepository(AppDbContext context) : base(context) { }
     
-    public async Task<TEntity?> Get(long id)
+    public async Task<TEntity?> GetAsync(long id)
     {
         return await Context.Set<TEntity>()
             .Where(t => t.Id == id)
