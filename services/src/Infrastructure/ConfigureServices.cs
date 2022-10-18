@@ -1,5 +1,8 @@
-﻿using Infrastructure.Exceptions;
+﻿using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
+using Infrastructure.Exceptions;
 using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +31,25 @@ public static class ConfigureServices
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
         }
+
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+        services.AddScoped<IFuelAtStationRepository, FuelAtStationRepository>();
+        services.AddScoped<IFuelPriceRepository, FuelPriceRepository>();
+        services.AddScoped<IFuelStationRepository, FuelStationRepository>();
+        services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
+        services.AddScoped<IOpeningClosingTimeRepository, OpeningClosingTimeRepository>();
+        services.AddScoped<IOwnedStationRepository, OwnedStationRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IServiceAtStationRepository, ServiceAtStationRepository>();
+        services.AddScoped<IStationChainRepository, StationChainRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
