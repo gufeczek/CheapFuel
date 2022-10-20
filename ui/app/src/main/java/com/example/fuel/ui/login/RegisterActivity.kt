@@ -5,6 +5,7 @@ import android.widget.EditText
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fuel.R
+import com.example.fuel.ui.login.fragment.SetPasswordFragment
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -19,7 +20,11 @@ class RegisterActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.registerActivity_toolbar)
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
 
-        etPassword = findViewById(R.id.registerActivity_et_password)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frameLayout, SetPasswordFragment())
+            .commit()
+
     }
 
 
