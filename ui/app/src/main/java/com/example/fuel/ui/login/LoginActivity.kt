@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.fuel.CornerDrawable
 import com.example.fuel.R
 
 class LoginActivity : AppCompatActivity() {
@@ -33,8 +32,6 @@ class LoginActivity : AppCompatActivity() {
             Color.RED, Color.BLUE, Shader.TileMode.CLAMP
         )
         tvWelcomeMsg.paint.shader = shader
-
-        CornerDrawable.roundCorners(etEmail, 20f)
 
         /*TODO: implement e-mail validity check*/
         btnRegister.setOnClickListener{
