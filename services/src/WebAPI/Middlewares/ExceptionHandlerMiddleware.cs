@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mime;
-using Application.Excepitons;
+using Application.Common.Exceptions;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

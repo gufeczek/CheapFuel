@@ -1,4 +1,4 @@
-﻿using Application.Excepitons;
+﻿using Application.Common.Exceptions;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
