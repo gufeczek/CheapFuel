@@ -15,4 +15,6 @@
     <string name="password_requirements_1">Minimum 8 znaków </string>
     <string name="password_requirements_2">Jedną dużą literę </string>
     <string name="password_requirements_3">Jeden znak specjalny</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
