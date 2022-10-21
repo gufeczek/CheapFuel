@@ -2,9 +2,9 @@
 
 namespace Application.StationChains.Commands.CreateStationChain;
 
-public class CreateStationChainValidator : AbstractValidator<CreateStationChainCommand>
+public class CreateStationChainCommandValidator : AbstractValidator<CreateStationChainCommand>
 {
-    public CreateStationChainValidator()
+    public CreateStationChainCommandValidator()
     {
         RuleFor(e => e.Name)
             .NotEmpty()

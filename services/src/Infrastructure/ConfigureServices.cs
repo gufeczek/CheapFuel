@@ -1,18 +1,27 @@
-﻿using Domain.Interfaces;
+﻿using System.Text;
+using Application.Common.Authentication;
+using Domain.Entities;
+using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Exceptions;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
@@ -31,11 +40,9 @@ public static class ConfigureServices
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
         }
-
-        return services;
     }
 
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IFavoriteRepository, FavoriteRepository>();
         services.AddScoped<IFuelAtStationRepository, FuelAtStationRepository>();
@@ -50,7 +57,36 @@ public static class ConfigureServices
         services.AddScoped<IStationChainRepository, StationChainRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
 
-        return services;
+    public static void AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
+    {
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        services.AddScoped<IUserPasswordHasher, UserPasswordHasher>();
+        
+        var authenticationSettings = new AuthenticationSettings();
+        services.AddSingleton(authenticationSettings);
+        
+        configuration.GetSection("Authentication").Bind(authenticationSettings);
+        services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = !environment.IsDevelopment();
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = authenticationSettings.JwtIssuer,
+                ValidAudience = authenticationSettings.JwtIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+            };
+        });
     }
 }

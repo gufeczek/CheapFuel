@@ -2,5 +2,5 @@
 
 public record ValidationErrorMessage : ErrorMessage
 {
-    public PropertyValidationFailure[] Violations { get; init; }
+    public PropertyValidationFailure[]? Violations { get; init; }
 }

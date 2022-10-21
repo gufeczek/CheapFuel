@@ -2,6 +2,6 @@
 
 public record PropertyValidationFailure
 {
-    public string Property { get; init; }
-    public string[] Errors { get; init; }
+    public string? Property { get; init; }
+    public string[]? Errors { get; init; }
 }
