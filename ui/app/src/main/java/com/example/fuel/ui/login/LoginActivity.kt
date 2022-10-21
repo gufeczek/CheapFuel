@@ -11,33 +11,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fuel.R
 import com.example.fuel.ui.login.fragment.SetPasswordFragment
+import com.example.fuel.ui.login.fragment.SetRegisterMethodFragment
 
 class LoginActivity : AppCompatActivity() {
-
-    private lateinit var tvWelcomeMsg: TextView
-    private lateinit var etEmail: EditText
-    private lateinit var btnRegister: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
 
-        tvWelcomeMsg = findViewById(R.id.loginActivity_tv_welcome)
-        etEmail = findViewById(R.id.loginActivity_et_email)
-        btnRegister = findViewById(R.id.btnRegister)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frameLayout2, SetRegisterMethodFragment())
+            .commit()
 
-        /*TODO: change gradient values*/
-        val shader = LinearGradient(
-            0f, 0f, 0f, tvWelcomeMsg.textSize,
-            Color.RED, Color.BLUE, Shader.TileMode.CLAMP
-        )
-        tvWelcomeMsg.paint.shader = shader
-
-        /*TODO: implement e-mail validity check*/
-        btnRegister.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
