@@ -25,7 +25,7 @@ public class TokenService : ITokenService
             new(ClaimTypes.Role, user.Role.ToString())
         };
         var identity = new ClaimsIdentity(claims);
-        var expires = DateTime.Now.AddDays(_authenticationSettings.ExpireDays);
+        var expires = DateTime.Now.AddDays((double) _authenticationSettings.ExpireDays!);
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.Secret!));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -69,6 +69,8 @@ public static class ConfigureServices
         services.AddSingleton(authenticationSettings);
         
         configuration.GetSection("Authentication").Bind(authenticationSettings);
+        ValidateAuthenticationSettings(authenticationSettings);
+        
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -89,5 +91,16 @@ public static class ConfigureServices
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret))
             };
         });
+    }
+
+    private static void ValidateAuthenticationSettings(AuthenticationSettings settings)
+    {
+        if (settings.Secret is null 
+            || settings.ExpireDays is null 
+            || settings.Issuer is null 
+            || settings.Audience is null)
+        {
+            throw new AppConfigurationException("One or more of the required authentication settings is missing");
+        }
     }
 }
