@@ -6,17 +6,12 @@ using WebAPI.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositories();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration, builder.Environment);
-
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddWebApiServices();
 builder.Services.AddSwagger();
-
-// Middleware
-builder.Services.AddScoped<ExceptionHandlerMiddleware>();
 
 var app = builder.Build();
 
