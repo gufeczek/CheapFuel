@@ -5,7 +5,7 @@ using WebAPI.Common.Authorization;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/test")]
 public class TestController : ControllerBase
 {
     [Authorize]
