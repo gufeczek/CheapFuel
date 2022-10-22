@@ -8,6 +8,14 @@ namespace WebAPI.Controllers;
 [Route("api/v1/test")]
 public class TestController : ControllerBase
 {
+    
+    [AllowAnonymous]
+    [HttpGet("anonymous")]
+    public string GetAnonymous()
+    {
+        return "Hello world anonymous!";
+    }
+    
     [Authorize]
     [HttpGet("user")]
     public string GetUser()
