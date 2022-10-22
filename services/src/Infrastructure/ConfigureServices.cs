@@ -63,11 +63,14 @@ public static class ConfigureServices
     {
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserPasswordHasher, UserPasswordHasher>();
+        services.AddScoped<ITokenService, TokenService>();
         
         var authenticationSettings = new AuthenticationSettings();
         services.AddSingleton(authenticationSettings);
         
         configuration.GetSection("Authentication").Bind(authenticationSettings);
+        ValidateAuthenticationSettings(authenticationSettings);
+        
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,10 +86,21 @@ public static class ConfigureServices
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = authenticationSettings.JwtIssuer,
-                ValidAudience = authenticationSettings.JwtIssuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+                ValidIssuer = authenticationSettings.Issuer,
+                ValidAudience = authenticationSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret))
             };
         });
+    }
+
+    private static void ValidateAuthenticationSettings(AuthenticationSettings settings)
+    {
+        if (settings.Secret is null 
+            || settings.ExpireDays is null 
+            || settings.Issuer is null 
+            || settings.Audience is null)
+        {
+            throw new AppConfigurationException("One or more of the required authentication settings is missing");
+        }
     }
 }

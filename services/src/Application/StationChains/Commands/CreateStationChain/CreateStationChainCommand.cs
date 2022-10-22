@@ -3,7 +3,4 @@ using MediatR;
 
 namespace Application.StationChains.Commands.CreateStationChain;
 
-public sealed record CreateStationChainCommand : IRequest<StationChain>
-{
-    public string Name { get; init; } = string.Empty;
-}
+public sealed record CreateStationChainCommand(string Name) : IRequest<StationChain>;

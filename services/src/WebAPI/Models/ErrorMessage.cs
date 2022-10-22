@@ -2,10 +2,4 @@
 
 namespace WebAPI.Models;
 
-public record ErrorMessage
-{
-    public HttpStatusCode StatusCode { get; set; }
-    public string Title { get; init; } = string.Empty;
-    public string Details { get; init; } = string.Empty;
-    public DateTime Timestamp { get; init; }
-}
+public record ErrorMessage(HttpStatusCode StatusCode, string Title, string Details, DateTime Timestamp);

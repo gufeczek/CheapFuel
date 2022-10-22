@@ -3,10 +3,5 @@ using MediatR;
 
 namespace Application.Users.Commands.RegisterUser;
 
-public class RegisterUserCommand : IRequest<UserDto>
-{
-    public string Username { get; init; }
-    public string Email { get; init; }
-    public string Password { get; init; }
-    public string ConfirmPassword { get; init; }
-}
+public sealed record RegisterUserCommand(string Username, string Email, string Password, string ConfirmPassword) 
+    : IRequest<UserDto>;

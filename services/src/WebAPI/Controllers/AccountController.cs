@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Users.Commands.AuthenticateUser;
+using Application.Users.Commands.RegisterUser;
+using Application.Users.Queries.GetUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("/api/v1/account")]
+[AllowAnonymous]
+[Route("api/v1/accounts")]
 public class AccountController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,9 +19,17 @@ public class AccountController : ControllerBase
         _mediator = mediator;
     }
 
-    [AllowAnonymous]
-    public async Task<ActionResult> RegisterAsync([FromBody] User user)
+    [HttpPost("register")]
+    public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserCommand command)
     {
-        return NotFound();
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+    
+    [HttpPost("login")]
+    public async Task<ActionResult<string>> Login([FromBody] AuthenticateUserCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 }
