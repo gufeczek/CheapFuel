@@ -19,13 +19,15 @@ app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 
-app.UseHttpsRedirection();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseHttpsRedirection();
 }
 
 app.UseRouting();
