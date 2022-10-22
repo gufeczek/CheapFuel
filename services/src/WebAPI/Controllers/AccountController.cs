@@ -1,4 +1,5 @@
 ﻿using Application.Users.Commands.AuthenticateUser;
+using Application.Users.Commands.ChangeUserRole;
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Queries.GetUser;
 using MediatR;
@@ -20,16 +21,23 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserCommand command)
+    public async Task<ActionResult<UserDto>> RegisterAsync([FromBody] RegisterUserCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
     }
     
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] AuthenticateUserCommand command)
+    public async Task<ActionResult<string>> LoginAsync([FromBody] AuthenticateUserCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
+    }
+
+    [HttpPost("change-role")]
+    public async Task<ActionResult> ChangeRoleAsync([FromBody] ChangeUserRoleCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
     }
 }

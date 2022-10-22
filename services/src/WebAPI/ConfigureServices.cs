@@ -1,10 +1,24 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 using WebAPI.Common.Authorization.Swagger;
+using WebAPI.Middlewares;
 
 namespace WebAPI;
 
 public static class ConfigureServices
 {
+    public static void AddWebApiServices(this IServiceCollection services)
+    {
+        services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        services.AddEndpointsApiExplorer();
+        
+        services.AddScoped<ExceptionHandlerMiddleware>();
+    }
+    
     public static void AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
