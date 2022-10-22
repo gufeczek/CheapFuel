@@ -106,6 +106,8 @@ public class ExceptionHandlerMiddleware : IMiddleware
 
     private ErrorMessage HandleUnexpectedException(Exception e)
     {
+        Console.WriteLine(e.GetType());
+        Console.WriteLine(e.Message);
         Console.WriteLine(e.StackTrace); // Should be change to logger
         
         return new ErrorMessage

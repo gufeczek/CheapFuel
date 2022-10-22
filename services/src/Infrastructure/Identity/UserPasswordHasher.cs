@@ -17,4 +17,10 @@ public class UserPasswordHasher : IUserPasswordHasher
     {
         return _passwordHasher.HashPassword(user, password);
     }
+
+    public bool IsPasswordCorrect(string hash, string password, User user)
+    {
+        var result = _passwordHasher.VerifyHashedPassword(user, hash, password);
+        return result == PasswordVerificationResult.Success;
+    }
 }

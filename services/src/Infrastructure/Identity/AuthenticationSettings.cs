@@ -2,7 +2,8 @@
 
 public class AuthenticationSettings
 {
-    public string? JwtKey { get; init; }
-    public int JwtExpireDays { get; init; }
-    public string? JwtIssuer { get; init; }
+    public string? Secret { get; init; }
+    public int ExpireDays { get; init; }
+    public string? Issuer { get; init; }
+    public string? Audience { get; init; }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Users.Commands.RegisterUser;
 
-public class RegisterUserCommand : IRequest<UserDto>
+public sealed record RegisterUserCommand : IRequest<UserDto>
 {
     public string Username { get; init; }
     public string Email { get; init; }

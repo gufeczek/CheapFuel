@@ -63,6 +63,7 @@ public static class ConfigureServices
     {
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserPasswordHasher, UserPasswordHasher>();
+        services.AddScoped<ITokenService, TokenService>();
         
         var authenticationSettings = new AuthenticationSettings();
         services.AddSingleton(authenticationSettings);
@@ -83,9 +84,9 @@ public static class ConfigureServices
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = authenticationSettings.JwtIssuer,
-                ValidAudience = authenticationSettings.JwtIssuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+                ValidIssuer = authenticationSettings.Issuer,
+                ValidAudience = authenticationSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret))
             };
         });
     }
