@@ -5,9 +5,16 @@
     <string name="todo">TODO</string>
     <string name="email_address" tools:ignore="Typos">Adres e-mail</string>
     <string name="password">Hasło</string>
+    <string name="repeat_password">Powtórz hasło</string>
     <string name="register">Zarejestruj się</string>
     <string name="loginWithFacebook">Zaloguj się kontem Facebook</string>
     <string name="loginWithGoogle">Zaloguj się kontem Google</string>
     <string name="set_password">Utwórz hasło</string>
     <string name="next_page">Dalej</string>
+    <string name="password_requirements_header">Hasło musi zawierać: </string>
+    <string name="password_requirements_1">Minimum 8 znaków </string>
+    <string name="password_requirements_2">Jedną dużą literę </string>
+    <string name="password_requirements_3">Jeden znak specjalny</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
