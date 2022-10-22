@@ -1,6 +1,9 @@
-﻿namespace WebAPI.Models;
+﻿using System.Net;
 
-public record ValidationErrorMessage : ErrorMessage
-{
-    public PropertyValidationFailure[]? Violations { get; init; }
-}
+namespace WebAPI.Models;
+
+public record ValidationErrorMessage(HttpStatusCode StatusCode, 
+    string Title, 
+    string Details, 
+    DateTime Timestamp, 
+    PropertyValidationFailure[] Violations) : ErrorMessage(StatusCode, Title, Details, Timestamp);

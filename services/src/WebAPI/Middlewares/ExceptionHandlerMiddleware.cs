@@ -39,6 +39,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
             BadRequestException badRequestException => HandleBadRequestException(badRequestException),
             NotFoundException notFoundException => HandleNotFoundException(notFoundException),
             ConflictException conflictException => HandleConflictException(conflictException),
+            UnauthorizedException unauthorizedException => HandleUnauthorizedException(unauthorizedException),
             ValidationException validationException => HandleValidationException(validationException),
             _ => HandleUnexpectedException(e)
         };
@@ -48,74 +49,83 @@ public class ExceptionHandlerMiddleware : IMiddleware
         await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage, _jsonSerializerSettings));
     }
 
-    private ErrorMessage HandleBadRequestException(BadRequestException e)
+    private static ErrorMessage HandleBadRequestException(BadRequestException e)
     {
         return new ErrorMessage
-        {
-            StatusCode = HttpStatusCode.BadRequest,
-            Title = "Bad request",
-            Details = e.Message,
-            Timestamp = DateTime.UtcNow
-        };
+        (
+            StatusCode: HttpStatusCode.BadRequest,
+            Title: "Bad request",
+            Details: e.Message,
+            Timestamp: DateTime.UtcNow
+        );
     }
 
-    private ErrorMessage HandleNotFoundException(NotFoundException e)
+    private static ErrorMessage HandleNotFoundException(NotFoundException e)
     {
         return new ErrorMessage
-        {
-            StatusCode = HttpStatusCode.NotFound,
-            Title = "The specified resource was not found.",
-            Details = e.Message,
-            Timestamp = DateTime.UtcNow
-        };
+        (
+            StatusCode: HttpStatusCode.NotFound,
+            Title: "The specified resource was not found.",
+            Details: e.Message,
+            Timestamp: DateTime.UtcNow
+        );
     }
 
-    private ErrorMessage HandleConflictException(ConflictException e)
+    private static ErrorMessage HandleConflictException(ConflictException e)
     {
         return new ErrorMessage
-        {
-            StatusCode = HttpStatusCode.Conflict,
-            Title = "Conflict",
-            Details = e.Message,
-            Timestamp = DateTime.UtcNow
-        };
+        (
+            StatusCode: HttpStatusCode.Conflict,
+            Title: "Conflict",
+            Details: e.Message,
+            Timestamp: DateTime.UtcNow
+        );
     }
 
-    private ErrorMessage HandleValidationException(ValidationException e)
+    private static ErrorMessage HandleUnauthorizedException(UnauthorizedException e)
+    {
+        return new ErrorMessage
+        (
+            StatusCode: HttpStatusCode.Unauthorized,
+            Title: "Unauthorized",
+            Details: e.Message,
+            Timestamp: DateTime.UtcNow
+        );
+    }
+
+    private static ErrorMessage HandleValidationException(ValidationException e)
     {
         var failures = e.Errors
             .GroupBy(
                 v => v.PropertyName,
                 v => v.ErrorMessage,
                 (propertyName, errorMessage) => new PropertyValidationFailure
-                {
-                    Property = propertyName,
-                    Errors = errorMessage.Distinct().ToArray()
-                })
+                (
+                    Property: propertyName,
+                    Errors: errorMessage.Distinct().ToArray()
+                ))
             .ToArray();
 
         return new ValidationErrorMessage
-        {
-            StatusCode = HttpStatusCode.BadRequest,
-            Title = "Bad request",
-            Details = "Validation failed",
-            Timestamp = DateTime.UtcNow,
-            Violations = failures
-        };
+        (
+            StatusCode: HttpStatusCode.BadRequest,
+            Title: "Bad request",
+            Details: "Validation failed",
+            Timestamp: DateTime.UtcNow,
+            Violations: failures
+        );
     }
 
-    private ErrorMessage HandleUnexpectedException(Exception e)
+    private static ErrorMessage HandleUnexpectedException(Exception e)
     {
-        Console.WriteLine(e.GetType());
-        Console.WriteLine(e.Message);
         Console.WriteLine(e.StackTrace); // Should be change to logger
         
         return new ErrorMessage
-        {
-            StatusCode = HttpStatusCode.InternalServerError,
-            Title = "Internal server error",
-            Details = "Something went wrong :(",
-            Timestamp = DateTime.UtcNow
-        };
+        (
+            StatusCode: HttpStatusCode.InternalServerError,
+            Title: "Internal server error",
+            Details: "Something went wrong :(",
+            Timestamp: DateTime.UtcNow
+        );
     }
 }
