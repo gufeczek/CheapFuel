@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context=".LoginActivity">
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="20dp"
+    tools:context=".ui.login.LoginActivity">
 
     <!--TODO: change placeholder image and placeholder-->
     <ImageView
@@ -20,86 +22,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/loginActivity_tv_welcome"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="410dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/roboto_bold"
-        android:text="@string/app_welcome"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        android:layout_marginTop="4dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="350dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="70dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <EditText
-            android:id="@+id/loginActivity_et_email"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:autofillHints="emailAddress"
-            android:background="@color/light_gray"
-            android:hint="@string/email_address"
-            android:inputType="textEmailAddress"
-            android:padding="10dp" />
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
-            android:backgroundTint="@color/light_red"
-            android:padding="10dp"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray" />
-
-        <Button
-            android:id="@+id/btnLoginWithFacebook"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:backgroundTint="@color/facebook"
-            android:padding="10dp"
-            android:text="@string/loginWithFacebook"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray" />
-
-        <Button
-            android:id="@+id/btnLoginWithGoogle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="145dp"
-            android:backgroundTint="@color/google"
-            android:padding="10dp"
-            android:text="@string/loginWithGoogle"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray" />
-
-    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
