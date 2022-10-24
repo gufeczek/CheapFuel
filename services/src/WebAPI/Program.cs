@@ -13,13 +13,14 @@ builder.Services.AddAuthenticationAndAuthorization(builder.Configuration, builde
 builder.Services.AddWebApiServices();
 builder.Services.AddSwagger();
 
+// Configure the HTTP request pipeline.
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
