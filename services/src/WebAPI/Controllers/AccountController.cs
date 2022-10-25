@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.AuthenticateUser;
+﻿using Application.Models;
+using Application.Users.Commands.AuthenticateUser;
 using Application.Users.Commands.ChangeUserRole;
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Queries.GetUser;

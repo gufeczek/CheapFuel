@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Models;
+using MediatR;
 
 namespace Application.Users.Queries.GetUser;
 

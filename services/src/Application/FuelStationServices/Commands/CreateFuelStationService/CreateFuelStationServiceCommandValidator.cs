@@ -2,7 +2,7 @@
 
 namespace Application.FuelStationServices.Commands.CreateFuelStationService;
 
-public class CreateFuelStationServiceCommandValidator : AbstractValidator<CreateFuelStationServiceCommand>
+public sealed class CreateFuelStationServiceCommandValidator : AbstractValidator<CreateFuelStationServiceCommand>
 {
     public CreateFuelStationServiceCommandValidator()
     {

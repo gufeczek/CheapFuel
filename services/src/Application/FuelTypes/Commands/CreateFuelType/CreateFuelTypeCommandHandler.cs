@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.FuelTypes.Commands.CreateFuelType;
 
-public class CreateFuelTypeCommandHandler : IRequestHandler<CreateFuelTypeCommand, FuelTypeDto>
+public sealed class CreateFuelTypeCommandHandler : IRequestHandler<CreateFuelTypeCommand, FuelTypeDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFuelTypeRepository _fuelTypeRepository;

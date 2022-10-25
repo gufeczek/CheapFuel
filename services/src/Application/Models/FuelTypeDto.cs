@@ -5,9 +5,9 @@ namespace Application.Models;
 
 public sealed record FuelTypeDto(long Id, string Name);
 
-public sealed class FuelTypeProfile : Profile
+public sealed class FuelTypeDtoProfile : Profile
 {
-    public FuelTypeProfile()
+    public FuelTypeDtoProfile()
     {
         CreateMap<FuelType, FuelTypeDto>();
     }

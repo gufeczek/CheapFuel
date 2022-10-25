@@ -1,4 +1,5 @@
 ﻿using Application.Common.Exceptions;
+using Application.Models;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace Application.Users.Queries.GetUser;
 
-public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
+public sealed class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;

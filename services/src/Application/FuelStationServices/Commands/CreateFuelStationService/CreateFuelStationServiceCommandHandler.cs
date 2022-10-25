@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.FuelStationServices.Commands.CreateFuelStationService;
 
-public class CreateFuelStationServiceCommandHandler : IRequestHandler<CreateFuelStationServiceCommand, FuelStationServiceDto>
+public sealed class CreateFuelStationServiceCommandHandler : IRequestHandler<CreateFuelStationServiceCommand, FuelStationServiceDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFuelStationServiceRepository _serviceRepository;

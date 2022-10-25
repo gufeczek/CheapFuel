@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Application.FuelTypes.Commands.CreateFuelType;
 
-public sealed record CreateFuelTypeCommand(string Name) : IRequest<FuelTypeDto>;
+public sealed record CreateFuelTypeCommand(string Name) 
+    : IRequest<FuelTypeDto>;

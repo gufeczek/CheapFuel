@@ -3,7 +3,5 @@ using MediatR;
 
 namespace Application.FuelStationServices.Queries.GetAllFuelStationServices;
 
-public class GetAllFuelStationServicesCommand : IRequest<IEnumerable<FuelStationServiceDto>>
-{
-    
-}
+public sealed record GetAllFuelStationServicesQuery 
+    : IRequest<IEnumerable<FuelStationServiceDto>>;

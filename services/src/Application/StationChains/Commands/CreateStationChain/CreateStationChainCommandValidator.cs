@@ -2,7 +2,7 @@
 
 namespace Application.StationChains.Commands.CreateStationChain;
 
-public class CreateStationChainCommandValidator : AbstractValidator<CreateStationChainCommand>
+public sealed class CreateStationChainCommandValidator : AbstractValidator<CreateStationChainCommand>
 {
     public CreateStationChainCommandValidator()
     {

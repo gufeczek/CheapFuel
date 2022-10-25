@@ -23,7 +23,7 @@ public class FuelStationServicesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FuelStationServiceDto>>> GetAllAsync()
     {
-        var result = await _mediator.Send(new GetAllFuelStationServicesCommand());
+        var result = await _mediator.Send(new GetAllFuelStationServicesQuery());
         return Ok(result);
     }
 

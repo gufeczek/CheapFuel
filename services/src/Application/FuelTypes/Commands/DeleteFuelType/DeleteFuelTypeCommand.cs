@@ -2,4 +2,5 @@
 
 namespace Application.FuelTypes.Commands.DeleteFuelType;
 
-public sealed record DeleteFuelTypeCommand(long Id) : IRequest<Unit>;
+public sealed record DeleteFuelTypeCommand(long Id) 
+    : IRequest<Unit>;

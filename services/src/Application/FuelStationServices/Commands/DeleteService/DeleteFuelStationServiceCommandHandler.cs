@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.FuelStationServices.Commands.DeleteService;
 
-public class DeleteFuelStationServiceCommandHandler : IRequestHandler<DeleteFuelStationServiceCommand, Unit>
+public sealed class DeleteFuelStationServiceCommandHandler : IRequestHandler<DeleteFuelStationServiceCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFuelStationServiceRepository _serviceRepository;

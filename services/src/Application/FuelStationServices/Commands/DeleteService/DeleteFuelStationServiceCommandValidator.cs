@@ -2,7 +2,7 @@
 
 namespace Application.FuelStationServices.Commands.DeleteService;
 
-public class DeleteFuelStationServiceCommandValidator : AbstractValidator<DeleteFuelStationServiceCommand>
+public sealed class DeleteFuelStationServiceCommandValidator : AbstractValidator<DeleteFuelStationServiceCommand>
 {
     public DeleteFuelStationServiceCommandValidator()
     {

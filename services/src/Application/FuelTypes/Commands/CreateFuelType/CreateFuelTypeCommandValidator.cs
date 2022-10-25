@@ -2,7 +2,7 @@
 
 namespace Application.FuelTypes.Commands.CreateFuelType;
 
-public class CreateFuelTypeCommandValidator : AbstractValidator<CreateFuelTypeCommand>
+public sealed class CreateFuelTypeCommandValidator : AbstractValidator<CreateFuelTypeCommand>
 {
     public CreateFuelTypeCommandValidator()
     {
