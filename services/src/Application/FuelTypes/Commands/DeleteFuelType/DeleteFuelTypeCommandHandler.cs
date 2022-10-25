@@ -21,9 +21,9 @@ public sealed class DeleteFuelTypeCommandHandler : IRequestHandler<DeleteFuelTyp
         var fuelType = await _fuelTypeRepository.GetAsync(request.Id) 
                        ?? throw new NotFoundException($"Fuel type not found for id = {request.Id}");
         
-            _fuelTypeRepository.Remove(fuelType);
-            await _unitOfWork.SaveAsync();
+        _fuelTypeRepository.Remove(fuelType);
+        await _unitOfWork.SaveAsync();
             
-            return Unit.Value;
+        return Unit.Value;
     }
 }
