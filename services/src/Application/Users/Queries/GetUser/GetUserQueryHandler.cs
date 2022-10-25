@@ -19,7 +19,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     
     public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
-        Domain.Entities.User user = await _unitOfWork.Users.GetByUsernameAsync(request.Username) 
+        var user = await _unitOfWork.Users.GetByUsernameAsync(request.Username) 
                                     ?? throw new NotFoundException(nameof(User), nameof(User.Username), request.Username);
 
         return _mapper.Map<UserDto>(user);

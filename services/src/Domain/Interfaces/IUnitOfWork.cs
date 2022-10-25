@@ -13,7 +13,7 @@ public interface IUnitOfWork : IDisposable
     IOwnedStationRepository OwnedStations { get; }
     IReviewRepository Reviews { get; }
     IServiceAtStationRepository ServicesAtStation { get; }
-    IServiceRepository Services { get; }
+    IFuelStationServiceRepository Services { get; }
     IStationChainRepository StationChains { get; }
     IUserRepository Users { get; }
 

@@ -8,7 +8,7 @@ namespace Infrastructure.Persistence;
 public sealed class AppDbContext : DbContext
 {
     public DbSet<FuelType> FuelTypes => Set<FuelType>();
-    public DbSet<Service> Services => Set<Service>();
+    public DbSet<FuelStationService> Services => Set<FuelStationService>();
     public DbSet<StationChain> StationChains => Set<StationChain>();
     public DbSet<User> Users => Set<User>();
     public DbSet<FuelStation> FuelStations => Set<FuelStation>();
