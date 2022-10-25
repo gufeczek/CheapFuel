@@ -10,7 +10,6 @@ using WebAPI.Common.Authorization;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("api/v1/services")]
 public class FuelStationServicesController : ControllerBase
 {
