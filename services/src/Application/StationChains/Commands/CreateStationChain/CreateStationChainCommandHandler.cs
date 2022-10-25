@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.StationChains.Commands.CreateStationChain;
 
-public class CreateStationChainCommandHandler : IRequestHandler<CreateStationChainCommand, StationChain>
+public sealed class CreateStationChainCommandHandler : IRequestHandler<CreateStationChainCommand, StationChain>
 {
     private readonly IUnitOfWork _unitOfWork;
 

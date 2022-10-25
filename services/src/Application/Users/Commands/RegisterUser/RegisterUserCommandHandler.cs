@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Users.Commands.RegisterUser;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserDto>
+public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserDetailsDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
@@ -25,7 +25,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         _passwordHasher = passwordHasher;
     }
     
-    public async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserDetailsDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         if (await _userRepository.ExistsByUsername(request.Username))
         {
@@ -53,6 +53,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         _userRepository.Add(newUser);
         await _unitOfWork.SaveAsync();
         
-        return _mapper.Map<UserDto>(newUser);
+        return _mapper.Map<UserDetailsDto>(newUser);
     }
 }

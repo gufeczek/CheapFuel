@@ -17,7 +17,7 @@ public class UnitOfWork : IUnitOfWork
     public IOwnedStationRepository OwnedStations { get; }
     public IReviewRepository Reviews { get; }
     public IServiceAtStationRepository ServicesAtStation { get; }
-    public IServiceRepository Services { get; }
+    public IFuelStationServiceRepository Services { get; }
     public IStationChainRepository StationChains { get; }
     public IUserRepository Users { get; }
 
@@ -31,7 +31,7 @@ public class UnitOfWork : IUnitOfWork
         IOwnedStationRepository ownedStations, 
         IReviewRepository reviews, 
         IServiceAtStationRepository servicesAtStation, 
-        IServiceRepository services, 
+        IFuelStationServiceRepository services, 
         IStationChainRepository stationChains,
         IUserRepository users)
     {

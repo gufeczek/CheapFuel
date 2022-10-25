@@ -52,7 +52,7 @@ public static class ConfigureServices
         services.AddScoped<IOpeningClosingTimeRepository, OpeningClosingTimeRepository>();
         services.AddScoped<IOwnedStationRepository, OwnedStationRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IFuelStationServiceRepository, FuelStationServiceRepository>();
         services.AddScoped<IServiceAtStationRepository, ServiceAtStationRepository>();
         services.AddScoped<IStationChainRepository, StationChainRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
