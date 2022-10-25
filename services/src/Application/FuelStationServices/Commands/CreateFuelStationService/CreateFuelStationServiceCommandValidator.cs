@@ -9,6 +9,6 @@ public class CreateFuelStationServiceCommandValidator : AbstractValidator<Create
         RuleFor(e => e.Name)
             .NotEmpty()
             .MinimumLength(3)
-            .MaximumLength(128);
+            .MaximumLength(32);
     }
 }
