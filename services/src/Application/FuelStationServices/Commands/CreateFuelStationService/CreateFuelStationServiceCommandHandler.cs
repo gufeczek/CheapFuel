@@ -1,22 +1,26 @@
-﻿using Domain.Entities;
+﻿using Application.Models;
+using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Application.FuelStationServices.Commands.CreateFuelStationService;
 
-public class CreateFuelStationServiceCommandHandler : IRequestHandler<CreateFuelStationServiceCommand, Domain.Entities.FuelStationService>
+public class CreateFuelStationServiceCommandHandler : IRequestHandler<CreateFuelStationServiceCommand, FuelStationServiceDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFuelStationServiceRepository _serviceRepository;
+    private readonly IMapper _mapper;
 
-    public CreateFuelStationServiceCommandHandler(IUnitOfWork unitOfWork)
+    public CreateFuelStationServiceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _serviceRepository = unitOfWork.Services;
+        _mapper = mapper;
     }
     
-    public async Task<FuelStationService> Handle(CreateFuelStationServiceCommand request, CancellationToken cancellationToken)
+    public async Task<FuelStationServiceDto> Handle(CreateFuelStationServiceCommand request, CancellationToken cancellationToken)
     {
         var service = new FuelStationService
         {
@@ -26,6 +30,6 @@ public class CreateFuelStationServiceCommandHandler : IRequestHandler<CreateFuel
         _serviceRepository.Add(service);
         await _unitOfWork.SaveAsync();
 
-        return service;
+        return _mapper.Map<FuelStationServiceDto>(service);
     }
 }

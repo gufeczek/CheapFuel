@@ -5,6 +5,7 @@ using Application.Users.Queries.GetUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Common.Authorization;
 
 namespace WebAPI.Controllers;
 
@@ -34,6 +35,7 @@ public class AccountController : ControllerBase
         return Ok(result);
     }
 
+    [AuthorizeAdmin]
     [HttpPost("change-role")]
     public async Task<ActionResult> ChangeRoleAsync([FromBody] ChangeUserRoleCommand command)
     {
