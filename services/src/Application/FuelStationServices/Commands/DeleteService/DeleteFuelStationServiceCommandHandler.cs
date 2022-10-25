@@ -1,5 +1,4 @@
 ﻿using Application.Common.Exceptions;
-using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -19,7 +18,7 @@ public class DeleteFuelStationServiceCommandHandler : IRequestHandler<DeleteFuel
     
     public async Task<Unit> Handle(DeleteFuelStationServiceCommand request, CancellationToken cancellationToken)
     {
-        FuelStationService service = await _serviceRepository.GetAsync(request.Id)
+        var service = await _serviceRepository.GetAsync(request.Id) 
                                      ?? throw new NotFoundException($"Service not found for id = {request.Id}");
         
         _serviceRepository.Remove(service);

@@ -1,6 +1,5 @@
 ﻿using Application.Models;
 using AutoMapper;
-using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
