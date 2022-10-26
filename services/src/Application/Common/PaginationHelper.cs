@@ -1,11 +1,11 @@
 ﻿using Application.Common.Exceptions;
 using Application.Models.Interfaces;
 using Application.Models.Pagination;
-using Domain.Common.Pagination;
+using Domain.Common.Pagination.Request;
 
 namespace Application.Common;
 
-public static class SortHelper
+public static class PaginationHelper
 {
     public static PageRequest<T> Eval<T>(PageRequestDto pageRequestDto, IColumnSelector<T> sortable)
         where T : class
@@ -19,7 +19,7 @@ public static class SortHelper
             throw new BadRequestException($"Unknown column {sortBy}. You can sort by: {columns}");
         }
 
-        Sort<T>? sort = null;
+        SortRequest<T>? sort = null;
 
         if (sortBy is not null)
         {

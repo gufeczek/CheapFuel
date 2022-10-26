@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Domain.Common.Pagination;
+using Domain.Common.Pagination.Request;
+using Domain.Common.Pagination.Response;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -59,8 +60,23 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
             LastPage = totalPages,
             TotalPages = totalPages,
             TotalElements = totalElements,
+            Sort = pageRequest.Sort is not null 
+                ? new Sort{ SortBy = ExtractSortByName(pageRequest), Direction = pageRequest.Sort.Direction } 
+                : null,
             Data = data
         };
+    }
+
+    //TODO: Change impl of this to something better: https://stackoverflow.com/questions/671968/retrieving-property-name-from-lambda-expression
+    private string? ExtractSortByName(PageRequest<TEntity> pageRequest)
+    {
+        if (pageRequest.Sort == null) return null;
+        
+        var body = pageRequest.Sort.SortBy.Body.ToString();
+        var startIndex = body.IndexOf(".", StringComparison.Ordinal) + 1;
+        var endIndex = body.IndexOf(",", StringComparison.Ordinal);
+        var length = endIndex != -1 ? endIndex - startIndex : body.Length - startIndex;
+        return body.Substring(startIndex, length);
     }
     
     public void Add(TEntity entity)

@@ -1,4 +1,4 @@
-﻿namespace Domain.Common.Pagination;
+﻿namespace Domain.Common.Pagination.Request;
 
 public enum SortDirection
 {

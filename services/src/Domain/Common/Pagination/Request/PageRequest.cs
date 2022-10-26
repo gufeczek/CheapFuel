@@ -1,8 +1,8 @@
-﻿namespace Domain.Common.Pagination;
+﻿namespace Domain.Common.Pagination.Request;
 
 public class PageRequest<TEntity> where TEntity : class
 {
     public int PageNumber { get; init; }
     public int PageSize { get; init; }
-    public Sort<TEntity>? Sort { get; set; }
+    public SortRequest<TEntity>? Sort { get; set; }
 }

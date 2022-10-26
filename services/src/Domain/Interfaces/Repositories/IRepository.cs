@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Domain.Common.Pagination;
+using Domain.Common.Pagination.Request;
+using Domain.Common.Pagination.Response;
 
 namespace Domain.Interfaces.Repositories;
 
