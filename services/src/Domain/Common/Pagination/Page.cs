@@ -6,6 +6,8 @@ public sealed class Page<T>
     public int PageSize { get; set; }
     public int? NextPage { get; set; }
     public int? PreviousPage { get; set; }
+    public int FirstPage { get; set; }
+    public int LastPage { get; set; }
     public int TotalPages { get; set; }
     public int TotalElements { get; set; }
     public IEnumerable<T> Data { get; set; }
@@ -18,6 +20,8 @@ public sealed class Page<T>
             PageSize = page.PageSize,
             NextPage = page.NextPage,
             PreviousPage = page.PreviousPage,
+            FirstPage = page.FirstPage,
+            LastPage = page.LastPage,
             TotalPages = page.TotalPages,
             TotalElements = page.TotalElements,
             Data = data

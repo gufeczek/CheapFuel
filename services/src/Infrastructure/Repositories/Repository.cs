@@ -28,28 +28,41 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
             .ToListAsync();
     }
 
-    public async Task<Page<TEntity>> GetAllAsync(PageRequest pageRequest)
+    public async Task<Page<TEntity>> GetAllAsync(PageRequest<TEntity> pageRequest)
     {
-        IEnumerable<TEntity> data = await Context.Set<TEntity>()
-            .Skip(pageRequest.PageSize * (pageRequest.PageNumber - 1))
+        return await Paginate(Context.Set<TEntity>(), pageRequest);
+    }
+
+    protected async Task<Page<TEntity>> Paginate(IQueryable<TEntity> query, PageRequest<TEntity> pageRequest)
+    {
+        if (pageRequest.Sort is not null)
+        {
+            query = pageRequest.Sort.Direction == SortDirection.Asc
+                ? query.OrderBy(pageRequest.Sort.SortBy)
+                : query.OrderByDescending(pageRequest.Sort.SortBy);
+        }
+
+        var data = await query.Skip(pageRequest.PageSize * (pageRequest.PageNumber - 1))
             .Take(pageRequest.PageSize)
             .ToListAsync();
 
         var totalElements = await Context.Set<TEntity>().CountAsync();
-        int totalPages = (int) Math.Ceiling((decimal)totalElements / pageRequest.PageSize);
+        var totalPages = (int)Math.Ceiling((decimal)totalElements / pageRequest.PageSize);
 
         return new Page<TEntity>
         {
             PageNumber = pageRequest.PageNumber,
             PageSize = pageRequest.PageSize,
-            NextPage = pageRequest.PageNumber != totalPages ? pageRequest.PageNumber + 1 : null,
-            PreviousPage = pageRequest.PageNumber != 1 ? pageRequest.PageNumber - 1 : null,
+            NextPage = pageRequest.PageNumber < totalPages ? pageRequest.PageNumber + 1 : null,
+            PreviousPage = pageRequest.PageNumber > 1 ? pageRequest.PageNumber - 1 : null,
+            FirstPage = 1,
+            LastPage = totalPages,
             TotalPages = totalPages,
             TotalElements = totalElements,
             Data = data
         };
     }
-
+    
     public void Add(TEntity entity)
     { 
         Context.Set<TEntity>().Add(entity);
