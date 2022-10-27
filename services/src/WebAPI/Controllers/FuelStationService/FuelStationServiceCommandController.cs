@@ -23,7 +23,7 @@ public class FuelStationServiceCommandController : ControllerBase
     public async Task<ActionResult<FuelStationServiceDto>> CreateService([FromBody] CreateFuelStationServiceCommand command)
     {
         var result = await _mediator.Send(command);
-        return Ok(result);
+        return Created($"api/v1/services/{result.Id}",result);
     }
 
     [HttpDelete("{id}")]

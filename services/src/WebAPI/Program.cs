@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using NLog.Web;
 using WebAPI;
 using WebAPI.Middlewares;
 
@@ -12,6 +13,8 @@ builder.Services.AddRepositories();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration, builder.Environment);
 builder.Services.AddWebApiServices();
 builder.Services.AddSwagger();
+builder.Host.UseNLog();
+
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
