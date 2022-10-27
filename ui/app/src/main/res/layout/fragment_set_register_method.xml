@@ -7,7 +7,7 @@
     tools:context=".ui.fragment.SetRegisterMethodFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/todo"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/loginActivity_tv_welcome"
+        android:id="@+id/tv_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
@@ -29,14 +29,14 @@
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:typeface="sans"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/rl_setRegisterMethod"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/image_logo"
         app:layout_constraintVertical_bias="0.0" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/rl_setRegisterMethod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/loginActivity_et_email"
+            android:id="@+id/et_email"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -56,11 +56,11 @@
             android:padding="10dp" />
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btn_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_alignStart="@+id/et_email"
+            android:layout_alignEnd="@+id/et_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="45dp"
             android:backgroundTint="@color/light_red"
@@ -70,11 +70,11 @@
             android:textColor="@color/light_gray" />
 
         <Button
-            android:id="@+id/btnLoginWithFacebook"
+            android:id="@+id/btn_loginWithFacebook"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_alignStart="@+id/et_email"
+            android:layout_alignEnd="@+id/et_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"
             android:backgroundTint="@color/facebook"
@@ -87,8 +87,8 @@
             android:id="@+id/btnLoginWithGoogle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/loginActivity_et_email"
-            android:layout_alignEnd="@+id/loginActivity_et_email"
+            android:layout_alignStart="@+id/et_email"
+            android:layout_alignEnd="@+id/et_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="145dp"
             android:backgroundTint="@color/google"
