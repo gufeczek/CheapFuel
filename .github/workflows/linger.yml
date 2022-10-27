@@ -1,0 +1,10 @@
+name: Wait 5 minutes
+
+on: pull_request
+
+jobs:
+  waiting:
+    runs-on: ubuntu-latest
+    steps:
+    - run: sleep 300s
+      shell: bash
