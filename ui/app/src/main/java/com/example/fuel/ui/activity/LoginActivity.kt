@@ -12,10 +12,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.frameLayout2, SetRegisterMethodFragment())
-            .commit()
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.frameLayout2, SetRegisterMethodFragment())
+//            .commit()
 
     }
 }
