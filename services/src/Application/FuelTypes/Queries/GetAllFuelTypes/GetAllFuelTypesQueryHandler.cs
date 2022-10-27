@@ -1,12 +1,14 @@
-﻿using Application.Models;
+﻿using Application.Common;
+using Application.Models;
 using AutoMapper;
+using Domain.Common.Pagination.Response;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Application.FuelTypes.Queries.GetAllFuelTypes;
 
-public sealed class GetAllFuelTypesQueryHandler : IRequestHandler<GetAllFuelTypesQuery, IEnumerable<FuelTypeDto>>
+public sealed class GetAllFuelTypesQueryHandler : IRequestHandler<GetAllFuelTypesQuery, Page<FuelTypeDto>>
 {
     private readonly IFuelTypeRepository _fuelTypeRepository;
     private readonly IMapper _mapper;
@@ -17,9 +19,10 @@ public sealed class GetAllFuelTypesQueryHandler : IRequestHandler<GetAllFuelType
         _mapper = mapper;
     }
     
-    public async Task<IEnumerable<FuelTypeDto>> Handle(GetAllFuelTypesQuery request, CancellationToken cancellationToken)
+    public async Task<Page<FuelTypeDto>> Handle(GetAllFuelTypesQuery request, CancellationToken cancellationToken)
     {
-        var fuelTypes = await _fuelTypeRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<FuelTypeDto>>(fuelTypes);
+        var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new FuelTypeColumnSelector());
+        var result = await _fuelTypeRepository.GetAllAsync(pageRequest);
+        return Page<FuelTypeDto>.From(result, _mapper.Map<IEnumerable<FuelTypeDto>>(result.Data));
     }
 }

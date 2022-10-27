@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using Application.Models.Interfaces;
+using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Models;
@@ -11,4 +13,13 @@ public sealed class FuelTypeDtoProfile : Profile
     {
         CreateMap<FuelType, FuelTypeDto>();
     }
+}
+
+public sealed class FuelTypeColumnSelector : IColumnSelector<FuelType>
+{
+    public Dictionary<string, Expression<Func<FuelType, object>>> ColumnSelector { get; } = new()
+    {
+        { nameof(FuelType.Id), r => r.Id },
+        { nameof(FuelType.Name), r => r.Name }
+    };
 }

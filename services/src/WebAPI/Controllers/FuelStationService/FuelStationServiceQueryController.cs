@@ -1,5 +1,6 @@
 ﻿using Application.FuelStationServices.Queries.GetAllFuelStationServices;
 using Application.Models;
+using Application.Models.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ public class FuelStationServiceQueryController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<FuelStationServiceDto>>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<FuelStationServiceDto>>> GetAllAsync([FromQuery] PageRequestDto pageRequestDto)
     {
-        var result = await _mediator.Send(new GetAllFuelStationServicesQuery());
+        var result = await _mediator.Send(new GetAllFuelStationServicesQuery(pageRequestDto));
         return Ok(result);
     }
 }
