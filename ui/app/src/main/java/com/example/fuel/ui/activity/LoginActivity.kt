@@ -1,17 +1,9 @@
-package com.example.fuel.ui.login
+package com.example.fuel.ui.activity
 
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fuel.R
-import com.example.fuel.ui.login.fragment.SetPasswordFragment
-import com.example.fuel.ui.login.fragment.SetRegisterMethodFragment
+import com.example.fuel.ui.fragment.SetRegisterMethodFragment
 
 class LoginActivity : AppCompatActivity() {
 

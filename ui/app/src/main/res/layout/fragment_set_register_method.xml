@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    tools:context=".ui.login.fragment.SetRegisterMethodFragment">
+    tools:context=".ui.fragment.SetRegisterMethodFragment">
 
     <TextView
         android:id="@+id/loginActivity_tv_welcome"
