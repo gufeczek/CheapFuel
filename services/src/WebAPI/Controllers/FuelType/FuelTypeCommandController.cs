@@ -22,8 +22,8 @@ public sealed class FuelTypeCommandController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<FuelTypeDto>> CreateFuelType([FromBody] CreateFuelTypeCommand command)
     {
-        var fuelType = await _mediator.Send(command);
-        return Ok(fuelType);
+        var result = await _mediator.Send(command);
+        return Created($"api/v1/FuelTypes/{result.Id}",result);
     }
 
     [HttpDelete("{id}")]
