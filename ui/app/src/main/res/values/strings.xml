@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fuel</string>
     <string name="placeholder">placeholder</string>
-    <string name="app_welcome">Witaj w aplikacji X</string>
+    <string name="app_welcome">Witaj w CheapFuel</string>
     <string name="todo">TODO</string>
     <string name="email_address" tools:ignore="Typos">Adres e-mail</string>
     <string name="password">Hasło</string>
@@ -15,6 +15,7 @@
     <string name="password_requirements_1">Minimum 8 znaków </string>
     <string name="password_requirements_2">Jedną dużą literę </string>
     <string name="password_requirements_3">Jeden znak specjalny</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username_hint">Nazwa użytkownika</string>
+    <string name="input_username">Podaj nazwę użytkownika: </string>
+    <string name="accept_terms_of_use"><a href="https://twitter.com/tech_queen">Akceptuje warunki regulaminu</a></string>
 </resources>
