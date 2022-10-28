@@ -11,6 +11,14 @@ namespace WebAPI.Middlewares;
 
 public class ExceptionHandlerMiddleware : IMiddleware
 {
+    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
+    
+    public ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger)
+    {
+        _logger = logger;
+        
+    }
+    
     private readonly JsonSerializerSettings _jsonSerializerSettings = new()
     {
         ContractResolver = new BaseFieldsFirstContractResolver { NamingStrategy = new CamelCaseNamingStrategy() },
@@ -49,7 +57,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
         await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage, _jsonSerializerSettings));
     }
 
-    private static ErrorMessage HandleBadRequestException(BadRequestException e)
+    private ErrorMessage HandleBadRequestException(BadRequestException e)
     {
         return new ErrorMessage
         (
@@ -60,7 +68,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
-    private static ErrorMessage HandleNotFoundException(NotFoundException e)
+    private ErrorMessage HandleNotFoundException(NotFoundException e)
     {
         return new ErrorMessage
         (
@@ -71,7 +79,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
-    private static ErrorMessage HandleConflictException(ConflictException e)
+    private ErrorMessage HandleConflictException(ConflictException e)
     {
         return new ErrorMessage
         (
@@ -82,7 +90,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
-    private static ErrorMessage HandleUnauthorizedException(UnauthorizedException e)
+    private ErrorMessage HandleUnauthorizedException(UnauthorizedException e)
     {
         return new ErrorMessage
         (
@@ -93,7 +101,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
-    private static ErrorMessage HandleValidationException(ValidationException e)
+    private ErrorMessage HandleValidationException(ValidationException e)
     {
         var failures = e.Errors
             .GroupBy(
@@ -116,10 +124,10 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
-    private static ErrorMessage HandleUnexpectedException(Exception e)
+    private ErrorMessage HandleUnexpectedException(Exception e)
     {
-        Console.WriteLine(e.Message);
-        Console.WriteLine(e.StackTrace); // Should be change to logger
+        _logger.LogError(e.Message);
+        _logger.LogError(e.StackTrace); // Should be change to logger
         
         return new ErrorMessage
         (
