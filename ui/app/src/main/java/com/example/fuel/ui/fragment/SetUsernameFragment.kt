@@ -12,12 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetUsernameBinding
-import com.example.fuel.ui.utils.TextViewExtension.Companion.removeLinksUnderline
-import kotlin.time.Duration.Companion.seconds
+import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.ui.utils.extension.TextViewExtension.Companion.removeLinksUnderline
+import java.util.*
+import kotlin.jvm.optionals.toSet
 
 class SetUsernameFragment : Fragment() {
 
     private lateinit var binding: FragmentSetUsernameBinding
+
+    private enum class ValidationErrors {
+        ERROR_USERNAME_TOO_SHORT,
+        ERROR_USERNAME_TOO_LONG
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,17 +32,25 @@ class SetUsernameFragment : Fragment() {
     ): View {
         binding = FragmentSetUsernameBinding.inflate(inflater, container, false)
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
-        binding.toolbar.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.toolbar.setOnClickListener { findNavController().popBackStack() }
         binding.tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         binding.tvTermsOfUse.removeLinksUnderline()
 
-
         binding.btnNextPage.setOnClickListener {
-            val (isValidationPassed: Boolean, msg: String) = validateUsername(binding.etUsername.text.toString())
-            if (isValidationPassed) {
+            val (isValidationPassed: Boolean, _msg: Optional<ValidationErrors>) = validateUsername(binding.etUsername.text.toString())
+            if (!isValidationPassed && _msg.isPresent) {
+                val msg: ValidationErrors = _msg.get()
                 binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded_error)
+                binding.tvUsernameValidationError.text = msg.toString()
+                binding.tvUsernameValidationError.visibility = View.VISIBLE
+                if (msg == ValidationErrors.ERROR_USERNAME_TOO_SHORT || msg == ValidationErrors.ERROR_USERNAME_TOO_LONG) {
+                    binding.etUsername.afterTextChanged { editable ->
+                        if (validateUsername(editable).first) {
+                            binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded)
+                            binding.tvUsernameValidationError.visibility = View.INVISIBLE
+                        }
+                    }
+                }
             }
             else if (!binding.chkTermsOfUse.isChecked) {
                 binding.tvTermsOfUseError.visibility = View.VISIBLE
@@ -54,13 +69,12 @@ class SetUsernameFragment : Fragment() {
         return binding.root
     }
 
-    private fun validateUsername(username: String): Pair<Boolean, String> {
-        Log.d("XD", "VALIDATION: username = ${username}")
+    private fun validateUsername(username: String): Pair<Boolean, Optional<ValidationErrors>>{
         if (username.length < 3) {
-            return Pair(false, "Nazwa użytkownika jest zbyt krótka")
+            return Pair(false, Optional.of(ValidationErrors.ERROR_USERNAME_TOO_SHORT))
         } else if (username.length > 32) {
-            return Pair(false, "Nazwa użytkownika jest zbyt długa")
+            return Pair(false, Optional.of(ValidationErrors.ERROR_USERNAME_TOO_LONG))
         }
-        return Pair(true, "")
+        return Pair(true, Optional.empty<ValidationErrors>())
     }
 }

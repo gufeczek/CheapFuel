@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SetUsernameFragment">
 
     <Toolbar
@@ -52,18 +52,18 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/bg_rounded"
             android:hint=" "
-            android:layout_marginTop="10dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintTop_toBottomOf="@+id/tv_inputUsername"
-            android:background="@drawable/bg_rounded"
             tools:ignore="HardcodedText">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -83,13 +83,26 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_usernameValidationError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="end"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@+id/til_username"
+            tools:layout_editor_absoluteX="18dp" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayoutCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_username">
+            app:layout_constraintTop_toBottomOf="@+id/tv_usernameValidationError">
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/chk_termsOfUse"
@@ -110,15 +123,22 @@
             android:id="@+id/tv_termsOfUseError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Musisz zaakceptować warunki regulaminu"
-            android:fontFamily="@font/roboto_bold"
             android:layout_marginStart="15dp"
-            android:visibility="gone"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Musisz zaakceptować warunki regulaminu"
             android:textColor="@color/red"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="30dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,14 +146,21 @@
         android:id="@+id/btn_nextPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cornerRadius="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="@color/dark_gray"
-        android:textColor="@color/white"
         android:text="@string/next_page"
+        android:textColor="@color/white"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/cl_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="264dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

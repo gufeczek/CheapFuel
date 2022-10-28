@@ -1,4 +1,4 @@
-package com.example.fuel.ui.utils
+package com.example.fuel.ui.utils.extension
 
 import android.text.SpannableString
 import android.text.TextPaint
