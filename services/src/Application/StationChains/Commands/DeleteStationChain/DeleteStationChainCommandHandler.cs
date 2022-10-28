@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.StationChains.Commands.DeleteStationChain;
 
-public class DeleteStationChainCommandHandler : IRequest<DeleteStationChainCommand>
+public class DeleteStationChainCommandHandler : IRequestHandler<DeleteStationChainCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IStationChainRepository _stationChainRepository;

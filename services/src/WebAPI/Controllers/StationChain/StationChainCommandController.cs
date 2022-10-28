@@ -26,7 +26,7 @@ public class StationChainCommandController : ControllerBase
         return Created($"api/v1/station-chain/{result.Id}" ,result);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteStationChain([FromRoute] long id)
     {
         await _mediator.Send(new DeleteStationChainCommand(id));
