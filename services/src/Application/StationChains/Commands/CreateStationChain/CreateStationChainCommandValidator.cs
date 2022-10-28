@@ -8,7 +8,7 @@ public sealed class CreateStationChainCommandValidator : AbstractValidator<Creat
     {
         RuleFor(e => e.Name)
             .NotEmpty()
-            .MinimumLength(3)
+            .MinimumLength(2)
             .MaximumLength(128);
     }
 }
