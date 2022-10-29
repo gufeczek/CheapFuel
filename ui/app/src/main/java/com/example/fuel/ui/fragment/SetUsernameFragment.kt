@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetUsernameBinding
@@ -17,7 +18,7 @@ import com.example.fuel.ui.utils.extension.TextViewExtension.Companion.removeLin
 import java.util.*
 
 
-class SetUsernameFragment : Fragment() {
+class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
 
     private lateinit var binding: FragmentSetUsernameBinding
 
@@ -53,7 +54,11 @@ class SetUsernameFragment : Fragment() {
 
     private val btnValidationListener = View.OnClickListener {
         val (isValidationPassed: Boolean, _msg: Optional<ValidationErrors>) = validateUsername(binding.etUsername.text.toString())
-        if (!isValidationPassed && _msg.isPresent) {
+        if (isValidationPassed) {
+            Navigation.findNavController(binding.root).navigate(R.id.setPasswordFragment)
+        }
+
+        else if (!isValidationPassed && _msg.isPresent) {
             val msg: ValidationErrors = _msg.get()
             binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded_error)
             binding.tvUsernameValidationError.text = msg.toString()
@@ -67,11 +72,13 @@ class SetUsernameFragment : Fragment() {
                 }
             }
         }
+
         else if (!binding.chkTermsOfUse.isChecked) {
             binding.tvTermsOfUseError.visibility = View.VISIBLE
             binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(Color.RED)
             binding.tvTermsOfUse.setLinkTextColor(Color.RED)
         }
+
     }
 
     private val chkValidationListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->

@@ -11,11 +11,12 @@
     <string name="loginWithGoogle">Zaloguj się kontem Google</string>
     <string name="set_password">Utwórz hasło</string>
     <string name="next_page">Dalej</string>
+    <string name="finish">Zakończ</string>
     <string name="password_requirements_header">Hasło musi zawierać: </string>
     <string name="password_requirements_1">Minimum 8 znaków </string>
     <string name="password_requirements_2">Jedną dużą literę </string>
-    <string name="password_requirements_3">Jeden znak specjalny</string>
+    <string name="password_requirements_3">Jedną cyfrę</string>
     <string name="username_hint">Nazwa użytkownika</string>
     <string name="input_username">Podaj nazwę użytkownika: </string>
-    <string name="accept_terms_of_use"><a href="https://twitter.com/tech_queen">Akceptuje warunki regulaminu</a></string>
+    <string name="accept_terms_of_use"><a href="https://google.com">Akceptuje warunki regulaminu</a></string>
 </resources>
