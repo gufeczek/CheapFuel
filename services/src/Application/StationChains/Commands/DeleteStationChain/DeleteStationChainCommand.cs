@@ -2,5 +2,5 @@
 
 namespace Application.StationChains.Commands.DeleteStationChain;
 
-public sealed record DeleteStationChainCommand(long Id)
+public sealed record DeleteStationChainCommand(long? Id)
     : IRequest<Unit>;
