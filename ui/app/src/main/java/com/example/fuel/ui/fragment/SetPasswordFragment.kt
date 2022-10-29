@@ -1,4 +1,4 @@
-package com.example.fuel.ui.login.fragment
+package com.example.fuel.ui.fragment
 
 import android.os.Bundle
 import android.view.View

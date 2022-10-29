@@ -7,9 +7,13 @@
     <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="et_gray">#e0e0e0</color>
     <color name="light_gray">#eaeaea</color>
+    <color name="dark_gray">#6F7378</color>
     <color name="red">#FF0000</color>
     <color name="light_red">#E60000</color>
     <color name="facebook">#3e5e9d</color>
     <color name="google">#0F9D58</color>
+    <color name="hyperlink">#5CACEE</color>
+    <color name="checkbox">#5CACEE</color>
 </resources>
