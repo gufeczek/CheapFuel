@@ -11,10 +11,10 @@ public sealed class ChangeUserRoleCommandHandler : IRequestHandler<ChangeUserRol
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
 
-    public ChangeUserRoleCommandHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
+    public ChangeUserRoleCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _userRepository = userRepository;
+        _userRepository = _unitOfWork.Users;
     }
 
     public async Task<Unit> Handle(ChangeUserRoleCommand request, CancellationToken cancellationToken)
