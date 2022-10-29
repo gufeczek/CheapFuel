@@ -34,8 +34,8 @@ public class PaginationHelperTest
         // Assert
         result.PageNumber.Should().Be(1);
         result.PageSize.Should().Be(10);
-        result.Sort.SortBy.ToString().Should().Be(expectedFunc.ToString());
-        result.Sort.Direction.Should().Be(SortDirection.Asc);
+        result.Sort?.SortBy.ToString().Should().Be(expectedFunc.ToString());
+        result.Sort?.Direction.Should().Be(SortDirection.Asc);
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public class PaginationHelperTest
         // Assert
         result.PageNumber.Should().Be(1);
         result.PageSize.Should().Be(10);
-        result.Sort.SortBy.ToString().Should().Be(expectedFunc.ToString());
-        result.Sort.Direction.Should().Be(SortDirection.Desc);
+        result.Sort?.SortBy.ToString().Should().Be(expectedFunc.ToString());
+        result.Sort?.Direction.Should().Be(SortDirection.Desc);
     } 
     
     [Fact]

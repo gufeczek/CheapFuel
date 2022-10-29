@@ -4,10 +4,10 @@ namespace Application.Common;
 
 public static class NullExtension
 {
-    public static T orElseThrow<T>(
+    public static T OrElseThrow<T>(
         this T? arg, 
         string? message = default,
-        [CallerArgumentExpression("argument")] string? paramName = default
+        [CallerArgumentExpression("arg")] string? paramName = default
         ) where T : notnull
     {
         if (arg is null)
@@ -18,10 +18,10 @@ public static class NullExtension
         return arg;
     }
     
-    public static T orElseThrow<T>(
+    public static T OrElseThrow<T>(
         this T? arg, 
         string? message = default,
-        [CallerArgumentExpression("argument")] string? paramName = default
+        [CallerArgumentExpression("arg")] string? paramName = default
     ) where T : unmanaged
     {
         if (arg is null)

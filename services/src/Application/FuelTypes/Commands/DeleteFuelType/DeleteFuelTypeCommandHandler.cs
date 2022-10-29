@@ -19,7 +19,7 @@ public sealed class DeleteFuelTypeCommandHandler : IRequestHandler<DeleteFuelTyp
     
     public async Task<Unit> Handle(DeleteFuelTypeCommand request, CancellationToken cancellationToken)
     {
-        var fuelType = await _fuelTypeRepository.GetAsync(request.Id.orElseThrow()) 
+        var fuelType = await _fuelTypeRepository.GetAsync(request.Id.OrElseThrow()) 
                        ?? throw new NotFoundException($"Fuel type not found for id = {request.Id}");
         
         _fuelTypeRepository.Remove(fuelType);

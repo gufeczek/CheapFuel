@@ -19,7 +19,7 @@ public class DeleteStationChainCommandHandler : IRequestHandler<DeleteStationCha
 
     public async Task<Unit> Handle(DeleteStationChainCommand request, CancellationToken cancellationToken)
     {
-        var stationChain = await _stationChainRepository.GetAsync(request.Id.orElseThrow())
+        var stationChain = await _stationChainRepository.GetAsync(request.Id.OrElseThrow())
                            ?? throw new NotFoundException($"Station chain not found for if = {request.Id}");
         
         _stationChainRepository.Remove(stationChain);

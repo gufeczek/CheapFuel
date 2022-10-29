@@ -19,7 +19,7 @@ public sealed class DeleteFuelStationServiceCommandHandler : IRequestHandler<Del
     
     public async Task<Unit> Handle(DeleteFuelStationServiceCommand request, CancellationToken cancellationToken)
     {
-        var service = await _serviceRepository.GetAsync(request.Id.orElseThrow()) 
+        var service = await _serviceRepository.GetAsync(request.Id.OrElseThrow()) 
                                      ?? throw new NotFoundException($"Service not found for id = {request.Id}");
         
         _serviceRepository.Remove(service);

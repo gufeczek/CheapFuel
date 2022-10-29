@@ -22,7 +22,7 @@ public sealed class ChangeUserRoleCommandHandler : IRequestHandler<ChangeUserRol
         var user = await _userRepository.GetByUsernameAsync(request.Username)
                    ?? throw new NotFoundException($"User not found for username = {request.Username}");
 
-        user.Role = request.Role.orElseThrow();
+        user.Role = request.Role.OrElseThrow();
         await _unitOfWork.SaveAsync();
 
         return Unit.Value;

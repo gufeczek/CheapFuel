@@ -14,7 +14,7 @@ public class NullExtensionTest
         int? value = 1;
         
         // Act
-        var result = value.orElseThrow();
+        var result = value.OrElseThrow();
         
         // Assert
         result.Should().BeOfType(typeof(int));
@@ -28,7 +28,7 @@ public class NullExtensionTest
         const int value = 1;
         
         // Act
-        var result = value.orElseThrow();
+        var result = value.OrElseThrow();
         
         // Assert
         result.Should().BeOfType(typeof(int));
@@ -42,7 +42,7 @@ public class NullExtensionTest
         int? value = null;
         
         // Act
-        Action act = () => value.orElseThrow();
+        Action act = () => value.OrElseThrow();
         
         // Assert
         act.Should()
@@ -53,10 +53,10 @@ public class NullExtensionTest
     public void Throws_exception_if_value_of_non_nullable_type_is_equal_to_null()
     {
         // Arrange
-        string value = null;
+        string value = null!;
         
         // Act
-        Action act = () => value.orElseThrow();
+        Action act = () => value.OrElseThrow();
         
         // Assert
         act.Should()
