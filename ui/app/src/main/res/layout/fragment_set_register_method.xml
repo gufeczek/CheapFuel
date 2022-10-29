@@ -39,6 +39,15 @@
         app:layout_constraintTop_toBottomOf="@+id/image_logo"
         app:layout_constraintVertical_bias="0.0" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_emailValidationError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginEnd="40dp"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toTopOf="@+id/rl_setRegisterMethod" />
+
     <RelativeLayout
         android:id="@+id/rl_setRegisterMethod"
         android:layout_width="match_parent"
@@ -63,7 +72,6 @@
             app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
-            app:endIconMode="password_toggle"
             tools:ignore="HardcodedText">
 
             <com.google.android.material.textfield.TextInputEditText
