@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common;
+using Application.Common.Exceptions;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -21,7 +22,7 @@ public sealed class ChangeUserRoleCommandHandler : IRequestHandler<ChangeUserRol
         var user = await _userRepository.GetByUsernameAsync(request.Username)
                    ?? throw new NotFoundException($"User not found for username = {request.Username}");
 
-        user.Role = request.Role;
+        user.Role = request.Role.orElseThrow();
         await _unitOfWork.SaveAsync();
 
         return Unit.Value;

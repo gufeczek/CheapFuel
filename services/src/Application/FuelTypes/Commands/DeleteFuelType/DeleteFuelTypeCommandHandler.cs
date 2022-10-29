@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common;
+using Application.Common.Exceptions;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -18,7 +19,7 @@ public sealed class DeleteFuelTypeCommandHandler : IRequestHandler<DeleteFuelTyp
     
     public async Task<Unit> Handle(DeleteFuelTypeCommand request, CancellationToken cancellationToken)
     {
-        var fuelType = await _fuelTypeRepository.GetAsync(request.Id) 
+        var fuelType = await _fuelTypeRepository.GetAsync(request.Id.orElseThrow()) 
                        ?? throw new NotFoundException($"Fuel type not found for id = {request.Id}");
         
         _fuelTypeRepository.Remove(fuelType);
