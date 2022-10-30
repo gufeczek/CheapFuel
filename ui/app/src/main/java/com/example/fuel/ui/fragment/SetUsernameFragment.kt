@@ -54,7 +54,7 @@ class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
 
     private val btnValidationListener = View.OnClickListener {
         val (isValidationPassed: Boolean, _msg: Optional<ValidationErrors>) = validateUsername(binding.etUsername.text.toString())
-        if (isValidationPassed) {
+        if (isValidationPassed && binding.chkTermsOfUse.isChecked) {
             Navigation.findNavController(binding.root).navigate(R.id.setPasswordFragment)
         }
 
@@ -76,7 +76,6 @@ class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
         else if (!binding.chkTermsOfUse.isChecked) {
             binding.tvTermsOfUseError.visibility = View.VISIBLE
             binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(Color.RED)
-            binding.tvTermsOfUse.setLinkTextColor(Color.RED)
         }
 
     }
