@@ -50,7 +50,5 @@ public abstract class IntegrationTest : IClassFixture<TestingWebApiFactory<Progr
         {
             predefinedData.Clear(context!);
         }
-        
-        GC.SuppressFinalize(this);
     }
 }
