@@ -20,7 +20,7 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
 
     private lateinit var binding: FragmentSetPasswordBinding
 
-    private enum class ValidationErrors {
+    private enum class Error {
         PASSWORD_TOO_SHORT,
         PASSWORD_TOO_LONG,
         PASSWORD_NO_UPPERCASE,
@@ -39,22 +39,38 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }
 
-        binding.etPassword.afterTextChanged { editable -> userInterfaceValidation(editable) }
-
-        binding.etPassword.afterTextChanged {
-
+        binding.etPassword.afterTextChanged { editable ->
+            validationPasswordCheckmarks(editable)
         }
 
         binding.btnNextPage.setOnClickListener {
-            if (!passwordValidation(binding.etPassword.text.toString(), binding.etRepeatPassword.text.toString()).isPresent) {
+            binding.tvPasswordValidationError.text = ""
+            binding.tvRepeatedPasswordValidationError.text = ""
+            binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded)
+            binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
+
+            val error = validationPassword(
+                binding.etPassword.text.toString(),
+                binding.etRepeatPassword.text.toString()
+            ).orElse(null)
+
+            if (error == null) {
                 Navigation.findNavController(binding.root).navigate(R.id.blankFragment)
+            } else {
+                binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded_error)
+                if (error == Error.PASSWORD_REPEAT_NO_MATCH) {
+                    binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded_error)
+                    binding.tvRepeatedPasswordValidationError.text = error.toString()
+                } else {
+                    binding.tvPasswordValidationError.text = error.toString()
+                }
             }
         }
 
         return binding.root
     }
 
-    private fun userInterfaceValidation(text: String) {
+    private fun validationPasswordCheckmarks(text: String) {
         if (text.length >= 8) {
             binding.imageAtLeast8Characters.setImageResource(R.drawable.ic_tick_green_32dp)
         } else {
@@ -74,21 +90,21 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         }
     }
 
-    private fun passwordValidation(password: String, repeatedPassword: String): Optional<ValidationErrors> {
+    private fun validationPassword(password: String, repeatedPassword: String): Optional<Error> {
         if (password.length < 8) {
-            return Optional.of(ValidationErrors.PASSWORD_TOO_SHORT)
+            return Optional.of(Error.PASSWORD_TOO_SHORT)
         } else if (password.length > 32) {
-            return Optional.of(ValidationErrors.PASSWORD_TOO_LONG)
+            return Optional.of(Error.PASSWORD_TOO_LONG)
         } else if (!isAtLeastOneUpperCase(password)) {
-            return Optional.of(ValidationErrors.PASSWORD_NO_UPPERCASE)
+            return Optional.of(Error.PASSWORD_NO_UPPERCASE)
         } else if (!isAtLeastOneLowerCase(password)) {
-            return Optional.of(ValidationErrors.PASSWORD_NO_LOWERCASE)
+            return Optional.of(Error.PASSWORD_NO_LOWERCASE)
         } else if (!isAtLeastOneDigit(password)) {
-            return Optional.of(ValidationErrors.PASSWORD_NO_DIGIT)
+            return Optional.of(Error.PASSWORD_NO_DIGIT)
         } else if (password != repeatedPassword) {
-            return Optional.of(ValidationErrors.PASSWORD_REPEAT_NO_MATCH)
+            return Optional.of(Error.PASSWORD_REPEAT_NO_MATCH)
         } else if (isIllegalCharacter(password)) {
-            return Optional.of(ValidationErrors.PASSWORD_ILLEGAL_CHARACTER)
+            return Optional.of(Error.PASSWORD_ILLEGAL_CHARACTER)
         }
         return Optional.empty()
     }

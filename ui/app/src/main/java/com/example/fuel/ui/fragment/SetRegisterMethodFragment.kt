@@ -16,7 +16,7 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
 
     private lateinit var binding: FragmentSetRegisterMethodBinding
 
-    private enum class ValidationErrors {
+    private enum class Error {
         ERROR_INCORRECT_EMAIL
     }
 
@@ -33,7 +33,7 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
                     Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
                 }
                 binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
-                binding.tvEmailValidationError.text = ValidationErrors.ERROR_INCORRECT_EMAIL.toString()
+                binding.tvEmailValidationError.text = Error.ERROR_INCORRECT_EMAIL.toString()
                 binding.etEmail.afterTextChanged { editable ->
                     if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
                         binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
