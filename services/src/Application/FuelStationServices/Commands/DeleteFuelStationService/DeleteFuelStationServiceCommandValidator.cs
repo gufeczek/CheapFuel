@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.FuelStationServices.Commands.DeleteService;
+namespace Application.FuelStationServices.Commands.DeleteFuelStationService;
 
 public sealed class DeleteFuelStationServiceCommandValidator : AbstractValidator<DeleteFuelStationServiceCommand>
 {

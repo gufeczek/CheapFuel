@@ -22,23 +22,37 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
             .NotEmpty()
             .MinimumLength(3)
             .MaximumLength(32)
-            .Must(username => Regex.Matches(username, LettersAndDigitsRegex).Count >= 2)
+            .Must(username => 
+                username is not null && 
+                Regex.Matches(username, LettersAndDigitsRegex).Count >= 2)
             .WithMessage("Username must contains at least two letters or numbers")
-            .Must(username => Regex.IsMatch(username, AllowedCharactersForUsernameRegex))
+            .Must(username => 
+                username is not null && 
+                Regex.IsMatch(username, AllowedCharactersForUsernameRegex))
             .WithMessage($"Username can contain only latin letters, numbers and {AllowedSpecialCharactersForUsername}");
+        
+        RuleFor(r => r.Email)
+            .NotEmpty()
+            .EmailAddress()
+            .MaximumLength(256);
         
         RuleFor(r => r.Password)
             .NotEmpty()
             .MinimumLength(8)
             .MaximumLength(32)
             .Must(password => 
+                password is not null &&
                 Regex.IsMatch(password, LowercaseLettersRegex) &&
                 Regex.IsMatch(password, UppercaseLettersRegex) && 
                 Regex.IsMatch(password, DigitsRegex))
             .WithMessage("Password must contain at least one number and one uppercase and lowercase letter")
-            .Must(password => Regex.IsMatch(password, AllowedCharactersForPasswordRegex))
+            .Must(password => 
+                password is not null && 
+                Regex.IsMatch(password, AllowedCharactersForPasswordRegex))
             .WithMessage($"Password can contain only latin letters, numbers and {AllowedSpecialCharactersForPassword}")
-            .Must((model, password) => password.Equals(model.ConfirmPassword))
+            .Must((model, password) => 
+                password is not null &&
+                password.Equals(model.ConfirmPassword))
             .WithMessage("Your passwords do not match");
     }
 }

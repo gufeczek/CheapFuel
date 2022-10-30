@@ -88,7 +88,7 @@ public static class ConfigureServices
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = authenticationSettings.Issuer,
                 ValidAudience = authenticationSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret!))
             };
         });
     }
