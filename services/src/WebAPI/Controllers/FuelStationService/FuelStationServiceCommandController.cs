@@ -1,5 +1,5 @@
 ﻿using Application.FuelStationServices.Commands.CreateFuelStationService;
-using Application.FuelStationServices.Commands.DeleteService;
+using Application.FuelStationServices.Commands.DeleteFuelStationService;
 using Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
