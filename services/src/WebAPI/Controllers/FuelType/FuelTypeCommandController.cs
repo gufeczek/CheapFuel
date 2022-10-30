@@ -9,7 +9,7 @@ namespace WebAPI.Controllers.FuelType;
 
 [ApiController]
 [AuthorizeAdmin]
-[Route("api/v1/FuelTypes")]
+[Route("api/v1/fuel-types")]
 public sealed class FuelTypeCommandController : ControllerBase
 {
     private readonly IMediator _mediator;

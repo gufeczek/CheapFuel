@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers.FuelType;
 
 [ApiController]
-[Route("api/v1/FuelTypes")]
+[Route("api/v1/fuel-types")]
 public sealed class FuelTypeQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
