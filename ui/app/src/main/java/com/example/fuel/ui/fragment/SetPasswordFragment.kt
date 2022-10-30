@@ -1,10 +1,14 @@
 package com.example.fuel.ui.fragment
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetPasswordBinding
@@ -21,7 +25,7 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         PASSWORD_TOO_LONG,
         PASSWORD_NO_UPPERCASE,
         PASSWORD_NO_LOWERCASE,
-        PASSWRORD_NO_DIGIT,
+        PASSWORD_NO_DIGIT,
         PASSWORD_REPEAT_NO_MATCH,
         PASSWORD_ILLEGAL_CHARACTER
     }
@@ -37,9 +41,13 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
 
         binding.etPassword.afterTextChanged { editable -> userInterfaceValidation(editable) }
 
-        binding.btnNextPage.setOnClickListener {
-            if (passwordValidation(binding.etPassword.text.toString(), binding.etRepeatPassword.text.toString()).isPresent) {
+        binding.etPassword.afterTextChanged {
 
+        }
+
+        binding.btnNextPage.setOnClickListener {
+            if (!passwordValidation(binding.etPassword.text.toString(), binding.etRepeatPassword.text.toString()).isPresent) {
+                Navigation.findNavController(binding.root).navigate(R.id.blankFragment)
             }
         }
 
@@ -76,7 +84,7 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         } else if (!isAtLeastOneLowerCase(password)) {
             return Optional.of(ValidationErrors.PASSWORD_NO_LOWERCASE)
         } else if (!isAtLeastOneDigit(password)) {
-            return Optional.of(ValidationErrors.PASSWRORD_NO_DIGIT)
+            return Optional.of(ValidationErrors.PASSWORD_NO_DIGIT)
         } else if (password != repeatedPassword) {
             return Optional.of(ValidationErrors.PASSWORD_REPEAT_NO_MATCH)
         } else if (isIllegalCharacter(password)) {

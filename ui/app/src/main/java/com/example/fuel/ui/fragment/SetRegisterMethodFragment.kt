@@ -28,14 +28,14 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
         binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
         binding.btnRegister.setOnClickListener {
             if (!Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()) {
-                //TODO: Remove this if statement later, only for debugging purposes
+                //TODO: Remove this if statement later, only for testing purposes
                 if(binding.etEmail.text.toString() == "") {
                     Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
                 }
                 binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
                 binding.tvEmailValidationError.text = ValidationErrors.ERROR_INCORRECT_EMAIL.toString()
                 binding.etEmail.afterTextChanged { editable ->
-                    if (Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()) {
+                    if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
                         binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
                         binding.tvEmailValidationError.text = ""
                     }

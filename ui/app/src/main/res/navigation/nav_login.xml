@@ -27,5 +27,14 @@
         android:id="@+id/setPasswordFragment"
         android:name="com.example.fuel.ui.fragment.SetPasswordFragment"
         android:label="fragment_set_password"
-        tools:layout="@layout/fragment_set_password" />
+        tools:layout="@layout/fragment_set_password" >
+        <action
+            android:id="@+id/action_setPasswordFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.fuel.ui.fragment.BlankFragment"
+        android:label="BlankFragment" />
+
 </navigation>

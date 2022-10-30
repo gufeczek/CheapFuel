@@ -19,4 +19,6 @@
     <string name="username_hint">Nazwa użytkownika</string>
     <string name="input_username">Podaj nazwę użytkownika: </string>
     <string name="accept_terms_of_use"><a href="https://google.com">Akceptuje warunki regulaminu</a></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
