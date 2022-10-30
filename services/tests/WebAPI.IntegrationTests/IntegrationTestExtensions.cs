@@ -22,19 +22,13 @@ public static class IntegrationTestExtensions
         => JsonConvert.DeserializeObject<TEntity>(await content.ReadAsStringAsync());
 
     public static async Task AuthorizeUser(this IntegrationTest integrationTest)
-    {
-        await integrationTest.AuthorizeUser(AccountsData.UserUsername, AccountsData.Password);
-    }
+        => await integrationTest.AuthorizeUser(AccountsData.UserUsername, AccountsData.Password);
 
     public static async Task AuthorizeOwner(this IntegrationTest integrationTest)
-    {
-        await integrationTest.AuthorizeUser(AccountsData.OwnerUsername, AccountsData.Password);
-    }
-    
+        => await integrationTest.AuthorizeUser(AccountsData.OwnerUsername, AccountsData.Password);
+
     public static async Task AuthorizeAdmin(this IntegrationTest integrationTest)
-    {
-        await integrationTest.AuthorizeUser(AccountsData.AdminUsername, AccountsData.Password);
-    }
+        => await integrationTest.AuthorizeUser(AccountsData.AdminUsername, AccountsData.Password);
 
     private static async Task AuthorizeUser(this IntegrationTest integrationTest, string username, string password)
     {
