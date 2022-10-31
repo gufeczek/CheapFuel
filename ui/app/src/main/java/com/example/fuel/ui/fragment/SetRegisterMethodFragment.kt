@@ -1,7 +1,6 @@
 package com.example.fuel.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,8 +9,8 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
-import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
-import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
+import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
 

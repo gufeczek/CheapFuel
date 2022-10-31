@@ -13,9 +13,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetUsernameBinding
-import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
-import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
-import com.example.fuel.ui.utils.extension.TextViewExtension.Companion.removeLinksUnderline
+import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
+import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
 import java.util.*
 
 
