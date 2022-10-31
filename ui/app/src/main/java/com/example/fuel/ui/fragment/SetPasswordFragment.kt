@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetPasswordBinding
 import com.example.fuel.databinding.FragmentSetUsernameBinding
+import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
 import java.util.*
 
@@ -66,6 +67,8 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
                 }
             }
         }
+
+        binding.clMain.setOnClickListener {view -> view.hideKeyboard()}
 
         return binding.root
     }

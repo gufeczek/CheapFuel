@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
+import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
@@ -44,6 +45,11 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
                 Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
             }
         }
+
+        binding.clMain.setOnClickListener { view ->
+            view.hideKeyboard()
+        }
+
         return binding.root
     }
 }

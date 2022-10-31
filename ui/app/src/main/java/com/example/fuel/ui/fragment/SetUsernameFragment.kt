@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetUsernameBinding
+import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.ui.utils.extension.TextViewExtension.Companion.removeLinksUnderline
 import java.util.*
@@ -39,6 +40,11 @@ class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
 
         binding.btnNextPage.setOnClickListener(btnValidationListener)
         binding.chkTermsOfUse.setOnCheckedChangeListener(chkValidationListener)
+
+        binding.chkTermsOfUse.setOnClickListener{ view -> view.hideKeyboard() }
+        binding.clMain.setOnClickListener{ view ->
+            view.hideKeyboard()
+        }
 
         return binding.root
     }
