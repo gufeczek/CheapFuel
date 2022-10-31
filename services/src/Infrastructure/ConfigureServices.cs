@@ -61,9 +61,12 @@ public static class ConfigureServices
 
     public static void AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
+        services.AddHttpContextAccessor();
+        
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserPasswordHasher, UserPasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserPrincipalService, UserPrincipalService>();
         
         var authenticationSettings = new AuthenticationSettings();
         services.AddSingleton(authenticationSettings);

@@ -126,9 +126,12 @@ public class ExceptionHandlerMiddleware : IMiddleware
 
     private ErrorMessage HandleUnexpectedException(Exception e)
     {
-        _logger.LogError(e.Message);
-        _logger.LogError(e.StackTrace); // Should be change to logger
+        Console.WriteLine(e.Message);
+        Console.WriteLine(e.StackTrace);
         
+        _logger.LogError(e.Message);
+        _logger.LogError(e.StackTrace);
+
         return new ErrorMessage
         (
             StatusCode: HttpStatusCode.InternalServerError,

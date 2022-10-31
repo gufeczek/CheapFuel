@@ -1,12 +1,15 @@
 ﻿using System.Reflection;
 using Domain.Common.Interfaces;
 using Domain.Entities;
+using Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 public sealed class AppDbContext : DbContext
 {
+    private readonly IUserPrincipalService _userPrincipalService;
+    
     public DbSet<FuelType> FuelTypes => Set<FuelType>();
     public DbSet<FuelStationService> Services => Set<FuelStationService>();
     public DbSet<StationChain> StationChains => Set<StationChain>();
@@ -19,7 +22,11 @@ public sealed class AppDbContext : DbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalService) 
+        : base(options)
+    {
+        _userPrincipalService = userPrincipalService;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,7 +64,7 @@ public sealed class AppDbContext : DbContext
             .ForEach(e =>
             {
                 e.CreatedAt = DateTime.UtcNow;
-                e.CreatedBy = 1L; // Just for now, should be change after Issue #4
+                e.CreatedBy = _userPrincipalService.GetUserPrincipalId();
             });
     }
 
@@ -71,7 +78,7 @@ public sealed class AppDbContext : DbContext
             .ForEach(e =>
             {
                 e.UpdatedAt = DateTime.UtcNow;
-                e.UpdatedBy = 1L; // Just for now, should be change after Issue #4
+                e.UpdatedBy =_userPrincipalService.GetUserPrincipalId();
             });
     }
 
@@ -86,7 +93,7 @@ public sealed class AppDbContext : DbContext
 
                 permanentEntity.Deleted = true;
                 permanentEntity.DeletedAt = DateTime.UtcNow;
-                permanentEntity.DeletedBy = 1L; // Just for now, should be change after Issue #4
+                permanentEntity.DeletedBy = _userPrincipalService.GetUserPrincipalId();
             
                 e.State = EntityState.Modified;
             });
