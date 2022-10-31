@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -24,6 +25,16 @@ public class TestingWebApiFactory<TEntity> : WebApplicationFactory<Program> wher
             {
                 options.UseInMemoryDatabase("TestDatabase");
             });
+
+            services.AddScoped<IUserPrincipalService, UserPrincipalServiceTest>();
         });
+    }
+}
+
+public class UserPrincipalServiceTest : IUserPrincipalService
+{
+    public int GetUserPrincipalId()
+    {
+        return -1;
     }
 }
