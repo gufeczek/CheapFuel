@@ -10,13 +10,14 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
+import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
 
     private lateinit var binding: FragmentSetRegisterMethodBinding
 
-    private enum class ValidationErrors {
+    private enum class Error {
         ERROR_INCORRECT_EMAIL
     }
 
@@ -28,14 +29,14 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
         binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
         binding.btnRegister.setOnClickListener {
             if (!Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()) {
-                //TODO: Remove this if statement later, only for debugging purposes
+                //TODO: Remove this if statement later, only for testing purposes
                 if(binding.etEmail.text.toString() == "") {
                     Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
                 }
                 binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
-                binding.tvEmailValidationError.text = ValidationErrors.ERROR_INCORRECT_EMAIL.toString()
+                binding.tvEmailValidationError.text = Error.ERROR_INCORRECT_EMAIL.toString()
                 binding.etEmail.afterTextChanged { editable ->
-                    if (Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()) {
+                    if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
                         binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
                         binding.tvEmailValidationError.text = ""
                     }
@@ -44,6 +45,11 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
                 Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
             }
         }
+
+        binding.clMain.setOnClickListener { view ->
+            view.hideKeyboard()
+        }
+
         return binding.root
     }
 }
