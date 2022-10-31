@@ -6,9 +6,9 @@ using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace Application.StationChains.Queries.GetAllStationChainsQuery;
+namespace Application.StationChains.Queries.GetAllStationChains;
 
-public class GetAllStationChainsQueryHandler : IRequestHandler<GetAllStationChainsQuery, Page<StationChainDto>>
+public class GetAllStationChainsQueryHandler : IRequestHandler<GetAllStationChains.GetAllStationChainsQuery, Page<StationChainDto>>
 {
     private readonly IStationChainRepository _stationChainRepository;
     private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ public class GetAllStationChainsQueryHandler : IRequestHandler<GetAllStationChai
         _mapper = mapper;
     }
     
-    public async Task<Page<StationChainDto>> Handle(GetAllStationChainsQuery request, CancellationToken cancellationToken)
+    public async Task<Page<StationChainDto>> Handle(GetAllStationChains.GetAllStationChainsQuery request, CancellationToken cancellationToken)
     {
         var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new StationChainColumnSelector());
         var result = await _stationChainRepository.GetAllAsync(pageRequest);

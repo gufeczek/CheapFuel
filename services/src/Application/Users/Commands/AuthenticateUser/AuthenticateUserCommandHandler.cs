@@ -25,14 +25,14 @@ public sealed class AuthenticateUserCommandHandler : IRequestHandler<Authenticat
 
         if (user is null)
         {
-            throw new UnauthorizedException("Invalid email or password");
+            throw new UnauthorizedException("Invalid username or password");
         }
 
         var isPasswordCorrect = _passwordHasher.IsPasswordCorrect(user.Password, request.Password, user);
 
         if (!isPasswordCorrect)
         {
-            throw new UnauthorizedException("Invalid email or password");
+            throw new UnauthorizedException("Invalid username or password");
         }
 
         return _tokenService.GenerateToken(user);

@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common;
+using Application.Common.Exceptions;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -18,7 +19,7 @@ public class DeleteStationChainCommandHandler : IRequestHandler<DeleteStationCha
 
     public async Task<Unit> Handle(DeleteStationChainCommand request, CancellationToken cancellationToken)
     {
-        var stationChain = await _stationChainRepository.GetAsync(request.Id)
+        var stationChain = await _stationChainRepository.GetAsync(request.Id.OrElseThrow())
                            ?? throw new NotFoundException($"Station chain not found for if = {request.Id}");
         
         _stationChainRepository.Remove(stationChain);

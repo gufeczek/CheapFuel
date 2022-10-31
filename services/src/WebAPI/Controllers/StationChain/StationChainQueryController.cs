@@ -1,6 +1,6 @@
 ﻿using Application.Models;
 using Application.Models.Pagination;
-using Application.StationChains.Queries.GetAllStationChainsQuery;
+using Application.StationChains.Queries.GetAllStationChains;
 using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
