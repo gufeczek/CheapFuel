@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Authentication;
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Models;
 using Application.Users.Commands.RegisterUser;
 using AutoMapper;
@@ -35,7 +36,12 @@ public class RegisterUserCommandHandlerTest
         _passwordHasher = new Mock<IUserPasswordHasher>();
         _mapper = new Mock<IMapper>();
 
-        _handler = new RegisterUserCommandHandler(_unitOfWork.Object, _mapper.Object, _passwordHasher.Object);
+        _handler = new RegisterUserCommandHandler(
+            _unitOfWork.Object, 
+            _mapper.Object, 
+            _passwordHasher.Object, 
+            new Mock<ITokenService>().Object, 
+            new Mock<IEmailSenderService>().Object);
     }
 
     [Fact]

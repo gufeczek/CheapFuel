@@ -1,12 +1,9 @@
-﻿using Application.Common;
+﻿using System.Security.Claims;
+using Application.Common.Authentication;
+using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Identity;
-
-public interface IUserPrincipalService
-{
-    int GetUserPrincipalId();
-}
 
 public class UserPrincipalService : IUserPrincipalService
 {
@@ -17,13 +14,21 @@ public class UserPrincipalService : IUserPrincipalService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public int GetUserPrincipalId()
+    public string? GetUserName()
+    {
+        return _httpContextAccessor
+            .HttpContext?
+            .User
+            .FindFirst(ClaimTypes.NameIdentifier)?
+            .Value;
+    }
+
+    public int? GetUserPrincipalId()
     {
         var claim = _httpContextAccessor
             .HttpContext?
             .User
-            .FindFirst(claim => claim.Type.Equals("Id"))
-            .OrElseThrow("Id claim of user principal is equal to null. User is probably not logged in!");
-        return int.Parse(claim!.Value);
+            .FindFirst(claim => claim.Type.Equals("Id"));
+        return claim != null ? int.Parse(claim.Value) : null;
     }
 }

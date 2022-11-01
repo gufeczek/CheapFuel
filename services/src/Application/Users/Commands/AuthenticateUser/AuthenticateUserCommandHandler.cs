@@ -35,6 +35,6 @@ public sealed class AuthenticateUserCommandHandler : IRequestHandler<Authenticat
             throw new UnauthorizedException("Invalid username or password");
         }
 
-        return _tokenService.GenerateToken(user);
+        return _tokenService.GenerateJwtToken(user);
     }
 }

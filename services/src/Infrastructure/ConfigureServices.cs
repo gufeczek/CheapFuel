@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using Application.Common.Authentication;
+using Application.Common.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Infrastructure.Common.Services.Email;
 using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
@@ -96,6 +98,17 @@ public static class ConfigureServices
         });
     }
 
+    public static void AddSmtpService(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IEmailSenderService, EmailSenderService>();
+
+        var emailSettings = new EmailHostSettings();
+        services.AddSingleton(emailSettings);
+        
+        configuration.GetSection("Email").Bind(emailSettings);
+        ValidateSmtpSettings(emailSettings);
+    }
+
     private static void ValidateAuthenticationSettings(AuthenticationSettings settings)
     {
         if (settings.Secret is null 
@@ -104,6 +117,17 @@ public static class ConfigureServices
             || settings.Audience is null)
         {
             throw new AppConfigurationException("One or more of the required authentication settings is missing");
+        }
+    }
+
+    private static void ValidateSmtpSettings(EmailHostSettings settings)
+    {
+        if (settings.EmailAddress is null 
+            || settings.Password is null 
+            || settings.Host is null 
+            || settings.Port is null)
+        {
+            throw new AppConfigurationException("One or more of the required email settings is missing");
         }
     }
 }

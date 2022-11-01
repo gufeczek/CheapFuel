@@ -1,5 +1,6 @@
 ﻿using Application.Common.Authentication;
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
@@ -16,13 +17,22 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IUserPasswordHasher _passwordHasher;
+    private readonly ITokenService _tokenService;
+    private readonly IEmailSenderService _emailSenderService;
 
-    public RegisterUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserPasswordHasher passwordHasher)
+    public RegisterUserCommandHandler(
+        IUnitOfWork unitOfWork, 
+        IMapper mapper, 
+        IUserPasswordHasher passwordHasher, 
+        ITokenService tokenService,
+        IEmailSenderService emailSenderService)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
+        _emailSenderService = emailSenderService;
     }
     
     public async Task<UserDetailsDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -41,7 +51,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         {
             Username = request.Username,
             Email = request.Email,
-            EmailConfirmed = true,
+            EmailConfirmed = false,
             MultiFactorAuthEnabled = false,
             Status = AccountStatus.Active,
             Role = Role.User
@@ -52,6 +62,8 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         
         _userRepository.Add(newUser);
         await _unitOfWork.SaveAsync();
+        
+        await _emailSenderService.SendEmailAddressVerificationToken(newUser.Email, _tokenService.GenerateSimpleToken());
         
         return _mapper.Map<UserDetailsDto>(newUser);
     }

@@ -10,6 +10,6 @@ public class FuelAtStation : ICreatable
     public long FuelStationId { get; set; }
     public FuelStation? FuelStation { get; set; }
     
-    public long CreatedBy { get; set; }
+    public long? CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; }
 }
