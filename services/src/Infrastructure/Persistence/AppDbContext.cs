@@ -21,6 +21,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<OwnedStation> OwnedStations => Set<OwnedStation>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
+    public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalIdentityService) 
         : base(options)

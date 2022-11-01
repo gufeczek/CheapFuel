@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Application.Common;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authorization;

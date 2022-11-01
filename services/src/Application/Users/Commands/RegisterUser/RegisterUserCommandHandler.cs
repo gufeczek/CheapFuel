@@ -76,7 +76,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         var token = new EmailVerificationToken
         {
             Token = tokenCode,
-            Expired = false,
+            Count = 0,
             User = user
         };
         _emailVerificationTokenRepository.Add(token);

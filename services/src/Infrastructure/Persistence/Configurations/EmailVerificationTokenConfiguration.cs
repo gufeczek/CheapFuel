@@ -12,8 +12,8 @@ public class EmailVerificationTokenConfiguration : IEntityTypeConfiguration<Emai
             .HasMaxLength(6)
             .IsRequired();
 
-        builder.Property(e => e.Expired)
-            .HasDefaultValue(false)
+        builder.Property(e => e.Count)
+            .HasDefaultValue(0)
             .IsRequired();
 
         builder.HasOne(e => e.User)
