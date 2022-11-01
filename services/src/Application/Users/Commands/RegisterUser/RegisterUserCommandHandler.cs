@@ -15,6 +15,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
+    private readonly IEmailVerificationTokenRepository _emailVerificationTokenRepository;
     private readonly IMapper _mapper;
     private readonly IUserPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
@@ -29,6 +30,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
+        _emailVerificationTokenRepository = unitOfWork.EmailVerificationTokens;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
@@ -62,9 +64,24 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         
         _userRepository.Add(newUser);
         await _unitOfWork.SaveAsync();
-        
-        await _emailSenderService.SendEmailAddressVerificationToken(newUser.Email, _tokenService.GenerateSimpleToken());
+
+        await SendVerificationTokenToUser(newUser);
         
         return _mapper.Map<UserDetailsDto>(newUser);
+    }
+
+    private async Task SendVerificationTokenToUser(User user)
+    {
+        var tokenCode = _tokenService.GenerateSimpleToken();
+        var token = new EmailVerificationToken
+        {
+            Token = tokenCode,
+            Expired = false,
+            User = user
+        };
+        _emailVerificationTokenRepository.Add(token);
+        await _unitOfWork.SaveAsync();
+        
+        await _emailSenderService.SendEmailAddressVerificationToken(user.Email!, tokenCode);
     }
 }

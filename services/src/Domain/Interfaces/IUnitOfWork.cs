@@ -16,6 +16,7 @@ public interface IUnitOfWork : IDisposable
     IFuelStationServiceRepository Services { get; }
     IStationChainRepository StationChains { get; }
     IUserRepository Users { get; }
+    IEmailVerificationTokenRepository EmailVerificationTokens { get; }
 
     Task SaveAsync();
 }

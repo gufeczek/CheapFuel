@@ -58,6 +58,7 @@ public static class ConfigureServices
         services.AddScoped<IServiceAtStationRepository, ServiceAtStationRepository>();
         services.AddScoped<IStationChainRepository, StationChainRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IEmailVerificationTokenRepository, EmailVerificationTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

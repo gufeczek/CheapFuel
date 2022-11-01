@@ -20,7 +20,8 @@ public class UnitOfWork : IUnitOfWork
     public IFuelStationServiceRepository Services { get; }
     public IStationChainRepository StationChains { get; }
     public IUserRepository Users { get; }
-
+    public IEmailVerificationTokenRepository EmailVerificationTokens { get; }
+    
     public UnitOfWork(AppDbContext context, 
         IFavoriteRepository favorites, 
         IFuelAtStationRepository fuelsAtStation, 
@@ -33,7 +34,8 @@ public class UnitOfWork : IUnitOfWork
         IServiceAtStationRepository servicesAtStation, 
         IFuelStationServiceRepository services, 
         IStationChainRepository stationChains,
-        IUserRepository users)
+        IUserRepository users,
+        IEmailVerificationTokenRepository emailVerificationTokens)
     {
         _context = context;
         Favorites = favorites;
@@ -48,6 +50,7 @@ public class UnitOfWork : IUnitOfWork
         Services = services;
         StationChains = stationChains;
         Users = users;
+        EmailVerificationTokens = emailVerificationTokens;
     }
 
     public async Task SaveAsync()
