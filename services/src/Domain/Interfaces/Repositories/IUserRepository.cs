@@ -8,4 +8,6 @@ public interface IUserRepository: IBaseRepository<User>
 
     Task<bool> ExistsByUsername(string username);
     Task<bool> ExistsByEmail(string email);
+    
+    Task<bool?> IsEmailVerified(string username);
 }

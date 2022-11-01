@@ -7,6 +7,7 @@ public class AuthorizeAdminAttribute : AuthorizeAttribute
 {
     public AuthorizeAdminAttribute()
     {
+        Policy = "EmailVerified";
         Roles = Role.Admin.ToString();
     }
 }

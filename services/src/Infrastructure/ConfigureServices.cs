@@ -7,9 +7,11 @@ using Domain.Interfaces.Repositories;
 using Infrastructure.Common.Services.Email;
 using Infrastructure.Exceptions;
 using Infrastructure.Identity;
+using Infrastructure.Identity.Policies.EmailVerifiedRequirement;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +72,7 @@ public static class ConfigureServices
         services.AddScoped<IUserPasswordHasher, UserPasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserPrincipalService, UserPrincipalService>();
-        
+
         var authenticationSettings = new AuthenticationSettings();
         services.AddSingleton(authenticationSettings);
         
@@ -97,6 +99,16 @@ public static class ConfigureServices
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.Secret!))
             };
         });
+    }
+
+    public static void AddAuthorizationPolicies(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("EmailVerified", builder => builder.AddRequirements(new EmailVerifiedRequirement()));
+        });
+        
+        services.AddScoped<IAuthorizationHandler, EmailVerifiedRequirementHandler>();
     }
 
     public static void AddSmtpService(this IServiceCollection services, IConfiguration configuration)

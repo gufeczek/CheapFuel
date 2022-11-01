@@ -21,6 +21,7 @@ public class RegisterUserCommandHandlerTest
 {
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IUserRepository> _userRepository;
+    private readonly Mock<IEmailVerificationTokenRepository> _emailVerificationTokenRepository;
     private readonly Mock<IMapper> _mapper;
     private readonly Mock<IUserPasswordHasher> _passwordHasher;
     private readonly RegisterUserCommandHandler _handler;
@@ -28,10 +29,14 @@ public class RegisterUserCommandHandlerTest
     public RegisterUserCommandHandlerTest()
     {
         _userRepository = new Mock<IUserRepository>();
+        _emailVerificationTokenRepository = new Mock<IEmailVerificationTokenRepository>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _unitOfWork
             .Setup(u => u.Users)
             .Returns(_userRepository.Object);
+        _unitOfWork
+            .Setup(u => u.EmailVerificationTokens)
+            .Returns(_emailVerificationTokenRepository.Object);
 
         _passwordHasher = new Mock<IUserPasswordHasher>();
         _mapper = new Mock<IMapper>();
@@ -80,7 +85,8 @@ public class RegisterUserCommandHandlerTest
         result.Should().NotBeNull();
         
         _userRepository.Verify(x => x.Add(It.IsAny<User>()), Times.Once);
-        _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        _emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
+        _unitOfWork.Verify(x => x.SaveAsync(), Times.Exactly(2));
     }
 
     [Fact]
