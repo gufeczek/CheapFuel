@@ -53,7 +53,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         {
             Username = request.Username,
             Email = request.Email,
-            EmailConfirmed = false,
+            EmailConfirmed = true,
             MultiFactorAuthEnabled = false,
             Status = AccountStatus.Active,
             Role = Role.User
@@ -65,7 +65,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         _userRepository.Add(newUser);
         await _unitOfWork.SaveAsync();
 
-        await SendVerificationTokenToUser(newUser);
+        //await SendVerificationTokenToUser(newUser);
         
         return _mapper.Map<UserDetailsDto>(newUser);
     }

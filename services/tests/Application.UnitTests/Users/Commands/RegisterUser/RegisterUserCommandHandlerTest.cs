@@ -85,8 +85,8 @@ public class RegisterUserCommandHandlerTest
         result.Should().NotBeNull();
         
         _userRepository.Verify(x => x.Add(It.IsAny<User>()), Times.Once);
-        _emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
-        _unitOfWork.Verify(x => x.SaveAsync(), Times.Exactly(2));
+        //_emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
+        _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
     }
 
     [Fact]
