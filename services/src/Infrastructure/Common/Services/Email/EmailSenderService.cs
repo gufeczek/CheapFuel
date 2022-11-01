@@ -6,6 +6,8 @@ namespace Infrastructure.Common.Services.Email;
 
 public class EmailSenderService : IEmailSenderService
 {
+    private const string VerificationCodeEmailTemplatePlaceholder = "#VERIFICATION_CODE#";
+    
     private readonly EmailHostSettings _emailHostSettings;
 
     public EmailSenderService(EmailHostSettings emailHostSettings)
@@ -19,8 +21,9 @@ public class EmailSenderService : IEmailSenderService
         mailMessage.To.Add(new MailAddress(destEmail));
         mailMessage.From = new MailAddress(_emailHostSettings.EmailAddress!);
         mailMessage.Subject = "Email verification";
-        mailMessage.Body = token;
-        mailMessage.IsBodyHtml = false;
+        mailMessage.Body = Properties.Resources.EmailVerificationTemplate
+          .Replace(VerificationCodeEmailTemplatePlaceholder, token);
+        mailMessage.IsBodyHtml = true;
 
         using var smtp = new SmtpClient();
         smtp.Host = _emailHostSettings.Host!;
@@ -29,5 +32,5 @@ public class EmailSenderService : IEmailSenderService
         smtp.Credentials = new NetworkCredential(_emailHostSettings.EmailAddress, _emailHostSettings.Password);
         smtp.EnableSsl = true;
         await smtp.SendMailAsync(mailMessage);
-    }
+    } 
 }
