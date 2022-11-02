@@ -19,6 +19,38 @@ namespace Infrastructure.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Domain.Entities.EmailVerificationToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Count")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmailVerificationTokens");
+                });
+
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
                 {
                     b.Property<long>("UserId")
@@ -30,14 +62,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("UserId", "FuelStationId");
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("Favorites", (string)null);
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelAtStation", b =>
@@ -51,14 +83,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("FuelTypeId", "FuelStationId");
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("FuelAtStations", (string)null);
+                    b.ToTable("FuelAtStations");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelPrice", b =>
@@ -67,7 +99,8 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("Available")
+                    b.Property<bool?>("Available")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);
@@ -75,7 +108,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Deleted")
@@ -109,7 +142,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<long>("UserId")
@@ -123,7 +156,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FuelPrices", (string)null);
+                    b.ToTable("FuelPrices");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
@@ -135,7 +168,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -149,14 +182,42 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StationChainId");
 
-                    b.ToTable("FuelStations", (string)null);
+                    b.ToTable("FuelStations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FuelStationService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelType", b =>
@@ -168,7 +229,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -179,12 +240,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelTypes", (string)null);
+                    b.ToTable("FuelTypes");
                 });
 
             modelBuilder.Entity("Domain.Entities.OpeningClosingTime", b =>
@@ -203,7 +264,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<int?>("OpeningTime")
@@ -214,12 +275,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("FuelStationId", "DayOfWeek");
 
-                    b.ToTable("OpeningClosingTime", (string)null);
+                    b.ToTable("OpeningClosingTime");
                 });
 
             modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
@@ -233,14 +294,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("UserId", "FuelStationId");
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("OwnedStations", (string)null);
+                    b.ToTable("OwnedStations");
                 });
 
             modelBuilder.Entity("Domain.Entities.Review", b =>
@@ -256,7 +317,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Deleted")
@@ -281,7 +342,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<long>("UserId")
@@ -293,35 +354,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Service", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
@@ -335,14 +368,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("ServiceId", "FuelStationId");
 
                     b.HasIndex("FuelStationId");
 
-                    b.ToTable("ServiceAtStations", (string)null);
+                    b.ToTable("ServiceAtStations");
                 });
 
             modelBuilder.Entity("Domain.Entities.StationChain", b =>
@@ -354,7 +387,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -365,12 +398,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("StationChains", (string)null);
+                    b.ToTable("StationChains");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -382,7 +415,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreatedBy")
+                    b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Deleted")
@@ -428,7 +461,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UpdatedBy")
+                    b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Username")
@@ -438,7 +471,18 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EmailVerificationToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
@@ -510,7 +554,7 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Entities.FuelStation.Address#Domain.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -540,13 +584,13 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations", (string)null);
+                            b1.ToTable("FuelStations");
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");
                         });
 
-                    b.OwnsOne("Domain.Entities.FuelStation.GeographicalCoordinates#Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
+                    b.OwnsOne("Domain.Entities.GeographicalCoordinates", "GeographicalCoordinates", b1 =>
                         {
                             b1.Property<long>("FuelStationId")
                                 .HasColumnType("bigint");
@@ -563,7 +607,7 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("FuelStationId");
 
-                            b1.ToTable("FuelStations", (string)null);
+                            b1.ToTable("FuelStations");
 
                             b1.WithOwner()
                                 .HasForeignKey("FuelStationId");
@@ -633,7 +677,7 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Service", "Service")
+                    b.HasOne("Domain.Entities.FuelStationService", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)

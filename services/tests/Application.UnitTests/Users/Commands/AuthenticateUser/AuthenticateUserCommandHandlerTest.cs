@@ -56,7 +56,7 @@ public class AuthenticateUserCommandHandlerTest
             .Returns(true);
 
         _tokenService
-            .Setup(x => x.GenerateToken(user))
+            .Setup(x => x.GenerateJwtToken(user))
             .Returns(token);
         
         // Act
@@ -92,7 +92,7 @@ public class AuthenticateUserCommandHandlerTest
             x => x.IsPasswordCorrect(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>()), 
             Times.Never);
         _tokenService.Verify(
-            x => x.GenerateToken(It.IsAny<User>()), 
+            x => x.GenerateJwtToken(It.IsAny<User>()), 
             Times.Never);
     }
 
@@ -126,7 +126,7 @@ public class AuthenticateUserCommandHandlerTest
             .WithMessage("Invalid username or password");
         
         _tokenService.Verify(
-            x => x.GenerateToken(It.IsAny<User>()), 
+            x => x.GenerateJwtToken(It.IsAny<User>()), 
             Times.Never);
     }
 }

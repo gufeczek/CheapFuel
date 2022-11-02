@@ -27,4 +27,12 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         return await Context.Users
             .AnyAsync(u => u.Email == email);
     }
+
+    public async Task<bool?> IsEmailVerified(string username)
+    {
+        return await Context.Users
+            .Where(u => u.Username == username)
+            .Select(u => u.EmailConfirmed)
+            .FirstAsync();
+    }
 }

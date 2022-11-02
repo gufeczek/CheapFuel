@@ -16,7 +16,7 @@ public class TestController : ControllerBase
         return "Hello world anonymous!";
     }
     
-    [Authorize]
+    [AuthorizeUser]
     [HttpGet("user")]
     public string GetUser()
     {

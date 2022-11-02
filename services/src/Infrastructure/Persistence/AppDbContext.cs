@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
+using Application.Common.Authentication;
 using Domain.Common.Interfaces;
 using Domain.Entities;
-using Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 public sealed class AppDbContext : DbContext
 {
-    private readonly IUserPrincipalService _userPrincipalService;
+    private readonly IUserPrincipalService _userPrincipalIdentityService;
     
     public DbSet<FuelType> FuelTypes => Set<FuelType>();
     public DbSet<FuelStationService> Services => Set<FuelStationService>();
@@ -21,11 +21,12 @@ public sealed class AppDbContext : DbContext
     public DbSet<OwnedStation> OwnedStations => Set<OwnedStation>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
+    public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
 
-    public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalService) 
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalIdentityService) 
         : base(options)
     {
-        _userPrincipalService = userPrincipalService;
+        _userPrincipalIdentityService = userPrincipalIdentityService;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -64,7 +65,7 @@ public sealed class AppDbContext : DbContext
             .ForEach(e =>
             {
                 e.CreatedAt = DateTime.UtcNow;
-                e.CreatedBy = _userPrincipalService.GetUserPrincipalId();
+                e.CreatedBy = _userPrincipalIdentityService.GetUserPrincipalId();
             });
     }
 
@@ -78,7 +79,7 @@ public sealed class AppDbContext : DbContext
             .ForEach(e =>
             {
                 e.UpdatedAt = DateTime.UtcNow;
-                e.UpdatedBy =_userPrincipalService.GetUserPrincipalId();
+                e.UpdatedBy =_userPrincipalIdentityService.GetUserPrincipalId();
             });
     }
 
@@ -93,7 +94,7 @@ public sealed class AppDbContext : DbContext
 
                 permanentEntity.Deleted = true;
                 permanentEntity.DeletedAt = DateTime.UtcNow;
-                permanentEntity.DeletedBy = _userPrincipalService.GetUserPrincipalId();
+                permanentEntity.DeletedBy = _userPrincipalIdentityService.GetUserPrincipalId();
             
                 e.State = EntityState.Modified;
             });

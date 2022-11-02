@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Application.Common.Authentication;
 using Domain.Entities;
@@ -9,6 +10,8 @@ namespace Infrastructure.Identity;
 
 public class TokenService : ITokenService
 {
+    private const string SimpleTokenAllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    
     private readonly AuthenticationSettings _authenticationSettings;
 
     public TokenService(AuthenticationSettings authenticationSettings)
@@ -16,7 +19,7 @@ public class TokenService : ITokenService
         _authenticationSettings = authenticationSettings;
     }
     
-    public string GenerateToken(User user)
+    public string GenerateJwtToken(User user)
     {
         var claims = new List<Claim>
         {
@@ -42,5 +45,13 @@ public class TokenService : ITokenService
         JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
         SecurityToken token = handler.CreateToken(descriptor);
         return handler.WriteToken(token);
+    }
+
+    public string GenerateSimpleToken()
+    {
+        var chars = Enumerable.Repeat(SimpleTokenAllowedChars, 6)
+            .Select(token => token[RandomNumberGenerator.GetInt32(SimpleTokenAllowedChars.Length)])
+            .ToArray();
+        return new string(chars);
     }
 }
