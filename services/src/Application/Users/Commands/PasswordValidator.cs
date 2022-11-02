@@ -18,14 +18,14 @@ public class PasswordValidator : AbstractValidator<string>
             .NotEmpty()
             .MinimumLength(8)
             .MaximumLength(32)
-            .Must(password => 
+            .Must(password =>
                 password is not null &&
                 Regex.IsMatch(password, LowercaseLettersRegex) &&
-                Regex.IsMatch(password, UppercaseLettersRegex) && 
+                Regex.IsMatch(password, UppercaseLettersRegex) &&
                 Regex.IsMatch(password, DigitsRegex))
             .WithMessage("Password must contain at least one number and one uppercase and lowercase letter")
-            .Must(password => 
-                password is not null && 
+            .Must(password =>
+                password is not null &&
                 Regex.IsMatch(password, AllowedCharactersForPasswordRegex))
             .WithMessage($"Password can contain only latin letters, numbers and {AllowedSpecialCharactersForPassword}");
     }

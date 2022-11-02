@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Users.Commands.ChangePassword;
 
-public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand>
+public sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;

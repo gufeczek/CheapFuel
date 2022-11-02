@@ -2,9 +2,9 @@
 
 namespace Application.Users.Commands.ChangeUserRole;
 
-public sealed class ChangeUserRoleValidator : AbstractValidator<ChangeUserRoleCommand>
+public sealed class ChangeUserRoleCommandValidator : AbstractValidator<ChangeUserRoleCommand>
 {
-    public ChangeUserRoleValidator()
+    public ChangeUserRoleCommandValidator()
     {
         RuleFor(c => c.Username)
             .NotEmpty();

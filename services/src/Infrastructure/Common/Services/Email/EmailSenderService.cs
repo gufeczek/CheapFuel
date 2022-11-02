@@ -17,12 +17,25 @@ public class EmailSenderService : IEmailSenderService
 
     public async Task SendEmailAddressVerificationToken(string destEmail, string token)
     {
+        var body = Properties.Resources.EmailVerificationTemplate
+            .Replace(VerificationCodeEmailTemplatePlaceholder, token);
+        await SendEmail(destEmail, "Email verification", body);
+    }
+
+    public async Task SendPasswordResetToken(string destEmail, string token)
+    {
+        var body = Properties.Resources.ResetPasswordTemplate
+            .Replace(VerificationCodeEmailTemplatePlaceholder, token);
+        await SendEmail(destEmail, "Reset your password", body);
+    }
+
+    private async Task SendEmail(string destEmail, string subject, string body)
+    {
         using var mailMessage = new MailMessage();
         mailMessage.To.Add(new MailAddress(destEmail));
         mailMessage.From = new MailAddress(_emailHostSettings.EmailAddress!);
-        mailMessage.Subject = "Email verification";
-        mailMessage.Body = Properties.Resources.EmailVerificationTemplate
-          .Replace(VerificationCodeEmailTemplatePlaceholder, token);
+        mailMessage.Subject = subject;
+        mailMessage.Body = body;
         mailMessage.IsBodyHtml = true;
 
         using var smtp = new SmtpClient();
@@ -32,5 +45,5 @@ public class EmailSenderService : IEmailSenderService
         smtp.Credentials = new NetworkCredential(_emailHostSettings.EmailAddress, _emailHostSettings.Password);
         smtp.EnableSsl = true;
         await smtp.SendMailAsync(mailMessage);
-    } 
+    }
 }

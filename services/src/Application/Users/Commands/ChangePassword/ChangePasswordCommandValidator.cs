@@ -2,9 +2,9 @@
 
 namespace Application.Users.Commands.ChangePassword;
 
-public class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
+public sealed class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-    public ChangePasswordValidator()
+    public ChangePasswordCommandValidator()
     {
         RuleFor(r => r.OldPassword)
             .NotEmpty();

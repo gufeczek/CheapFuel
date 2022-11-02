@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Users.Commands.GenerateEmailVerificationToken;
 
-public class GenerateEmailVerificationTokenHandler : IRequestHandler<GenerateEmailVerificationTokenCommand>
+public sealed class GenerateEmailVerificationTokenCommandHandler : IRequestHandler<GenerateEmailVerificationTokenCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
@@ -19,7 +19,7 @@ public class GenerateEmailVerificationTokenHandler : IRequestHandler<GenerateEma
     private readonly ITokenService _tokenService;
     private readonly IEmailSenderService _emailSenderService;
     
-    public GenerateEmailVerificationTokenHandler(
+    public GenerateEmailVerificationTokenCommandHandler(
         IUnitOfWork unitOfWork,
         IUserPrincipalService userPrincipalService,
         ITokenService tokenService,
