@@ -2,8 +2,10 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using MediatR;
 
 namespace Application.Users.Commands.GenerateEmailVerificationToken;

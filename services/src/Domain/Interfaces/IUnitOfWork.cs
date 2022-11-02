@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 
 namespace Domain.Interfaces;
 

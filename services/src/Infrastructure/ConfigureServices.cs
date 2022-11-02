@@ -4,12 +4,14 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using Infrastructure.Common.Services.Email;
 using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Policies.EmailVerifiedRequirement;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -61,6 +63,7 @@ public static class ConfigureServices
         services.AddScoped<IStationChainRepository, StationChainRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IEmailVerificationTokenRepository, EmailVerificationTokenRepository>();
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

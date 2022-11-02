@@ -1,12 +1,12 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations;
+namespace Infrastructure.Persistence.Configurations.Tokens;
 
-public class EmailVerificationTokenConfiguration : IEntityTypeConfiguration<EmailVerificationToken>
+public abstract class AbstractTokenConfiguration<T> : IEntityTypeConfiguration<T> where T : AbstractToken
 {
-    public void Configure(EntityTypeBuilder<EmailVerificationToken> builder)
+    public void Configure(EntityTypeBuilder<T> builder)
     {
         builder.Property(e => e.Token)
             .HasMaxLength(6)

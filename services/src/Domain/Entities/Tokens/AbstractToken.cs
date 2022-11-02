@@ -1,8 +1,8 @@
 ﻿using Domain.Common;
 
-namespace Domain.Entities;
+namespace Domain.Entities.Tokens;
 
-public class EmailVerificationToken : BaseEntity
+public abstract class AbstractToken : BaseEntity
 {
     public string? Token { get; set; }
     public int Count { get; set; }
