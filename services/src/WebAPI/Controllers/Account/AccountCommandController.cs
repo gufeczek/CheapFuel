@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Users.Commands.AuthenticateUser;
+using Application.Users.Commands.ChangePassword;
 using Application.Users.Commands.ChangeUserRole;
 using Application.Users.Commands.GenerateEmailVerificationToken;
 using Application.Users.Commands.RegisterUser;
@@ -57,6 +58,14 @@ public class AccountCommandController : ControllerBase
     public async Task<ActionResult> GenerateEmailAddressVerificationToken()
     {
         await _mediator.Send(new GenerateEmailVerificationTokenCommand());
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        await _mediator.Send(command);
         return Ok();
     }
 }
