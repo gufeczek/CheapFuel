@@ -7,6 +7,7 @@ public sealed class GeneratePasswordResetTokenCommandValidator : AbstractValidat
     public GeneratePasswordResetTokenCommandValidator()
     {
         RuleFor(g => g.Email)
+            .NotEmpty()
             .EmailAddress();
     }
 }
