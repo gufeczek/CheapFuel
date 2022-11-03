@@ -95,17 +95,9 @@ public class GeneratePasswordResetTokenCommandHandlerTest
         // Assert
         result.Should().Be(Unit.Value);
         
-        _passwordResetTokenRepository.Verify(
-            x => x.RemoveAllByUsername(It.IsAny<string>()), 
-            Times.Never);
-        _passwordResetTokenRepository.Verify(
-            x => x.Add(It.IsAny<PasswordResetToken>()), 
-            Times.Never);
-        _unitOfWork.Verify(
-            x => x.SaveAsync(), 
-            Times.Never);
-        _emailSenderService.Verify(
-            x => x.SendPasswordResetToken(It.IsAny<string>(), 
-                It.IsAny<string>()), Times.Never);
+        _passwordResetTokenRepository.Verify(x => x.RemoveAllByUsername(It.IsAny<string>()), Times.Never);
+        _passwordResetTokenRepository.Verify(x => x.Add(It.IsAny<PasswordResetToken>()), Times.Never);
+        _unitOfWork.Verify(x => x.SaveAsync(), Times.Never);
+        _emailSenderService.Verify(x => x.SendPasswordResetToken(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 }
