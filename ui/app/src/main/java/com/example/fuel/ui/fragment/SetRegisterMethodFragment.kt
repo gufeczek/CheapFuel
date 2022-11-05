@@ -1,7 +1,6 @@
 package com.example.fuel.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,6 +43,11 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
             } else {
                 Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
             }
+        }
+
+        // TODO: Remove this, only for testing purposes
+        binding.btnGoToMap.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.mapFragment);
         }
 
         binding.clMain.setOnClickListener { view ->

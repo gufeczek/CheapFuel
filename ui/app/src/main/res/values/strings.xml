@@ -21,4 +21,5 @@
     <string name="accept_terms_of_use"><a href="https://google.com">Akceptuje warunki regulaminu</a></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fuelStations">Stacje paliw</string>
 </resources>

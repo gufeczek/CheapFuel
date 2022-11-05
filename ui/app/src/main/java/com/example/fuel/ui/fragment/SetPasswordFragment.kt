@@ -1,18 +1,14 @@
 package com.example.fuel.ui.fragment
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetPasswordBinding
-import com.example.fuel.databinding.FragmentSetUsernameBinding
 import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
 import java.util.*

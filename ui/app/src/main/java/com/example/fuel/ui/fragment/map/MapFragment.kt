@@ -1,0 +1,130 @@
+package com.example.fuel.ui.fragment.map
+
+import android.Manifest
+import android.location.LocationManager
+import android.os.Bundle
+import androidx.preference.PreferenceManager
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
+import com.example.fuel.R
+import com.example.fuel.databinding.FragmentMapBinding
+import com.example.fuel.ui.utils.permission.allPermissionsGranted
+import org.osmdroid.api.IGeoPoint
+import org.osmdroid.api.IMapController
+import org.osmdroid.config.Configuration.*;
+import org.osmdroid.config.IConfigurationProvider
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+
+private const val INITIAL_ZOOM = 7.0;
+private const val USER_LOCATION_INITIAL_ZOOM = 11.0
+private const val MIN_ZOOM = 2.9
+private const val MAX_ZOOM = 18.0
+
+class MapFragment : Fragment(R.layout.fragment_map) {
+    private val centerOfPoland: IGeoPoint = GeoPoint(52.44819702037008, 19.418026355263613);
+
+    private lateinit var binding: FragmentMapBinding
+    private lateinit var locationOverlay: MyLocationNewOverlay
+
+    private val requiredPermissions: Array<String> = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    private val optionalPermissions: Array<String> = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private val requestPermissionsResultLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) { animateMapToLocation() }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentMapBinding.inflate(inflater, container, false);
+
+        binding.fabCenter.setOnClickListener { animateMapToLocation() }
+
+        requestPermissionsResultLauncher.launch(optionalPermissions.plus(requiredPermissions))
+
+        configureToolbar()
+        configureMapView()
+        initLocationOverly()
+        centerMapViewOnFixedPoint()
+
+        return binding.root
+    }
+
+    private fun configureToolbar() {
+        binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+        binding.toolbar.setOnClickListener { findNavController().popBackStack() }
+    }
+
+    private fun configureMapView() {
+        val configuration: IConfigurationProvider = getInstance();
+        configuration.load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
+        configuration.userAgentValue = requireContext().packageName;
+
+        binding.map.setTileSource(TileSourceFactory.MAPNIK)
+        binding.map.setMultiTouchControls(true)
+        binding.map.setScrollableAreaLimitLatitude(
+            MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
+        binding.map.isVerticalMapRepetitionEnabled = false
+        binding.map.minZoomLevel = MIN_ZOOM
+        binding.map.maxZoomLevel = MAX_ZOOM
+        binding.map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+    }
+
+    private fun initLocationOverly() {
+        val provider = GpsMyLocationProvider(requireContext())
+        provider.addLocationSource(LocationManager.NETWORK_PROVIDER)
+
+        locationOverlay = MyLocationNewOverlay(provider, binding.map)
+        locationOverlay.enableMyLocation()
+        locationOverlay.enableFollowLocation()
+        locationOverlay.isDrawAccuracyEnabled = true
+        binding.map.overlays.add(locationOverlay)
+    }
+
+    private fun centerMapViewOnFixedPoint() {
+        val mapController: IMapController = binding.map.controller
+        mapController.setCenter(centerOfPoland)
+        mapController.setZoom(INITIAL_ZOOM)
+    }
+
+    private fun animateMapToLocation() =
+        if (allPermissionsGranted(requireContext(), optionalPermissions)) animateMapToUserLocation()
+        else animateMapToFixedLocation()
+
+    private fun animateMapToUserLocation() {
+        val mapController: IMapController = binding.map.controller
+
+        locationOverlay.runOnFirstFix { requireActivity().runOnUiThread {
+            mapController.animateTo(locationOverlay.myLocation, USER_LOCATION_INITIAL_ZOOM, 1000)
+        } }
+    }
+
+    private fun animateMapToFixedLocation() {
+        val mapController: IMapController = binding.map.controller
+        mapController.animateTo(centerOfPoland, INITIAL_ZOOM, 1000)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.map.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.map.onPause()
+    }
+}
