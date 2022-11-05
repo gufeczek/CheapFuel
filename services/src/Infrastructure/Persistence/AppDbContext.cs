@@ -2,6 +2,7 @@
 using Application.Common.Authentication;
 using Domain.Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
@@ -22,6 +23,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
     public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalIdentityService) 
         : base(options)

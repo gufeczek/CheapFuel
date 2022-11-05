@@ -7,11 +7,11 @@ namespace Application.UnitTests.Users.Commands.ChangeUserRole;
 
 public class ChangeUserRoleValidatorTest
 {
-    private readonly ChangeUserRoleValidator _validator;
+    private readonly ChangeUserRoleCommandValidator _validator;
 
     public ChangeUserRoleValidatorTest()
     {
-        _validator = new ChangeUserRoleValidator();
+        _validator = new ChangeUserRoleCommandValidator();
     }
 
     [Theory]

@@ -11,6 +11,7 @@ using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using FluentAssertions;
 using Moq;
 using Xunit;

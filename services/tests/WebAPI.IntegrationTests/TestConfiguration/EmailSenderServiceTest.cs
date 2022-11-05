@@ -9,4 +9,9 @@ public class EmailSenderServiceTest : IEmailSenderService
     {
         return Task.CompletedTask;
     }
+
+    public Task SendPasswordResetToken(string destEmail, string token)
+    {
+        return Task.CompletedTask;
+    }
 }

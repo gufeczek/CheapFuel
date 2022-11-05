@@ -4,9 +4,11 @@ using Application.Common.Interfaces;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using MediatR;
 
 namespace Application.Users.Commands.RegisterUser;

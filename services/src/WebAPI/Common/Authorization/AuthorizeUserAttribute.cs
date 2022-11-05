@@ -8,6 +8,6 @@ public class AuthorizeUserAttribute : AuthorizeAttribute
     public AuthorizeUserAttribute()
     {
         Policy = "EmailVerified";
-        Roles = Role.User.ToString();
+        Roles = string.Join(",", Role.User, Role.Owner, Role.Admin);
     }
 }
