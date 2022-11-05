@@ -33,7 +33,10 @@ public class ChangePasswordCommandHandlerTest
 
         _passwordHasher = new Mock<IUserPasswordHasher>();
         _userPrincipalService = new Mock<IUserPrincipalService>();
-        _handler = new ChangePasswordCommandHandler(_unitOfWork.Object, _passwordHasher.Object, _userPrincipalService.Object);
+        _handler = new ChangePasswordCommandHandler(
+            _unitOfWork.Object, 
+            _passwordHasher.Object, 
+            _userPrincipalService.Object);
     }
 
     [Fact]
