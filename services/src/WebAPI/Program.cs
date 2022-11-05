@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddBeforeSaveChangesPipeline();
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositories();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration, builder.Environment);

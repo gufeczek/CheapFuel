@@ -10,6 +10,9 @@ using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Policies.EmailVerifiedRequirement;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Pipeline;
+using Infrastructure.Persistence.Pipeline.Operations;
+using Infrastructure.Persistence.Pipeline.Operations.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +49,15 @@ public static class ConfigureServices
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
         }
+    }
+
+    public static void AddBeforeSaveChangesPipeline(this IServiceCollection services)
+    {
+        services.AddScoped<IAddCreationInfoOperation, AddCreationInfoOperation>();
+        services.AddScoped<IAddUpdateInfoOperation, AddUpdateInfoOperation>();
+        services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperation>();
+
+        services.AddScoped<IBeforeSaveChangesPipelineBuilder, BeforeSaveChangesPipelineBuilder>();
     }
 
     public static void AddRepositories(this IServiceCollection services)

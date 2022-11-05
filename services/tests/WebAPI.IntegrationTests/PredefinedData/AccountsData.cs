@@ -36,6 +36,7 @@ public class AccountsData : IPredefinedData
     {
         new User
         {
+            Id = 100,
             Username = "User",
             Email = UserEmailAddress,
             Password = "AQAAAAEAACcQAAAAEIx4l5FIMC2QHbCl94VCmPBY6//9LqJfoCifq8a5vxVDbfk4CMwLB6JAL0kSDgj+kA==",
@@ -46,6 +47,7 @@ public class AccountsData : IPredefinedData
         },
         new User
         {
+            Id = 101,
             Username = "Admin",
             Email = "admin@gmail.com",
             Password = "AQAAAAEAACcQAAAAELNzPARipTL/V1pG+HJoZnd5Rz2bZliNNXbi2qwmRYN0Hm6Xsx3Wr4ZD/W7QCeM/3g==",
@@ -56,6 +58,7 @@ public class AccountsData : IPredefinedData
         },
         new User
         {
+            Id = 102,
             Username = "Owner",
             Email = "owner@gmail.com",
             Password = "AQAAAAEAACcQAAAAEGcxtiLUVG8snLluxOTqXlPP4rzsCwAm32Eg2W0QK6BASX/OGFw4H08gG9V0cY/KtA==",
