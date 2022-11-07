@@ -1,8 +1,15 @@
 package com.example.fuel.ui.fragment.map
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,7 +37,7 @@ private const val MIN_ZOOM = 2.9
 private const val MAX_ZOOM = 18.0
 
 class MapFragment : Fragment(R.layout.fragment_map) {
-    private val centerOfPoland: IGeoPoint = GeoPoint(52.44819702037008, 19.418026355263613);
+    private val centerOfPoland: GeoPoint = GeoPoint(52.44819702037008, 19.418026355263613);
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationOverlay: MyLocationNewOverlay
@@ -45,6 +52,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private val requestPermissionsResultLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) { animateMapToLocation() }
 
+    private val gpsSwitchStateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (LocationManager.PROVIDERS_CHANGED_ACTION == intent!!.action && !isGpsEnabled()) {
+                locationOverlay.disableMyLocation()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,12 +67,16 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false);
 
-        binding.fabCenter.setOnClickListener { animateMapToLocation() }
+        binding.fabCenter.setOnClickListener {
+            askToEnableGps()
+            animateMapToUserLocation()
+        }
 
         requestPermissionsResultLauncher.launch(optionalPermissions.plus(requiredPermissions))
 
         configureToolbar()
         configureMapView()
+
         initLocationOverly()
         centerMapViewOnFixedPoint()
 
@@ -74,7 +93,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         configuration.load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
         configuration.userAgentValue = requireContext().packageName;
 
-        binding.map.setTileSource(TileSourceFactory.MAPNIK)
+        binding.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
         binding.map.setMultiTouchControls(true)
         binding.map.setScrollableAreaLimitLatitude(
             MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
@@ -102,10 +121,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun animateMapToLocation() =
-        if (allPermissionsGranted(requireContext(), optionalPermissions)) animateMapToUserLocation()
+        if (allPermissionsGranted(requireContext(), optionalPermissions) && isGpsEnabled()) animateMapToUserLocation()
         else animateMapToFixedLocation()
 
     private fun animateMapToUserLocation() {
+        if (!locationOverlay.isMyLocationEnabled) locationOverlay.enableMyLocation()
+
         val mapController: IMapController = binding.map.controller
 
         locationOverlay.runOnFirstFix { requireActivity().runOnUiThread {
@@ -118,13 +139,40 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         mapController.animateTo(centerOfPoland, INITIAL_ZOOM, 1000)
     }
 
+    private fun askToEnableGps() {
+        if (isGpsEnabled()) {
+            return
+        }
+
+
+        AlertDialog.Builder(requireContext())
+            .setMessage(R.string.ask_to_enable_gps)
+            .setNegativeButton(R.string.no_thanks, null)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            .show()
+    }
+
+    private fun isGpsEnabled(): Boolean {
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
     override fun onResume() {
         super.onResume()
         binding.map.onResume()
+        requireActivity().registerReceiver(gpsSwitchStateReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
     }
 
     override fun onPause() {
         super.onPause()
         binding.map.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unregisterReceiver(gpsSwitchStateReceiver)
     }
 }
