@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
             app:destination="@id/setUsernameFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/setUsernameFragment"
@@ -36,5 +39,10 @@
         android:id="@+id/blankFragment"
         android:name="com.example.fuel.ui.fragment.BlankFragment"
         android:label="BlankFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.fuel.ui.fragment.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>
