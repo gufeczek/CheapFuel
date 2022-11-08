@@ -11,44 +11,50 @@ import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.utils.validation.ValidatorEmail
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
 
-    private lateinit var binding: FragmentSetRegisterMethodBinding
-
-    private enum class Error {
-        ERROR_INCORRECT_EMAIL
-    }
+    private var _binding: FragmentSetRegisterMethodBinding? = null
+    private val binding get() = _binding!!
+    private var error: ValidatorEmail.Error? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
-        binding.btnRegister.setOnClickListener {
-            if (!Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()) {
-                //TODO: Remove this if statement later, only for testing purposes
-                if(binding.etEmail.text.toString() == "") {
-                    Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
-                }
-                binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
-                binding.tvEmailValidationError.text = Error.ERROR_INCORRECT_EMAIL.toString()
-                binding.etEmail.afterTextChanged { editable ->
-                    if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
-                        binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
-                        binding.tvEmailValidationError.text = ""
-                    }
-                }
-            } else {
-                Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
-            }
-        }
+        _binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
 
-        binding.clMain.setOnClickListener { view ->
-            view.hideKeyboard()
-        }
+        binding.btnRegister.setOnClickListener(btnRegisterOnClickListener)
+        binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private val btnRegisterOnClickListener = View.OnClickListener {
+        val validator = ValidatorEmail(binding.etEmail.text.toString())
+        if (!validator.validate()) {
+            error = validator.error
+            //TODO: Remove this if statement later, only for testing purposes
+            if(binding.etEmail.text.toString() == "") {
+                Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
+            }
+            binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
+            binding.tvEmailValidationError.text = ValidatorEmail.Error.ERROR_INCORRECT_EMAIL.toString()
+            binding.etEmail.afterTextChanged { editable ->
+                if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
+                    binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
+                    binding.tvEmailValidationError.text = ""
+                }
+            }
+        } else {
+            Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
+        }
     }
 }

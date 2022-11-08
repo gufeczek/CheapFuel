@@ -1,4 +1,4 @@
-package com.example.fuel
+package com.example.fuel.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
