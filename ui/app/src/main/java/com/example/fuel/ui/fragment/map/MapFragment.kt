@@ -72,6 +72,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false);
+        binding.toolbar.setOnClickListener { findNavController().popBackStack() }
 
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
