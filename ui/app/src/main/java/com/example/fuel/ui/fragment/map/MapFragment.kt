@@ -6,14 +6,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.ColorStateList
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.Shape
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -27,25 +21,24 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
+import com.example.fuel.mock.getFuelStations
+import com.example.fuel.model.SimpleMapFuelStation
 import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
-import com.google.android.material.internal.ViewUtils.dpToPx
 import org.osmdroid.api.IMapController
-import org.osmdroid.bonuspack.location.NominatimPOIProvider
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration.getInstance
 import org.osmdroid.config.IConfigurationProvider
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.FolderOverlay
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.SpeechBalloonOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 private const val INITIAL_ZOOM = 7.0;
-private const val USER_LOCATION_INITIAL_ZOOM = 11.0
+private const val USER_LOCATION_INITIAL_ZOOM = 15.0
 private const val MIN_ZOOM = 2.9
 private const val MAX_ZOOM = 18.0
 
@@ -89,47 +82,36 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         configureToolbar()
         configureMapView()
-
         initLocationOverly()
         centerMapViewOnFixedPoint()
         addMarkers()
+
         return binding.root
     }
 
     private fun addMarkers() {
-        val marker = Marker(binding.map)
-//        marker.title = "Some text here"
-//        marker.icon = null
-//        marker.position = centerOfPoland
-//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-//        marker.setSnippet("The White House is the official residence and principal workplace of the President of the United States.");
-//        marker.setSubDescription("1600 Pennsylvania Ave NW, Washington, DC 20500");
-        //marker.icon = Test.getTextIcon(binding.map.context.resources, "Text")
-        val fuelStationMarker = FuelStationMarker(binding.map.context.resources, "Orlen")
-        marker.icon = BitmapDrawable(binding.map.context.resources, fuelStationMarker.toBitmap(200, 200))
-        marker.position = centerOfPoland
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        binding.map.overlays.add(marker)
+        val cluster = RadiusMarkerClusterer(requireContext())
+        cluster.setRadius(85)
+        cluster.mTextAnchorU = 0.70F
+        cluster.mTextAnchorV = 0.27F
+        cluster.textPaint.textSize = 14F
+
+        val fuelStations: Array<SimpleMapFuelStation> = getFuelStations()
+        fuelStations.forEach { fuelStation -> cluster.add(buildMarker(fuelStation)) }
+
+        binding.map.overlays.add(cluster)
         binding.map.invalidate()
     }
 
-    private fun getTextDrawable(): ShapeDrawable {
-        var shape: Shape = object : Shape() {
-            override fun draw(canvas: Canvas?, paint: Paint?) {
-                paint?.color = Color.BLUE
-                paint?.textSize = 100F
-                val radii = 50
-                if (paint != null) {
-                    canvas?.drawCircle((canvas.width - radii * 2).toFloat(), (canvas.height / 2 - radii).toFloat(), radii.toFloat(), paint)
-                    paint.color = Color.WHITE
-                    canvas?.drawText("Hello Canvas", (canvas.width - 150).toFloat(), (canvas.height / 2).toFloat(), paint)
-                }
-            }
-        }
-        return ShapeDrawable(shape)
+    private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {
+        val marker = Marker(binding.map)
+        val fuelStationMarker = FuelStationMarker(binding.map.context.resources, fuelStation.parsePrice(), Color.GRAY, false)
+        marker.icon = BitmapDrawable(binding.map.context.resources, fuelStationMarker.toBitmap(600, 200))
+        marker.position = GeoPoint(fuelStation.latitude, fuelStation.longitude)
+        marker.setInfoWindow(null)
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        return marker
     }
-
-
 
     private fun configureToolbar() {
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -141,7 +123,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         configuration.load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
         configuration.userAgentValue = requireContext().packageName;
 
-        binding.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+        binding.map.setTileSource(TileSourceFactory.WIKIMEDIA)
         binding.map.setMultiTouchControls(true)
         binding.map.setScrollableAreaLimitLatitude(
             MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
@@ -192,7 +174,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             return
         }
 
-
         AlertDialog.Builder(requireContext())
             .setMessage(R.string.ask_to_enable_gps)
             .setNegativeButton(R.string.no_thanks, null)
@@ -204,6 +185,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun isGpsEnabled(): Boolean {
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
