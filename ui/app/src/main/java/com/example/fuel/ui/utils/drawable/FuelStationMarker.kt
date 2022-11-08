@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.util.TypedValue
 
 class FuelStationMarker(res: Resources, text: CharSequence) : Drawable() {
@@ -77,10 +78,12 @@ class FuelStationMarker(res: Resources, text: CharSequence) : Drawable() {
         val yStart = (bounds.centerY() - mPaint.textSize.toInt()).toFloat() - marginTopBottom
         val xEnd = (mIntrinsicWidth + bounds.centerX()  - (mIntrinsicWidth / 2)).toFloat() + marginLeftRight
         val yEnd = (mIntrinsicHeight + bounds.centerY() - mPaint.textSize.toInt()).toFloat() + marginTopBottom
-
+        
         path.moveTo(xStart, yStart)
         path.lineTo(xEnd, yStart)
-        path.lineTo(xEnd, yEnd)
+        path.lineTo(xEnd - 65, yEnd)
+        path.lineTo(xEnd - 78.5F, yEnd + 20)
+        path.lineTo(xStart + 65, yEnd)
         path.lineTo(xStart, yEnd)
         path.lineTo(xStart, yStart)
         path.close()
