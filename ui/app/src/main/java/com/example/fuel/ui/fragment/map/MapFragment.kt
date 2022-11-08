@@ -6,28 +6,41 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.Shape
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
+import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
-import org.osmdroid.api.IGeoPoint
+import com.google.android.material.internal.ViewUtils.dpToPx
 import org.osmdroid.api.IMapController
-import org.osmdroid.config.Configuration.*;
+import org.osmdroid.bonuspack.location.NominatimPOIProvider
+import org.osmdroid.config.Configuration.getInstance
 import org.osmdroid.config.IConfigurationProvider
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.FolderOverlay
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.SpeechBalloonOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
@@ -79,9 +92,44 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         initLocationOverly()
         centerMapViewOnFixedPoint()
-
+        addMarkers()
         return binding.root
     }
+
+    private fun addMarkers() {
+        val marker = Marker(binding.map)
+//        marker.title = "Some text here"
+//        marker.icon = null
+//        marker.position = centerOfPoland
+//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+//        marker.setSnippet("The White House is the official residence and principal workplace of the President of the United States.");
+//        marker.setSubDescription("1600 Pennsylvania Ave NW, Washington, DC 20500");
+        //marker.icon = Test.getTextIcon(binding.map.context.resources, "Text")
+        val fuelStationMarker = FuelStationMarker(binding.map.context.resources, "Orlen")
+        marker.icon = BitmapDrawable(binding.map.context.resources, fuelStationMarker.toBitmap(200, 200))
+        marker.position = centerOfPoland
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        binding.map.overlays.add(marker)
+        binding.map.invalidate()
+    }
+
+    private fun getTextDrawable(): ShapeDrawable {
+        var shape: Shape = object : Shape() {
+            override fun draw(canvas: Canvas?, paint: Paint?) {
+                paint?.color = Color.BLUE
+                paint?.textSize = 100F
+                val radii = 50
+                if (paint != null) {
+                    canvas?.drawCircle((canvas.width - radii * 2).toFloat(), (canvas.height / 2 - radii).toFloat(), radii.toFloat(), paint)
+                    paint.color = Color.WHITE
+                    canvas?.drawText("Hello Canvas", (canvas.width - 150).toFloat(), (canvas.height / 2).toFloat(), paint)
+                }
+            }
+        }
+        return ShapeDrawable(shape)
+    }
+
+
 
     private fun configureToolbar() {
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -89,7 +137,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun configureMapView() {
-        val configuration: IConfigurationProvider = getInstance();
+        val configuration: IConfigurationProvider = getInstance()
         configuration.load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
         configuration.userAgentValue = requireContext().packageName;
 
