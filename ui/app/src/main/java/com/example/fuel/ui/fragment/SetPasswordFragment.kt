@@ -1,9 +1,11 @@
 package com.example.fuel.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -67,6 +69,12 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         binding.clMain.setOnClickListener {view -> view.hideKeyboard()}
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     private fun validationPasswordCheckmarks(text: String) {
