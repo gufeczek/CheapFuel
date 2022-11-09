@@ -8,17 +8,23 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.location.Address
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.toBitmap
-import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
 import com.example.fuel.mock.getFuelStations
@@ -47,6 +53,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationOverlay: MyLocationNewOverlay
+    private lateinit var geocoder: Geocoder
 
     private val requiredPermissions: Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -71,9 +78,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMapBinding.inflate(inflater, container, false);
-        binding.toolbar.setOnClickListener { findNavController().popBackStack() }
-
+        setHasOptionsMenu(true)
+        binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
             animateMapToUserLocation()
@@ -81,11 +87,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         requestPermissionsResultLauncher.launch(optionalPermissions.plus(requiredPermissions))
 
-        configureToolbar()
         configureMapView()
         initLocationOverly()
         centerMapViewOnFixedPoint()
         addMarkers()
+
+        geocoder = Geocoder(requireContext())
 
         return binding.root
     }
@@ -114,11 +121,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         return marker
     }
 
-    private fun configureToolbar() {
-        binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
-        binding.toolbar.setOnClickListener { findNavController().popBackStack() }
-    }
-
     private fun configureMapView() {
         val configuration: IConfigurationProvider = getInstance()
         configuration.load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
@@ -145,6 +147,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         binding.map.overlays.add(locationOverlay)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val appActivity = (activity as AppCompatActivity)
+        if (!appActivity.supportActionBar?.isShowing!!) {
+            appActivity.supportActionBar?.show()
+        }
+    }
+
     private fun centerMapViewOnFixedPoint() {
         val mapController: IMapController = binding.map.controller
         mapController.setCenter(centerOfPoland)
@@ -153,10 +164,13 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun animateMapToLocation() =
         if (allPermissionsGranted(requireContext(), optionalPermissions) && isGpsEnabled()) animateMapToUserLocation()
-        else animateMapToFixedLocation()
+        else animateMapToStartLocation(centerOfPoland)
 
     private fun animateMapToUserLocation() {
-        if (!locationOverlay.isMyLocationEnabled) locationOverlay.enableMyLocation()
+        if (!locationOverlay.isMyLocationEnabled) {
+            locationOverlay.enableMyLocation()
+            locationOverlay.enableFollowLocation()
+        }
 
         val mapController: IMapController = binding.map.controller
 
@@ -165,9 +179,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         } }
     }
 
-    private fun animateMapToFixedLocation() {
+    private fun animateMapToStartLocation(geoPoint: GeoPoint) {
         val mapController: IMapController = binding.map.controller
-        mapController.animateTo(centerOfPoland, INITIAL_ZOOM, 1000)
+        mapController.animateTo(geoPoint, INITIAL_ZOOM, 1000)
+    }
+
+    private fun animateMapToAddress(address: Address) {
+        if (locationOverlay.isFollowLocationEnabled) locationOverlay.disableFollowLocation()
+
+        val location = GeoPoint(address.latitude, address.longitude)
+
+        val mapController: IMapController = binding.map.controller
+        mapController.animateTo(location, USER_LOCATION_INITIAL_ZOOM, 1000)
+    }
+
+    private fun searchForLocation(searchPhrase: String) {
+        val addresses = geocoder.getFromLocationName(searchPhrase, 1)
+
+        if (addresses.size > 0) {
+            animateMapToAddress(addresses.get(0))
+        } else {
+            val toast = Toast.makeText(requireContext(), "Nothing found", Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     private fun askToEnableGps() {
@@ -189,6 +223,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.options_menu, menu)
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            isIconified = false
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) {
+                        searchForLocation(query)
+                    }
+
+                    return false;
+                }
+            })
+        }
     }
 
     override fun onResume() {

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/setRegisterMethodFragment"
         android:name="com.example.fuel.ui.fragment.SetRegisterMethodFragment"
-        android:label="fragment_set_register_method"
+        android:label="Register method"
         tools:layout="@layout/fragment_set_register_method" >
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/setUsernameFragment"
         android:name="com.example.fuel.ui.fragment.SetUsernameFragment"
-        android:label="fragment_set_username"
+        android:label="Username"
         tools:layout="@layout/fragment_set_username" >
         <action
             android:id="@+id/action_setUsernameFragment_to_setPasswordFragment"
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/setPasswordFragment"
         android:name="com.example.fuel.ui.fragment.SetPasswordFragment"
-        android:label="fragment_set_password"
+        android:label="Password"
         tools:layout="@layout/fragment_set_password" >
         <action
             android:id="@+id/action_setPasswordFragment_to_blankFragment"
@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.fuel.ui.fragment.map.MapFragment"
-        android:label="fragment_map"
+        android:label="Fuel stations"
         tools:layout="@layout/fragment_map" />
 
 </navigation>

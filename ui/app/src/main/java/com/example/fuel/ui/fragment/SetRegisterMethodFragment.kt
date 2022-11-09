@@ -1,11 +1,13 @@
 package com.example.fuel.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
@@ -55,5 +57,17 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 }
