@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -25,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
 import com.example.fuel.mock.getFuelStations
@@ -79,6 +81,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
+
         binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
@@ -226,7 +229,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.options_menu, menu)
+        inflater.inflate(R.menu.map_menu, menu)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as SearchView
 
@@ -246,6 +249,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 }
             })
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.map_filter) {
+            Navigation.findNavController(binding.root).navigate(R.id.mapFilter)
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
