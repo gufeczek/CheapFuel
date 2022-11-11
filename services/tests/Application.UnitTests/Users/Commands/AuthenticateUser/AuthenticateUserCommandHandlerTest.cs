@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Authentication;
 using Application.Common.Exceptions;
+using Application.Models;
 using Application.Users.Commands.AuthenticateUser;
 using Domain.Entities;
 using Domain.Enums;
@@ -63,7 +64,7 @@ public class AuthenticateUserCommandHandlerTest
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.Should().Be(token);
+        result.Token.Should().Be(token);
     }
     
     [Fact]
@@ -80,7 +81,7 @@ public class AuthenticateUserCommandHandlerTest
             .ReturnsAsync((User)null!);
         
         // Act
-        Func<Task<string>> act = _handler.Awaiting(x => x.Handle(command, CancellationToken.None));
+        Func<Task<JwtTokenDto>> act = _handler.Awaiting(x => x.Handle(command, CancellationToken.None));
         
         // Assert
         await act
@@ -117,7 +118,7 @@ public class AuthenticateUserCommandHandlerTest
             .Returns(false);
         
         // Act
-        Func<Task<string>> act = _handler.Awaiting(x => x.Handle(command, CancellationToken.None));
+        Func<Task<JwtTokenDto>> act = _handler.Awaiting(x => x.Handle(command, CancellationToken.None));
 
         // Assert
         await act

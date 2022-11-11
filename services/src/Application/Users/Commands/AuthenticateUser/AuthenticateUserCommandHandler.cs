@@ -1,12 +1,13 @@
 ﻿using Application.Common.Authentication;
 using Application.Common.Exceptions;
+using Application.Models;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Application.Users.Commands.AuthenticateUser;
 
-public sealed class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, string>
+public sealed class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, JwtTokenDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserPasswordHasher _passwordHasher;
@@ -19,7 +20,7 @@ public sealed class AuthenticateUserCommandHandler : IRequestHandler<Authenticat
         _tokenService = tokenService;
     }
     
-    public async Task<string> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
+    public async Task<JwtTokenDto> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByUsernameAsync(request.Username);
 
@@ -35,6 +36,8 @@ public sealed class AuthenticateUserCommandHandler : IRequestHandler<Authenticat
             throw new UnauthorizedException("Invalid username or password");
         }
 
-        return _tokenService.GenerateJwtToken(user);
+        var token = _tokenService.GenerateJwtToken(user);
+        
+        return new JwtTokenDto(token);
     }
 }
