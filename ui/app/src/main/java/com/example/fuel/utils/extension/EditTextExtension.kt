@@ -1,4 +1,4 @@
-package com.example.fuel.ui.utils.extension
+package com.example.fuel.utils.extension
 
 import android.text.Editable
 import android.text.TextWatcher
