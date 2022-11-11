@@ -1,83 +1,77 @@
 package com.example.fuel.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetPasswordBinding
-import com.example.fuel.ui.utils.extension.ContextExtension.Companion.hideKeyboard
-import com.example.fuel.ui.utils.extension.EditTextExtension.Companion.afterTextChanged
-import java.util.*
+import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
+import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.utils.validation.ValidationPassword
+import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
+import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
 
 class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
 
-    private lateinit var binding: FragmentSetPasswordBinding
-
-    private enum class Error {
-        PASSWORD_TOO_SHORT,
-        PASSWORD_TOO_LONG,
-        PASSWORD_NO_UPPERCASE,
-        PASSWORD_NO_LOWERCASE,
-        PASSWORD_NO_DIGIT,
-        PASSWORD_REPEAT_NO_MATCH,
-        PASSWORD_ILLEGAL_CHARACTER
-    }
+    private var _binding: FragmentSetPasswordBinding? = null
+    private val binding get() = _binding!!
+    private var error: ValidationPassword.Error? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSetPasswordBinding.inflate(inflater, container, false)
+        _binding = FragmentSetPasswordBinding.inflate(inflater, container, false)
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }
+        binding.clMain.setOnClickListener {view -> view.hideKeyboard()}
 
         binding.etPassword.afterTextChanged { editable ->
-            validationPasswordCheckmarks(editable)
+            passwordCheckmarks(editable)
         }
-
-        binding.btnNextPage.setOnClickListener {
-            binding.tvPasswordValidationError.text = ""
-            binding.tvRepeatedPasswordValidationError.text = ""
-            binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded)
-            binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
-
-            val error = validationPassword(
-                binding.etPassword.text.toString(),
-                binding.etRepeatPassword.text.toString()
-            ).orElse(null)
-
-            if (error == null) {
-                Navigation.findNavController(binding.root).navigate(R.id.blankFragment)
-            } else {
-                binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded_error)
-                if (error == Error.PASSWORD_REPEAT_NO_MATCH) {
-                    binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded_error)
-                    binding.tvRepeatedPasswordValidationError.text = error.toString()
-                } else {
-                    binding.tvPasswordValidationError.text = error.toString()
-                }
-            }
-        }
-
-        binding.clMain.setOnClickListener {view -> view.hideKeyboard()}
+        binding.btnNextPage.setOnClickListener(btnNextPageListener)
 
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    private fun validationPasswordCheckmarks(text: String) {
+    private val btnNextPageListener = View.OnClickListener {
+        binding.tvPasswordValidationError.text = ""
+        binding.tvRepeatedPasswordValidationError.text = ""
+        binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded)
+        binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
+
+        val validator = ValidationPassword(
+            binding.etPassword.text.toString(),
+            binding.etRepeatPassword.text.toString()
+        )
+        validator.validate()
+        error = validator.error
+
+        if (error == null) {
+            Navigation.findNavController(binding.root).navigate(R.id.blankFragment)
+        } else {
+            binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded_error)
+            if (error == ValidationPassword.Error.PASSWORD_REPEAT_NO_MATCH) {
+                binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded_error)
+                binding.tvRepeatedPasswordValidationError.text = error.toString()
+            } else {
+                binding.tvPasswordValidationError.text = error.toString()
+            }
+        }
+    }
+
+
+    private fun passwordCheckmarks(text: String) {
         if (text.length >= 8) {
             binding.imageAtLeast8Characters.setImageResource(R.drawable.ic_tick_green_32dp)
         } else {
@@ -97,54 +91,4 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
         }
     }
 
-    private fun validationPassword(password: String, repeatedPassword: String): Optional<Error> {
-        if (password.length < 8) {
-            return Optional.of(Error.PASSWORD_TOO_SHORT)
-        } else if (password.length > 32) {
-            return Optional.of(Error.PASSWORD_TOO_LONG)
-        } else if (!isAtLeastOneUpperCase(password)) {
-            return Optional.of(Error.PASSWORD_NO_UPPERCASE)
-        } else if (!isAtLeastOneLowerCase(password)) {
-            return Optional.of(Error.PASSWORD_NO_LOWERCASE)
-        } else if (!isAtLeastOneDigit(password)) {
-            return Optional.of(Error.PASSWORD_NO_DIGIT)
-        } else if (password != repeatedPassword) {
-            return Optional.of(Error.PASSWORD_REPEAT_NO_MATCH)
-        } else if (isIllegalCharacter(password)) {
-            return Optional.of(Error.PASSWORD_ILLEGAL_CHARACTER)
-        }
-        return Optional.empty()
-    }
-
-    private fun isIllegalCharacter(text: String): Boolean {
-        val regex = """^[a-zA-Z0-9!#${'$'}%&'()*+,-.:;<=>?@\[\]^_`{}|~]+${'$'}""".toRegex()
-        return !regex.matches(text)
-    }
-
-    private fun isAtLeastOneUpperCase(text: String): Boolean {
-        for (i in text.indices) {
-            if (text[i].isUpperCase()) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun isAtLeastOneLowerCase(text: String): Boolean {
-        for (i in text.indices) {
-            if (text[i].isLowerCase()) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun isAtLeastOneDigit(text: String): Boolean {
-        for (i in text.indices) {
-            if (text[i].isDigit()) {
-                return true
-            }
-        }
-        return false
-    }
 }
