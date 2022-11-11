@@ -1,8 +1,9 @@
 package com.example.fuel.api
 
-import com.example.fuel.utils.extension.Constants.Companion.BASE_URL
+import com.example.fuel.utils.Constants.Companion.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 object RetrofitInstance {
 
@@ -13,7 +14,12 @@ object RetrofitInstance {
             .build()
     }
 
-    val api: SimpleApi by lazy {
-        retrofit.create(SimpleApi::class.java)
+
+    val accountApi: AccountApiService by lazy {
+        retrofit.create(AccountApiService::class.java)
+    }
+
+    val testApi: TestApiService by lazy {
+        retrofit.create(TestApiService::class.java)
     }
 }

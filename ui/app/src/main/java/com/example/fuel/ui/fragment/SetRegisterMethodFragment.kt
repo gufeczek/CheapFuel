@@ -1,29 +1,43 @@
 package com.example.fuel.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
+import com.example.fuel.model.User
+import com.example.fuel.repository.TestRepository
+import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
+import com.example.fuel.viewmodel.TestViewModel
+import com.example.fuel.viewmodel.UserViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
 
     private var _binding: FragmentSetRegisterMethodBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorEmail.Error? = null
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        retrofitTest()
         _binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
 
         binding.btnRegister.setOnClickListener(btnRegisterOnClickListener)
@@ -35,6 +49,24 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    private fun retrofitTest() {
+        val user = User("sfafsf",
+            "xddd@gmail.com",
+            "zaq1@WSX",
+            "zaq1@WSX")
+        val viewModelFactory = ViewModelFactory()
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
+        viewModel.postRegister(user)
+        viewModel.response.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                Log.d("XD", response.message())
+            } else {
+                Log.d("XD", response.code().toString())
+            }
+        }
     }
 
     private val btnRegisterOnClickListener = View.OnClickListener {
