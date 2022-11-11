@@ -1,5 +1,6 @@
 package com.example.fuel.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
@@ -42,6 +44,10 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
 
         binding.btnRegister.setOnClickListener(btnRegisterOnClickListener)
         binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
+        // TODO: Remove this, only for testing purposes
+        binding.btnGoToMap.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
+        }
 
         return binding.root
     }
@@ -53,8 +59,8 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
 
 
     private fun retrofitTest() {
-        val user = User("sfafsf",
-            "xddd@gmail.com",
+        val user = User("sfafsfs",
+            "xddds@gmail.com",
             "zaq1@WSX",
             "zaq1@WSX")
         val viewModelFactory = ViewModelFactory()
@@ -88,5 +94,17 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
         } else {
             Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 }

@@ -13,10 +13,7 @@ import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidationPassword
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
-import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneLowerCase
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
-import com.example.fuel.utils.validation.Validator.Companion.isIllegalCharacter
-import java.util.*
 
 class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
 
@@ -93,6 +90,5 @@ class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
             binding.imageAtLeastOneDigit.setImageResource(R.drawable.ic_cancel_red_47dp)
         }
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.fuel.ui.fragment
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -49,6 +51,11 @@ class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     private val btnValidationListener = View.OnClickListener {

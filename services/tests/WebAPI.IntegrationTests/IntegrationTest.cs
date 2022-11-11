@@ -13,9 +13,10 @@ namespace WebAPI.IntegrationTests;
 public abstract class IntegrationTest : IClassFixture<TestingWebApiFactory<Program>>, IDisposable
 {
     private readonly IPredefinedData[] _predefinedData;
+    protected ITestOutputHelper OutputHelper;
+    
     public TestingWebApiFactory<Program> Factory { get; }
     public HttpClient HttpClient { get; }
-    protected ITestOutputHelper OutputHelper;
     
     protected IntegrationTest(TestingWebApiFactory<Program> factory, ITestOutputHelper outputHelper, IPredefinedData[] predefinedData)
     {
@@ -46,9 +47,9 @@ public abstract class IntegrationTest : IClassFixture<TestingWebApiFactory<Progr
         using var scope = sp.CreateScope();
         var context = scope.ServiceProvider.GetService<AppDbContext>();
 
-        foreach (var predefinedData in _predefinedData)
+        for (var i = _predefinedData.Length - 1; i >= 0; i--)
         {
-            predefinedData.Clear(context!);
+            _predefinedData[i].Clear(context!);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using Application.Common.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Pipeline.Operations.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +26,9 @@ public class TestingWebApiFactory<TEntity> : WebApplicationFactory<Program> wher
             {
                 options.UseInMemoryDatabase("TestDatabase");
             });
+
+            services.AddScoped<IEmailSenderService, EmailSenderServiceTest>();
+            services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperationTest>();
         });
     }
 }

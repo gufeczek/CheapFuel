@@ -8,9 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddBeforeSaveChangesPipeline();
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositories();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration, builder.Environment);
+builder.Services.AddAuthorizationPolicies();
+builder.Services.AddSmtpService(builder.Configuration);
 builder.Services.AddWebApiServices();
 builder.Services.AddSwagger();
 builder.Host.UseNLog();

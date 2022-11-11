@@ -4,5 +4,7 @@ namespace Application.Common.Authentication;
 
 public interface ITokenService
 { 
-    string GenerateToken(User user);
+    string GenerateJwtToken(User user);
+
+    string GenerateSimpleToken();
 }

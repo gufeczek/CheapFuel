@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Authentication;
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Models;
 using Application.Users.Commands.RegisterUser;
 using AutoMapper;
@@ -10,6 +11,7 @@ using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -20,6 +22,7 @@ public class RegisterUserCommandHandlerTest
 {
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IUserRepository> _userRepository;
+    private readonly Mock<IEmailVerificationTokenRepository> _emailVerificationTokenRepository;
     private readonly Mock<IMapper> _mapper;
     private readonly Mock<IUserPasswordHasher> _passwordHasher;
     private readonly RegisterUserCommandHandler _handler;
@@ -27,15 +30,24 @@ public class RegisterUserCommandHandlerTest
     public RegisterUserCommandHandlerTest()
     {
         _userRepository = new Mock<IUserRepository>();
+        _emailVerificationTokenRepository = new Mock<IEmailVerificationTokenRepository>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _unitOfWork
             .Setup(u => u.Users)
             .Returns(_userRepository.Object);
+        _unitOfWork
+            .Setup(u => u.EmailVerificationTokens)
+            .Returns(_emailVerificationTokenRepository.Object);
 
         _passwordHasher = new Mock<IUserPasswordHasher>();
         _mapper = new Mock<IMapper>();
 
-        _handler = new RegisterUserCommandHandler(_unitOfWork.Object, _mapper.Object, _passwordHasher.Object);
+        _handler = new RegisterUserCommandHandler(
+            _unitOfWork.Object, 
+            _mapper.Object, 
+            _passwordHasher.Object, 
+            new Mock<ITokenService>().Object, 
+            new Mock<IEmailSenderService>().Object);
     }
 
     [Fact]
@@ -74,6 +86,7 @@ public class RegisterUserCommandHandlerTest
         result.Should().NotBeNull();
         
         _userRepository.Verify(x => x.Add(It.IsAny<User>()), Times.Once);
+        //_emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
         _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
     }
 

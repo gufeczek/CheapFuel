@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using Infrastructure.Persistence;
 
 namespace Infrastructure.Repositories;
@@ -20,7 +21,9 @@ public class UnitOfWork : IUnitOfWork
     public IFuelStationServiceRepository Services { get; }
     public IStationChainRepository StationChains { get; }
     public IUserRepository Users { get; }
-
+    public IEmailVerificationTokenRepository EmailVerificationTokens { get; }
+    public IPasswordResetTokenRepository PasswordResetTokenRepository { get; }
+    
     public UnitOfWork(AppDbContext context, 
         IFavoriteRepository favorites, 
         IFuelAtStationRepository fuelsAtStation, 
@@ -33,7 +36,9 @@ public class UnitOfWork : IUnitOfWork
         IServiceAtStationRepository servicesAtStation, 
         IFuelStationServiceRepository services, 
         IStationChainRepository stationChains,
-        IUserRepository users)
+        IUserRepository users,
+        IEmailVerificationTokenRepository emailVerificationTokens,
+        IPasswordResetTokenRepository passwordResetTokenRepository)
     {
         _context = context;
         Favorites = favorites;
@@ -48,6 +53,8 @@ public class UnitOfWork : IUnitOfWork
         Services = services;
         StationChains = stationChains;
         Users = users;
+        EmailVerificationTokens = emailVerificationTokens;
+        PasswordResetTokenRepository = passwordResetTokenRepository;
     }
 
     public async Task SaveAsync()

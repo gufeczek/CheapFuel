@@ -2,6 +2,6 @@
 
 public interface ICreatable
 {
-    long CreatedBy { get; set; }
+    long? CreatedBy { get; set; }
     DateTime CreatedAt { get; set; }
 }
