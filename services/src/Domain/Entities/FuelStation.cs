@@ -13,4 +13,10 @@ public class FuelStation : AuditableEntity
 
     private List<OpeningClosingTime> _openingClosingTimes = new();
     public IReadOnlyCollection<OpeningClosingTime> OpeningClosingTimes => _openingClosingTimes.AsReadOnly();
+    
+    private List<FuelPrice> _fuelPrices = new();
+    public IReadOnlyCollection<FuelPrice> FuelPrices => _fuelPrices;
+    
+    private List<ServiceAtStation> _services = new();
+    public IReadOnlyCollection<ServiceAtStation> ServiceAtStations => _services;
 }

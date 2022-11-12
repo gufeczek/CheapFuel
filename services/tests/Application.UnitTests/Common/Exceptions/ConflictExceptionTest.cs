@@ -2,9 +2,9 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Application.UnitTests.Exceptions;
+namespace Application.UnitTests.Common.Exceptions;
 
-public class UnauthorizedExceptionTest
+public class ConflictExceptionTest
 {
     [Fact]
     public void should_create_exception_instance_with_message()
@@ -13,7 +13,7 @@ public class UnauthorizedExceptionTest
         const string message = "Test message";
         
         // Act
-        var result = new UnauthorizedException(message);
+        var result = new ConflictException(message);
         
         // Assert
         result.Message.Should().Be(message);

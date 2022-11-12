@@ -13,6 +13,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,13 +27,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
-import com.example.fuel.mock.getFuelStations
 import com.example.fuel.model.SimpleMapFuelStation
 import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
+import com.example.fuel.viewmodel.FuelStationMapViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
 import org.osmdroid.api.IMapController
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration.getInstance
@@ -56,6 +59,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationOverlay: MyLocationNewOverlay
     private lateinit var geocoder: Geocoder
+    private lateinit var viewModel: FuelStationMapViewModel
 
     private val requiredPermissions: Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -82,6 +86,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     ): View {
         setHasOptionsMenu(true)
 
+        viewModel = ViewModelProvider(this, ViewModelFactory())[FuelStationMapViewModel::class.java]
         binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
@@ -101,17 +106,20 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun addMarkers() {
-        val cluster = RadiusMarkerClusterer(requireContext())
-        cluster.setRadius(85)
-        cluster.mTextAnchorU = 0.70F
-        cluster.mTextAnchorV = 0.27F
-        cluster.textPaint.textSize = 14F
+        viewModel.getFuelStations(1)
+        viewModel.fuelStations.observe(viewLifecycleOwner) { response ->
+            val cluster = RadiusMarkerClusterer(requireContext())
+            cluster.setRadius(85)
+            cluster.mTextAnchorU = 0.70F
+            cluster.mTextAnchorV = 0.27F
+            cluster.textPaint.textSize = 14F
 
-        val fuelStations: Array<SimpleMapFuelStation> = getFuelStations()
-        fuelStations.forEach { fuelStation -> cluster.add(buildMarker(fuelStation)) }
+            response.body()?.forEach { fuelStation -> cluster.add(buildMarker(fuelStation)) }
 
-        binding.map.overlays.add(cluster)
-        binding.map.invalidate()
+            binding.map.overlays.add(cluster)
+            binding.map.invalidate()
+        }
+
     }
 
     private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {

@@ -140,7 +140,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -547,7 +546,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.FuelPrice", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("FuelPrices")
                         .HasForeignKey("FuelStationId");
 
                     b.HasOne("Domain.Entities.FuelType", "FuelType")
@@ -617,13 +616,13 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<decimal>("Latitude")
-                                .HasPrecision(10, 8)
-                                .HasColumnType("decimal(10,8)")
+                                .HasPrecision(17, 15)
+                                .HasColumnType("decimal(17,15)")
                                 .HasColumnName("Latitude");
 
                             b1.Property<decimal>("Longitude")
-                                .HasPrecision(11, 8)
-                                .HasColumnType("decimal(11,8)")
+                                .HasPrecision(17, 15)
+                                .HasColumnType("decimal(17,15)")
                                 .HasColumnName("Longitude");
 
                             b1.HasKey("FuelStationId");
@@ -733,6 +732,8 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
                 {
+                    b.Navigation("FuelPrices");
+
                     b.Navigation("OpeningClosingTimes");
                 });
 #pragma warning restore 612, 618

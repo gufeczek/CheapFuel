@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
 using Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -28,7 +27,8 @@ public class FuelPriceConfiguration : PermanentEntityConfiguration<FuelPrice>
             .IsRequired();
 
         builder.HasOne(f => f.FuelStation)
-            .WithMany()
+            .WithMany(s => s.FuelPrices)
+            .HasForeignKey(f => f.FuelStationId)
             .OnDelete(DeleteBehavior.ClientSetNull); // Should be change after changing FuelStation to permanent table
 
         builder.HasOne(f => f.FuelType)

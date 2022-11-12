@@ -11,6 +11,10 @@ public class AccountsData : IPredefinedData
     public const string DefaultPasswordHash = "AQAAAAEAACcQAAAAEIx4l5FIMC2QHbCl94VCmPBY6//9LqJfoCifq8a5vxVDbfk4CMwLB6JAL0kSDgj+kA==";
 
     public const int InitialUserCount = 3;
+
+    public const int UserId = 100;
+    public const int OwnerId = 101;
+    public const int AdminId = 102;
     
     public const string UserUsername = "User";
     public const string OwnerUsername = "Owner";
@@ -38,7 +42,7 @@ public class AccountsData : IPredefinedData
     {
         new User
         {
-            Id = 100,
+            Id = UserId,
             Username = "User",
             Email = UserEmailAddress,
             Password = DefaultPasswordHash,
@@ -49,7 +53,7 @@ public class AccountsData : IPredefinedData
         },
         new User
         {
-            Id = 101,
+            Id = AdminId,
             Username = "Admin",
             Email = "admin@gmail.com",
             Password = DefaultPasswordHash,
@@ -60,7 +64,7 @@ public class AccountsData : IPredefinedData
         },
         new User
         {
-            Id = 102,
+            Id = OwnerId,
             Username = "Owner",
             Email = "owner@gmail.com",
             Password = DefaultPasswordHash,
