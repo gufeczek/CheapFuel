@@ -8,24 +8,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentSetRegisterMethodBinding
 import com.example.fuel.model.User
-import com.example.fuel.repository.TestRepository
-import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
-import com.example.fuel.viewmodel.TestViewModel
 import com.example.fuel.viewmodel.UserViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.concurrent.thread
 
 class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
 

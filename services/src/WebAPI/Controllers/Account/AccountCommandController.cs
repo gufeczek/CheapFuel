@@ -33,7 +33,7 @@ public class AccountCommandController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<ActionResult<string>> LoginAsync([FromBody] AuthenticateUserCommand command)
+    public async Task<ActionResult<JwtTokenDto>> LoginAsync([FromBody] AuthenticateUserCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);

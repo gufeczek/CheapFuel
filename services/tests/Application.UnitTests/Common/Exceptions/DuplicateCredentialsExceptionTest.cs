@@ -2,9 +2,9 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Application.UnitTests.Exceptions;
+namespace Application.UnitTests.Common.Exceptions;
 
-public class ConflictExceptionTest
+public class DuplicateCredentialsExceptionTest
 {
     [Fact]
     public void should_create_exception_instance_with_message()
@@ -13,7 +13,7 @@ public class ConflictExceptionTest
         const string message = "Test message";
         
         // Act
-        var result = new ConflictException(message);
+        var result = new DuplicateCredentialsException(message);
         
         // Assert
         result.Message.Should().Be(message);

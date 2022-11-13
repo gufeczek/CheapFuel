@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Application.UnitTests.Exceptions;
+namespace Application.UnitTests.Common.Exceptions;
 
 public class NotFoundExceptionTest
 {

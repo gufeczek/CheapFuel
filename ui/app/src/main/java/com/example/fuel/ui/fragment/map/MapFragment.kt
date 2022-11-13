@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.location.Address
 import android.location.Geocoder
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -25,12 +25,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
-import com.example.fuel.mock.getFuelStations
 import com.example.fuel.model.SimpleMapFuelStation
 import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
+import com.example.fuel.viewmodel.FuelStationMapViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
 import org.osmdroid.api.IMapController
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration.getInstance
@@ -54,6 +57,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationOverlay: MyLocationNewOverlay
     private lateinit var geocoder: Geocoder
+    private lateinit var viewModel: FuelStationMapViewModel
+
+    private var _markerCluster: RadiusMarkerClusterer? = null
+    private val markerCluster get() = _markerCluster!!
 
     private val requiredPermissions: Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -79,46 +86,28 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
+
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationMapViewModel::class.java]
         binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
             animateMapToUserLocation()
         }
 
-        requestPermissionsResultLauncher.launch(optionalPermissions.plus(requiredPermissions))
-
-        configureMapView()
-        initLocationOverly()
-        centerMapViewOnFixedPoint()
-        addMarkers()
-
+        configureMapInBackground()
         geocoder = Geocoder(requireContext())
+        requestPermissionsResultLauncher.launch(optionalPermissions.plus(requiredPermissions))
 
         return binding.root
     }
 
-    private fun addMarkers() {
-        val cluster = RadiusMarkerClusterer(requireContext())
-        cluster.setRadius(85)
-        cluster.mTextAnchorU = 0.70F
-        cluster.mTextAnchorV = 0.27F
-        cluster.textPaint.textSize = 14F
-
-        val fuelStations: Array<SimpleMapFuelStation> = getFuelStations()
-        fuelStations.forEach { fuelStation -> cluster.add(buildMarker(fuelStation)) }
-
-        binding.map.overlays.add(cluster)
-        binding.map.invalidate()
-    }
-
-    private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {
-        val marker = Marker(binding.map)
-        val fuelStationMarker = FuelStationMarker(binding.map.context.resources, fuelStation.parsePrice(), Color.GRAY, false)
-        marker.icon = BitmapDrawable(binding.map.context.resources, fuelStationMarker.toBitmap(600, 200))
-        marker.position = GeoPoint(fuelStation.latitude, fuelStation.longitude)
-        marker.setInfoWindow(null)
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        return marker
+    private fun configureMapInBackground() {
+        requireActivity().runOnUiThread {
+            configureMapView()
+            initLocationOverly()
+            centerMapViewOnFixedPoint()
+            addMarkers()
+        }
     }
 
     private fun configureMapView() {
@@ -147,19 +136,47 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         binding.map.overlays.add(locationOverlay)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        val appActivity = (activity as AppCompatActivity)
-        if (!appActivity.supportActionBar?.isShowing!!) {
-            appActivity.supportActionBar?.show()
-        }
-    }
-
     private fun centerMapViewOnFixedPoint() {
         val mapController: IMapController = binding.map.controller
         mapController.setCenter(centerOfPoland)
         mapController.setZoom(INITIAL_ZOOM)
+    }
+
+    private fun addMarkers() {
+        if (viewModel.willDataChange()) {
+            viewModel.getFuelStations()
+        }
+
+        viewModel.fuelStations.observe(viewLifecycleOwner) { response ->
+            binding.map.overlays.remove(_markerCluster)
+
+            _markerCluster = RadiusMarkerClusterer(requireContext())
+            markerCluster.setRadius(85)
+            markerCluster.mTextAnchorU = 0.70F
+            markerCluster.mTextAnchorV = 0.27F
+            markerCluster.textPaint.textSize = 14F
+
+            viewModel.calculateStatistics(response.body())
+            response.body()?.forEach { fuelStation -> markerCluster.add(buildMarker(fuelStation)) }
+
+            binding.map.overlays.add(markerCluster)
+            binding.map.invalidate()
+        }
+
+    }
+
+    private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {
+        val marker = Marker(binding.map)
+        val fuelStationMarker = FuelStationMarker(
+            binding.map.context.resources,
+            fuelStation.parsePrice(),
+            viewModel.getPriceColor(fuelStation),
+            viewModel.shouldBeBold(fuelStation))
+        marker.icon = BitmapDrawable(binding.map.context.resources, fuelStationMarker.toBitmap(600, 200))
+        marker.position = GeoPoint(fuelStation.latitude, fuelStation.longitude)
+        marker.setInfoWindow(null)
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        return marker
     }
 
     private fun animateMapToLocation() =
@@ -226,7 +243,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.options_menu, menu)
+        inflater.inflate(R.menu.map_menu, menu)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as SearchView
 
@@ -245,6 +262,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     return false;
                 }
             })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.map_filter) {
+            Navigation.findNavController(binding.root).navigate(R.id.mapFilter)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val appActivity = (activity as AppCompatActivity)
+        if (!appActivity.supportActionBar?.isShowing!!) {
+            appActivity.supportActionBar?.show()
         }
     }
 

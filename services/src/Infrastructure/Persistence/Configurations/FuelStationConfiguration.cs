@@ -9,9 +9,8 @@ public class FuelStationConfiguration : IEntityTypeConfiguration<FuelStation>
     public void Configure(EntityTypeBuilder<FuelStation> builder)
     {
         builder.Property(f => f.Name)
-            .HasMaxLength(100)
-            .IsRequired();
-
+            .HasMaxLength(100);
+        
         builder.Property(f => f.StationChainId)
             .IsRequired();
 
@@ -48,12 +47,12 @@ public class FuelStationConfiguration : IEntityTypeConfiguration<FuelStation>
 
                 g.Property(e => e.Latitude)
                     .HasColumnName(nameof(GeographicalCoordinates.Latitude))
-                    .HasPrecision(10, 8)
+                    .HasPrecision(17, 15)
                     .IsRequired();
 
                 g.Property(e => e.Longitude)
                     .HasColumnName(nameof(GeographicalCoordinates.Longitude))
-                    .HasPrecision(11, 8)
+                    .HasPrecision(17, 15)
                     .IsRequired();
 
             }).Navigation(f => f.GeographicalCoordinates)

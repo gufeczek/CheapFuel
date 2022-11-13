@@ -49,6 +49,7 @@ public class ExceptionHandlerMiddleware : IMiddleware
             ConflictException conflictException => HandleConflictException(conflictException),
             UnauthorizedException unauthorizedException => HandleUnauthorizedException(unauthorizedException),
             ValidationException validationException => HandleValidationException(validationException),
+            FilterValidationException filterValidationException => HandleFilterValidationException(filterValidationException),
             _ => HandleUnexpectedException(e)
         };
 
@@ -121,6 +122,17 @@ public class ExceptionHandlerMiddleware : IMiddleware
             Details: "Validation failed",
             Timestamp: DateTime.UtcNow,
             Violations: failures
+        );
+    }
+
+    private ErrorMessage HandleFilterValidationException(FilterValidationException e)
+    {
+        return new ErrorMessage
+        (
+            StatusCode: HttpStatusCode.BadRequest,
+            Title: "Bad request",
+            Details: string.Join("\n", e.ValidationErrors),
+            Timestamp: DateTime.UtcNow
         );
     }
 

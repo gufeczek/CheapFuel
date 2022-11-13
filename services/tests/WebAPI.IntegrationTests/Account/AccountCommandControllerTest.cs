@@ -138,10 +138,10 @@ public class AccountCommandControllerTest : IntegrationTest
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Text.Plain);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
         var createdObject = await response.Content.ReadAsStringAsync();
-        createdObject.Should().NotBeEmpty();
+        createdObject.Should().NotBeNull();
     }
 
     [Fact]

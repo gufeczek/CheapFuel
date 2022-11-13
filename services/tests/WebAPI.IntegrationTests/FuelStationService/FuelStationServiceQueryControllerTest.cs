@@ -33,7 +33,7 @@ public class FuelStationServiceQueryControllerTest : IntegrationTest
         
         // Act 
         var response = await HttpClient.GetAsync(
-            $"api/v1/services?" +
+            "api/v1/services?" +
             $"PageNumber={pageNumber}&" +
             $"PageSize={pageSize}&" +
             $"Sort.SortBy={sortBy}&" +

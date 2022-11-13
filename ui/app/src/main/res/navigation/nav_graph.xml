@@ -43,6 +43,14 @@
         android:id="@+id/mapFragment"
         android:name="com.example.fuel.ui.fragment.map.MapFragment"
         android:label="Fuel stations"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_mapFilter3"
+            app:destination="@id/mapFilter" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFilter"
+        android:name="com.example.fuel.ui.fragment.map.MapFilter"
+        android:label="MapFilter" />
 
 </navigation>
