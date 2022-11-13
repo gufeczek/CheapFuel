@@ -22,14 +22,14 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
             .Include(fs => fs.StationChain)
             .Include(fs => fs.FuelPrices
                 .Where(fp =>
-                    fp.Available == true &&
                     fp.Status == FuelPriceStatus.Accepted &&
                     fp.FuelTypeId == fuelTypeId &&
+                    fp.Available == true &&
                     (minPrice == null || minPrice <= fp.Price) &&
                     (maxPrice == null || maxPrice >= fp.Price))
                 .OrderByDescending(fp => fp.CreatedAt)
                 .Take(1));
-
+        
         if (stationChainsIds is null && servicesIds is null)
             return await query.ToListAsync();
 
@@ -43,7 +43,7 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
     }
 
     private async Task<IEnumerable<FuelStation>> GetFuelStationsWithFuelPriceByFuelTypeIdAndStationChain(
-        IIncludableQueryable<FuelStation, IEnumerable<FuelPrice>> query, 
+        IQueryable<FuelStation> query, 
         IEnumerable<long> stationChainIds)
     {
         return await query
@@ -54,7 +54,7 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
     }
 
     private async Task<IEnumerable<FuelStation>> GetFuelStationWithFuelPriceByFuelTypeIdAndServices(
-        IIncludableQueryable<FuelStation, IEnumerable<FuelPrice>> query, 
+        IQueryable<FuelStation> query, 
         IEnumerable<long> servicesIds)
     {
         return await query
@@ -66,7 +66,7 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
     }
     
     private async Task<IEnumerable<FuelStation>> GetFuelStationWithFuelPriceByFuelTypeIdAndStationChainsAndServices(
-        IIncludableQueryable<FuelStation, IEnumerable<FuelPrice>> query, 
+        IQueryable<FuelStation> query, 
         IEnumerable<long> stationChainsIds, 
         IEnumerable<long> servicesIds)
     {

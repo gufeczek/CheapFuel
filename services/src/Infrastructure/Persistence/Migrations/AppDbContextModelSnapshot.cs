@@ -105,7 +105,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -118,11 +118,15 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("FuelStationId");
 
                     b.HasIndex("FuelTypeId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("Status", "FuelTypeId", "Available", "Price");
 
                     b.ToTable("FuelPrices");
                 });
@@ -692,7 +696,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("ServiceAtStations")
                         .HasForeignKey("FuelStationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -735,6 +739,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("FuelPrices");
 
                     b.Navigation("OpeningClosingTimes");
+
+                    b.Navigation("ServiceAtStations");
                 });
 #pragma warning restore 612, 618
         }

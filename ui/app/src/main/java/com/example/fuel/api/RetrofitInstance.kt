@@ -11,8 +11,8 @@ object RetrofitInstance {
 
     private val client by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
             .build()
     }
 
@@ -31,6 +31,18 @@ object RetrofitInstance {
 
     val fuelStationApi: FuelStationApiService by lazy {
         retrofit.create(FuelStationApiService::class.java)
+    }
+
+    val fuelTypeApiService: FuelTypeApiService by lazy {
+        retrofit.create(FuelTypeApiService::class.java)
+    }
+
+    val fuelStationServiceApiService: FuelStationServiceApiService by lazy {
+        retrofit.create(FuelStationServiceApiService::class.java)
+    }
+
+    val stationChainApiService: StationChainApiService by lazy {
+        retrofit.create(StationChainApiService::class.java)
     }
 
     val testApi: TestApiService by lazy {

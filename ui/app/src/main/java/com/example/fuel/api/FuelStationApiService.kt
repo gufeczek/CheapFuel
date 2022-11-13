@@ -1,14 +1,15 @@
 package com.example.fuel.api
 
+import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleMapFuelStation
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface FuelStationApiService {
 
-    @GET("api/v1/fuel-stations")
+    @POST("api/v1/fuel-stations")
     suspend fun getSimpleMapFuelStations(
-        @Query("fuelTypeId") furlTypeId: Long
+        @Body filter: FuelStationsFilter
     ): Response<Array<SimpleMapFuelStation>>
 }

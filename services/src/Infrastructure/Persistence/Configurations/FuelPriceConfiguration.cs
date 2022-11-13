@@ -38,5 +38,17 @@ public class FuelPriceConfiguration : PermanentEntityConfiguration<FuelPrice>
         builder.HasOne(f => f.User)
             .WithMany()
             .IsRequired();
+
+        builder.HasIndex(f => new
+            {
+                f.Status, 
+                f.FuelTypeId,
+                f.Available,
+                f.Price,
+            })
+            .IsUnique(false);
+
+        builder.HasIndex(f => f.CreatedAt)
+            .IsUnique(false);
     }
 }
