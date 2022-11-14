@@ -2,6 +2,7 @@
 
 public sealed class FuelStationDetailsDto
 {
+    public long? Id { get; set; }
     public string? Name { get; set; }
     public AddressDto? Address { get; set; }
     public StationChainDto? StationChain { get; set; }

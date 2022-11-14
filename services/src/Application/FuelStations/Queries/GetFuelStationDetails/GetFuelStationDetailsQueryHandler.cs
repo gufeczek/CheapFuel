@@ -63,6 +63,7 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
         
         return new FuelStationDetailsDto
         {
+            Id = fuelStation.Id,
             Name = fuelStation.Name,
             Address = _mapper.Map<AddressDto>(fuelStation.Address),
             StationChain = _mapper.Map<StationChainDto>(fuelStation.StationChain),
