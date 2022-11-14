@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.FuelStations.Queries.GetAllFuelStationForMap;
 
-public class GetAllFuelStationsForMapQueryHandler 
+public sealed class GetAllFuelStationsForMapQueryHandler 
     : IRequestHandler<GetAllFuelStationsForMapQuery, IEnumerable<SimpleMapFuelStationDto>>
 {
     private readonly IFuelStationRepository _fuelStationRepository;

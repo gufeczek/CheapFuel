@@ -3,14 +3,26 @@ using Domain.Enums;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Repositories;
 
 public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRepository
 {
     public FuelStationRepository(AppDbContext context) : base(context) { }
-    
+
+    public async Task<FuelStation?> GetFuelStationWithAllDetails(long id)
+    {
+        return await Context.FuelStations
+            .Include(fs => fs.StationChain)
+            .Include(fs => fs.OpeningClosingTimes)
+            .Include(fs => fs.ServiceAtStations)
+                .ThenInclude(ss => ss.Service)
+            .Include(fs => fs.FuelTypes)
+                .ThenInclude(ft => ft.FuelType)
+            .Where(fs => fs.Id == id)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<FuelStation>> GetFuelStationsWithFuelPrice(
         long fuelTypeId, 
         IEnumerable<long>? servicesIds, 

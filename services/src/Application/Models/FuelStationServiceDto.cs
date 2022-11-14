@@ -5,7 +5,11 @@ using Domain.Entities;
 
 namespace Application.Models;
 
-public sealed record FuelStationServiceDto(long Id, string Name);
+public sealed class FuelStationServiceDto
+{
+    public long? Id { get; set; }
+    public string? Name { get; set; }
+}
 
 public sealed class FuelStationServiceDtoProfile : Profile
 {
