@@ -39,7 +39,7 @@ public class CreateFuelStationServiceCommandHandlerTest
         const long id = 1;
         
         var command = new CreateFuelStationServiceCommand(name);
-        var serviceDto = new FuelStationServiceDto(id, name);
+        var serviceDto = new FuelStationServiceDto { Id = id, Name = name };
 
         _mapper
             .Setup(x => x.Map<FuelStationServiceDto>(It.IsAny<FuelStationService>()))

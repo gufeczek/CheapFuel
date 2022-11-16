@@ -118,8 +118,8 @@ public class GetAllFuelStationServicesQueryHandlerTest
 
     private List<FuelStationServiceDto> CreateDto(List<FuelStationService> data) => new()
     {
-        new(1, data[0].Name!),
-        new(2, data[1].Name!)
+        new() { Id = 1, Name = data[0].Name! },
+        new() { Id = 2, Name = data[1].Name! }
     };
 
     private Page<E> CreatePage<E>(PageRequest<FuelStationService> pageRequest, IEnumerable<E> data) => new()

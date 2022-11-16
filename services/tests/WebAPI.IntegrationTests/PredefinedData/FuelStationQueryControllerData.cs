@@ -30,6 +30,7 @@ public class FuelStationQueryControllerData : IPredefinedData
 
     public const int FuelStationsWithPriceOfFuelType1Count = 2;
 
+    public const int InvalidFuelStationId = 999;
     public const int InvalidFuelTypeId = 999;
     public const int InvalidStationChainId = 999;
     public const int InvalidServiceId = 999;
@@ -259,6 +260,11 @@ public class FuelStationQueryControllerData : IPredefinedData
         {
             FuelStationId = FuelStation4Id,
             FuelTypeId = FuelType1Id
+        },
+        new FuelAtStation
+        {
+            FuelStationId = FuelStation4Id,
+            FuelTypeId = FuelType2Id
         }
     };
 

@@ -1,4 +1,5 @@
 ﻿using Application.FuelStations.Queries.GetAllFuelStationForMap;
+using Application.FuelStations.Queries.GetFuelStationDetails;
 using Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,14 @@ public class FuelStationQueryController : ControllerBase
     public FuelStationQueryController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+    
+    [AuthorizeUser]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<FuelStationDetailsDto>> GetFuelStationDetailsById([FromRoute] long id)
+    {
+        var result = await _mediator.Send(new GetFuelStationDetailsQuery(id));
+        return Ok(result);
     }
 
     [AuthorizeUser]

@@ -16,7 +16,10 @@ public class FuelStation : AuditableEntity
     
     private List<FuelPrice> _fuelPrices = new();
     public IReadOnlyCollection<FuelPrice> FuelPrices => _fuelPrices;
-    
+
+    private List<FuelAtStation> _fuelTypes = new();
+    public IReadOnlyCollection<FuelAtStation> FuelTypes => _fuelTypes;
+
     private List<ServiceAtStation> _services = new();
     public IReadOnlyCollection<ServiceAtStation> ServiceAtStations => _services;
 }

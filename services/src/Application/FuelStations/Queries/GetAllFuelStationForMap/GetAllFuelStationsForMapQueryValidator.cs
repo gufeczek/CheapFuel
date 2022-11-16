@@ -2,7 +2,7 @@
 
 namespace Application.FuelStations.Queries.GetAllFuelStationForMap;
 
-public class GetAllFuelStationsForMapQueryValidator : AbstractValidator<GetAllFuelStationsForMapQuery>
+public sealed class GetAllFuelStationsForMapQueryValidator : AbstractValidator<GetAllFuelStationsForMapQuery>
 {
     public GetAllFuelStationsForMapQueryValidator()
     {
