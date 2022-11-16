@@ -36,6 +36,7 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
         return fuelStation.FuelTypes
             .Select(async f => await _fuelPriceRepository.GetMostRecentPrice(fuelStation.Id, f.FuelTypeId))
             .Select(t => t.Result)
+            .Where(f => f is not null)
             .ToList();
     }
 
@@ -48,7 +49,7 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
         
         foreach (var fuelType in fuelStation.FuelTypes)
         {
-            var price = fuelPricesList.FirstOrDefault(f => f.FuelTypeId == fuelType.FuelTypeId);
+            var price = fuelPricesList.FirstOrDefault(f => f!.FuelTypeId == fuelType.FuelTypeId);
             var priceDto = price is null ? null : _mapper.Map<SimpleFuelPriceDto>(price);
             
             var fuelTypeWithPrice = new FuelTypeWithPriceDto

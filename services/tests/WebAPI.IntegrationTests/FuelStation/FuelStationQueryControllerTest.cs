@@ -293,7 +293,6 @@ public class FuelStationQueryControllerTest : IntegrationTest
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
-
     }
     
     [Fact]
@@ -354,6 +353,92 @@ public class FuelStationQueryControllerTest : IntegrationTest
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
+    }
+
+    [Fact]
+    public async Task Returns_fuel_stations_with_all_details()
+    {
+        // Arrange
+        await this.AuthorizeUser();
+
+        const int fuelStationId = FuelStationQueryControllerData.FuelStation1Id;
+        
+        // Act
+        var response = await HttpClient.GetAsync($"api/v1/fuel-stations/{fuelStationId}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
+
+        var fuelStations = await this.Deserialize<FuelStationDetailsDto>(response.Content);
+        
+        fuelStations!.Id.Should().Be(fuelStationId);
+        fuelStations.Name.Should().Be("Fuel station 1");
+        fuelStations.StationChain!.Id.Should().Be(FuelStationQueryControllerData.StationChain1Id);
+        fuelStations.OpeningClosingTimes.Should().NotBeNull();
+        fuelStations.Address.Should().NotBeNull();
+        fuelStations.Services!.Count().Should().Be(2);
+        fuelStations.FuelTypes!.Count().Should().Be(1);
+        fuelStations.FuelTypes!.ToList()[0].Should().NotBeNull();
+        fuelStations.FuelTypes!.ToList()[0].Price!.Price.Should().Be(2.14M);
+    }
+
+    [Fact]
+    public async Task Returns_fuel_station_details_with_all_fuel_types()
+    {
+        // Arrange
+        await this.AuthorizeUser();
+
+        const int fuelStationId = FuelStationQueryControllerData.FuelStation4Id;
+        
+        // Act
+        var response = await HttpClient.GetAsync($"api/v1/fuel-stations/{fuelStationId}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
+        
+        var fuelStations = await this.Deserialize<FuelStationDetailsDto>(response.Content);
+        
+        fuelStations!.Id.Should().Be(fuelStationId);
+        fuelStations.Name.Should().Be("Fuel station 4");
+        fuelStations.StationChain!.Id.Should().Be(FuelStationQueryControllerData.StationChain2Id);
+        fuelStations.OpeningClosingTimes.Should().NotBeNull();
+        fuelStations.Address.Should().NotBeNull();
+        fuelStations.Services!.Count().Should().Be(0);
+        fuelStations.FuelTypes!.Count().Should().Be(2);
+        fuelStations.FuelTypes!
+            .Select(f => f.Price)
+            .Count(p => p is not null)
+            .Should().Be(1);
+    }
+
+    [Fact]
+    public async Task Fails_to_return_fuel_station_details_for_not_logged_user()
+    {
+        // Arrange
+        const int fuelStationId = FuelStationQueryControllerData.FuelStation1Id;
+        
+        // Act
+        var response = await HttpClient.GetAsync($"api/v1/fuel-stations/{fuelStationId}");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
+    }
+    
+    [Fact]
+    public async Task Fails_to_return_fuel_station_details_for_invalid_id()
+    {
+        // Arrange
+        const int fuelStationId = FuelStationQueryControllerData.InvalidFuelStationId;
+        
+        // Act
+        var response = await HttpClient.GetAsync($"api/v1/fuel-stations/{fuelStationId}");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
     }
 }
