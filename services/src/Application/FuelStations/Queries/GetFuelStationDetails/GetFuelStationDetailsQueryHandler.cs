@@ -67,6 +67,7 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
             Id = fuelStation.Id,
             Name = fuelStation.Name,
             Address = _mapper.Map<AddressDto>(fuelStation.Address),
+            Location = _mapper.Map<FuelStationLocationDto>(fuelStation.GeographicalCoordinates),
             StationChain = _mapper.Map<StationChainDto>(fuelStation.StationChain),
             OpeningClosingTimes = _mapper.Map<IEnumerable<OpeningClosingTimeDto>>(fuelStation.OpeningClosingTimes),
             Services = _mapper.Map<IEnumerable<FuelStationServiceDto>>(services),

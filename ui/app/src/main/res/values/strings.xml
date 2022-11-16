@@ -27,4 +27,5 @@
     <string name="fuelStations">Stacje paliw</string>
     <string name="search_title">Szukaj</string>
     <string name="map_filter">Filtruj</string>
+    <string name="from_you">%1$s od ciebie</string>
 </resources>

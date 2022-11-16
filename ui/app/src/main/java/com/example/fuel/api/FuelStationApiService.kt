@@ -1,10 +1,13 @@
 package com.example.fuel.api
 
+import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleMapFuelStation
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface FuelStationApiService {
 
@@ -12,4 +15,9 @@ interface FuelStationApiService {
     suspend fun getSimpleMapFuelStations(
         @Body filter: FuelStationsFilter
     ): Response<Array<SimpleMapFuelStation>>
+
+    @GET("api/v1/fuel-stations/{id}")
+    suspend fun getFuelStationDetails(
+        @Path("id") fuelStationId: Long
+    ): Response<FuelStationDetails>
 }

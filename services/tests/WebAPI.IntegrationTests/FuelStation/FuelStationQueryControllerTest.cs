@@ -406,6 +406,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         fuelStations.StationChain!.Id.Should().Be(FuelStationQueryControllerData.StationChain2Id);
         fuelStations.OpeningClosingTimes.Should().NotBeNull();
         fuelStations.Address.Should().NotBeNull();
+        fuelStations.Location.Should().NotBeNull();
         fuelStations.Services!.Count().Should().Be(0);
         fuelStations.FuelTypes!.Count().Should().Be(2);
         fuelStations.FuelTypes!
