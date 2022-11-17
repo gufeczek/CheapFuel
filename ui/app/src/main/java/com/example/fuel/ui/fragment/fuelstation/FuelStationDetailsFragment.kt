@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationDetailsBinding
 import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationLocation
+import com.example.fuel.model.FuelType
 import com.example.fuel.utils.calculateDistance
 import com.example.fuel.utils.converters.UnitConverter
 import com.example.fuel.utils.getUserLocation
@@ -48,6 +52,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
             populateViewWithData(fuelStationData!!)
             showLayout()
+            addFuelPriceCards(fuelStationData.fuelTypes)
         }
     }
 
@@ -70,6 +75,46 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
         textView.text =  resources.getString(R.string.from_you, UnitConverter.fromMetersToTarget(distance.toDouble()))
         textView.visibility = View.VISIBLE
+    }
+
+    private fun addFuelPriceCards(fuelTypes: Array<FuelType>) {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_fuelPriceContainer)
+        var llc: LinearLayoutCompat? = null
+
+        for (i in fuelTypes.indices) {
+            if (i % 2 == 0) {
+                llc = createEmptyRow()
+                parent.addView(llc)
+            }
+
+            val fuelPriceCardFragment = FuelPriceCardFragment()
+            fragmentTransaction.add(llc!!.id, fuelPriceCardFragment)
+        }
+
+        fragmentTransaction.commitNow()
+
+//        if (llc != null && fuelTypes.size % 2 == 1) {
+//            val priceCard = llc[llc.size - 1]
+//            val params = LinearLayoutCompat.LayoutParams(parent.width / 2, priceCard.height, 0.5F)
+//            priceCard.layoutParams = params
+//            priceCard.requestLayout()
+//            llc.requestLayout()
+//        }
+    }
+
+    private fun createEmptyRow(): LinearLayoutCompat {
+        val llc = LinearLayoutCompat(requireContext())
+        llc.id = View.generateViewId()
+        llc.orientation = LinearLayoutCompat.HORIZONTAL
+        return llc
+    }
+
+    private fun createSpacer(): View {
+        return LayoutInflater.from(requireContext())
+            .inflate(R.layout.horizontal_spacer_50, null, false) as View
     }
 
     private fun showLayout() {
