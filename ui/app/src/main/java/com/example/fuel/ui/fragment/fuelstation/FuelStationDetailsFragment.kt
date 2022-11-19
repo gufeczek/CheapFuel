@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.view.get
-import androidx.core.view.size
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationDetailsBinding
 import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationLocation
-import com.example.fuel.model.FuelType
+import com.example.fuel.model.FuelStationService
+import com.example.fuel.model.FuelTypeWithPrice
+import com.example.fuel.ui.common.initChipAppearance
 import com.example.fuel.utils.calculateDistance
 import com.example.fuel.utils.converters.UnitConverter
 import com.example.fuel.utils.getUserLocation
@@ -23,6 +23,8 @@ import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 
 class FuelStationDetailsFragment : BottomSheetDialogFragment() {
@@ -53,6 +55,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             populateViewWithData(fuelStationData!!)
             showLayout()
             addFuelPriceCards(fuelStationData.fuelTypes)
+            addFuelStationServices(fuelStationData.services)
+            initCommentSection()
         }
     }
 
@@ -77,7 +81,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         textView.visibility = View.VISIBLE
     }
 
-    private fun addFuelPriceCards(fuelTypes: Array<FuelType>) {
+    private fun addFuelPriceCards(fuelTypes: Array<FuelTypeWithPrice>) {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
@@ -90,19 +94,11 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
                 parent.addView(llc)
             }
 
-            val fuelPriceCardFragment = FuelPriceCardFragment()
+            val fuelPriceCardFragment = FuelPriceCardFragment(fuelTypes[i])
             fragmentTransaction.add(llc!!.id, fuelPriceCardFragment)
         }
 
         fragmentTransaction.commitNow()
-
-//        if (llc != null && fuelTypes.size % 2 == 1) {
-//            val priceCard = llc[llc.size - 1]
-//            val params = LinearLayoutCompat.LayoutParams(parent.width / 2, priceCard.height, 0.5F)
-//            priceCard.layoutParams = params
-//            priceCard.requestLayout()
-//            llc.requestLayout()
-//        }
     }
 
     private fun createEmptyRow(): LinearLayoutCompat {
@@ -112,9 +108,56 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         return llc
     }
 
-    private fun createSpacer(): View {
-        return LayoutInflater.from(requireContext())
-            .inflate(R.layout.horizontal_spacer_50, null, false) as View
+    private fun addFuelStationServices(services: Array<FuelStationService>) {
+        val serviceContainer = fuelStationDetailsView.findViewById<ChipGroup>(R.id.cg_fuelStationServicesContainer);
+
+        for (service in services) {
+            val chip = createServiceChip(service)
+            serviceContainer.addView(chip)
+        }
+    }
+
+    private fun createServiceChip(service: FuelStationService): Chip {
+        val chip = LayoutInflater.from(requireContext()).inflate(R.layout.filter_chip, null, false) as Chip
+        initChipAppearance(chip, requireContext())
+        chip.text = service.name
+        chip.isChecked = false
+        chip.isEnabled = false
+        return chip
+    }
+
+    private fun initCommentSection() {
+        loadComments()
+
+        fuelStationDetailsView.findViewById<NestedScrollView>(R.id.nsv_fuel_details_bottom_sheet)
+            .setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                val nsv = v as NestedScrollView
+
+                if (oldScrollY < scrollY
+                    && scrollY == (nsv.getChildAt(0).measuredHeight - nsv.measuredHeight)) {
+                    loadComments()
+                }
+            }
+    }
+
+    private fun loadComments() {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_comments_container)
+
+        for (i in 0..10) {
+            val commentFragment = FuelStationCommentFragment()
+            fragmentTransaction.add(parent.id, commentFragment)
+        }
+
+        fragmentTransaction.commitNow()
+    }
+
+
+    private fun hideCommentSectionProgressBar() {
+        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_comment_load)
+        progressBar.visibility = View.GONE
     }
 
     private fun showLayout() {

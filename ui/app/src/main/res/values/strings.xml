@@ -28,4 +28,13 @@
     <string name="search_title">Szukaj</string>
     <string name="map_filter">Filtruj</string>
     <string name="from_you">%1$s od ciebie</string>
+    <string name="never">Nigdy</string>
+    <string name="less_then_hour_ago">Mniej niż godzinę temu</string>
+    <string name="hours_ago">%1$s godzin temu</string>
+    <string name="one_day_ago">1 dzień temu</string>
+    <string name="days_ago">%1$s dni temu</string>
+    <string name="zloty">%1$s zł</string>
+    <string name="fuel_price_uppercase">CENY PALIW</string>
+    <string name="services_uppercase">USŁUGI</string>
+    <string name="comments_uppercase">KOMENTARZE</string>
 </resources>

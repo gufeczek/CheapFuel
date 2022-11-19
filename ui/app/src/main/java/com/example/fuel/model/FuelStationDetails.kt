@@ -7,7 +7,7 @@ data class FuelStationDetails(
     val location: FuelStationLocation,
     val stationChain: StationChain,
     val openingClosingTimes: Array<OpeningClosingTime>,
-    val fuelTypes: Array<FuelType>,
+    val fuelTypes: Array<FuelTypeWithPrice>,
     val services: Array<FuelStationService>
 ) {
 

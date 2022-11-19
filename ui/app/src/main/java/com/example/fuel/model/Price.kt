@@ -1,9 +1,9 @@
 package com.example.fuel.model
 
-import java.time.LocalDateTime
+import java.util.Date
 
 data class Price(
     val price: Double,
     val available: Boolean,
-    val createdAt: LocalDateTime
+    val createdAt: Date
 )

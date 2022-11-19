@@ -56,7 +56,7 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
             {
                 Id = fuelType.FuelTypeId,
                 Name = fuelType.FuelType!.Name!,
-                Price = priceDto
+                FuelPrice = priceDto
             };
             
             fuelTypesWithPrice.Add(fuelTypeWithPrice);
