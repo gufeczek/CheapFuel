@@ -381,7 +381,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         fuelStations.Services!.Count().Should().Be(2);
         fuelStations.FuelTypes!.Count().Should().Be(1);
         fuelStations.FuelTypes!.ToList()[0].Should().NotBeNull();
-        fuelStations.FuelTypes!.ToList()[0].Price!.Price.Should().Be(2.14M);
+        fuelStations.FuelTypes!.ToList()[0].FuelPrice!.Price.Should().Be(2.14M);
     }
 
     [Fact]
@@ -406,10 +406,11 @@ public class FuelStationQueryControllerTest : IntegrationTest
         fuelStations.StationChain!.Id.Should().Be(FuelStationQueryControllerData.StationChain2Id);
         fuelStations.OpeningClosingTimes.Should().NotBeNull();
         fuelStations.Address.Should().NotBeNull();
+        fuelStations.Location.Should().NotBeNull();
         fuelStations.Services!.Count().Should().Be(0);
         fuelStations.FuelTypes!.Count().Should().Be(2);
         fuelStations.FuelTypes!
-            .Select(f => f.Price)
+            .Select(f => f.FuelPrice)
             .Count(p => p is not null)
             .Should().Be(1);
     }

@@ -1,6 +1,7 @@
 package com.example.fuel.api
 
 import com.example.fuel.utils.Constants.Companion.BASE_URL
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,6 +9,12 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitInstance {
+
+    private val gson by lazy {
+        Gson().newBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .create()
+    }
 
     private val client by lazy {
         OkHttpClient.Builder()
@@ -20,10 +27,9 @@ object RetrofitInstance {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
-
 
     val accountApi: AccountApiService by lazy {
         retrofit.create(AccountApiService::class.java)

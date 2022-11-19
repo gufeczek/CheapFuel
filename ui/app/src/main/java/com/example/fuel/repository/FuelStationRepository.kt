@@ -1,6 +1,7 @@
 package com.example.fuel.repository
 
 import com.example.fuel.api.RetrofitInstance
+import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleMapFuelStation
 import retrofit2.Response
@@ -11,4 +12,7 @@ class FuelStationRepository {
         return RetrofitInstance.fuelStationApi.getSimpleMapFuelStations(filter)
     }
 
+    suspend fun getFuelStationDetails(fuelStationId: Long): Response<FuelStationDetails> {
+        return RetrofitInstance.fuelStationApi.getFuelStationDetails(fuelStationId);
+    }
 }
