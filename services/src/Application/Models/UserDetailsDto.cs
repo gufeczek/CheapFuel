@@ -1,10 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using Application.Models.Interfaces;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Models;
 
-public sealed class UserDetailsDto
+
+
+public sealed record UserDetailsDto(string Username, string? Email, Role Role)
 {
     public string? Username { get; init; }
     public string? Email { get; init; }
@@ -21,4 +25,13 @@ public sealed class UserDetailsDtoProfile : Profile
     {
         CreateMap<User, UserDetailsDto>();
     }
+}
+
+public sealed class UserDetailColumnSelector : IColumnSelector<User>
+{
+    public Dictionary<string, Expression<Func<User, object>>> ColumnSelector { get; } = new()
+    {
+        { nameof(User.Id), r => r.Id },
+        { nameof(User.Username), r => r.Username },
+    };
 }
