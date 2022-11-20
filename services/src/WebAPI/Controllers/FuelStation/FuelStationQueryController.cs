@@ -9,7 +9,7 @@ namespace WebAPI.Controllers.FuelStation;
 
 [ApiController]
 [Route("api/v1/fuel-stations")]
-public class FuelStationQueryController : ControllerBase
+public sealed class FuelStationQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
 
