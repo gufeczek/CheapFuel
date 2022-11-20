@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using Application.Models.Pagination;
 using Application.Reviews.Queries.GetAllFuelStationReviews;
+using Application.Reviews.Queries.GetUserReviewOfFuelStation;
 using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,12 @@ public sealed class ReviewQueryController : ControllerBase
     {
         var reviews = await _mediator.Send(new GetAllFuelStationReviewsQuery(id, pageRequestDto));
         return Ok(reviews);
+    }
+
+    [HttpGet("{fuelStationId}/{username}")]
+    public async Task<ActionResult<FuelStationReviewDto>> GetUserFuelStationReview([FromRoute] long fuelStationId, [FromRoute] string username)
+    {
+        var review = await _mediator.Send(new GetUserReviewOfFuelStationQuery(username, fuelStationId));
+        return Ok(review);
     }
 }

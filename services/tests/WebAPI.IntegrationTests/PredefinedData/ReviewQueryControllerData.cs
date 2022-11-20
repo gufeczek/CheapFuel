@@ -12,6 +12,10 @@ public class ReviewQueryControllerData : IPredefinedData
     private const int User2Id = 201;
     private const int User3Id = 202;
 
+    public const string User1Username = "User 1";
+    public const string User2Username = "User 2";
+    public const string User3Username = "User 3";
+
     private const int StationChain1Id = 100;
 
     public const int FuelStation1Id = 100;
@@ -43,7 +47,7 @@ public class ReviewQueryControllerData : IPredefinedData
         new User
         {
             Id = User1Id,
-            Username = "Review user 1",
+            Username = User1Username,
             Email = "user1@example.com",
             Password = AccountsData.DefaultPasswordHash,
             Role = Role.User,
@@ -54,7 +58,7 @@ public class ReviewQueryControllerData : IPredefinedData
         new User
         {
             Id = User2Id,
-            Username = "Review user 2",
+            Username = User2Username,
             Email = "user2@example.com",
             Password = AccountsData.DefaultPasswordHash,
             Role = Role.User,
@@ -65,7 +69,7 @@ public class ReviewQueryControllerData : IPredefinedData
         new User
         {
             Id = User3Id,
-            Username = "Review user 3",
+            Username = User3Username,
             Email = "user3@example.com",
             Password = AccountsData.DefaultPasswordHash,
             Role = Role.User,
