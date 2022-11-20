@@ -19,7 +19,7 @@ public sealed class FuelStationServiceDtoProfile : Profile
     }
 }
 
-public sealed class FuelStationServiceColumnSelector : IColumnSelector<FuelStationService>
+public sealed class FuelStationServiceDtoColumnSelector : IColumnSelector<FuelStationService>
 {
     public Dictionary<string, Expression<Func<FuelStationService, object>>> ColumnSelector { get; } = new()
     {

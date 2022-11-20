@@ -15,7 +15,7 @@ public sealed class FuelTypeDtoProfile : Profile
     }
 }
 
-public sealed class FuelTypeColumnSelector : IColumnSelector<FuelType>
+public sealed class FuelTypeDtoColumnSelector : IColumnSelector<FuelType>
 {
     public Dictionary<string, Expression<Func<FuelType, object>>> ColumnSelector { get; } = new()
     {

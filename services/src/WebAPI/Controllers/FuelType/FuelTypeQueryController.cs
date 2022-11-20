@@ -1,6 +1,7 @@
 ﻿using Application.FuelTypes.Queries.GetAllFuelTypes;
 using Application.Models;
 using Application.Models.Pagination;
+using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ public sealed class FuelTypeQueryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<FuelTypeDto>>> GetAllFuelTypes([FromQuery] PageRequestDto pageRequestDto)
+    public async Task<ActionResult<Page<FuelTypeDto>>> GetAllFuelTypes([FromQuery] PageRequestDto pageRequestDto)
     {
         var fuelTypes = await _mediator.Send(new GetAllFuelTypesQuery(pageRequestDto));
         return Ok(fuelTypes);
