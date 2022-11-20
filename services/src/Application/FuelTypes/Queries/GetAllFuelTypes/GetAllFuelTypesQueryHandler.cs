@@ -21,7 +21,7 @@ public sealed class GetAllFuelTypesQueryHandler : IRequestHandler<GetAllFuelType
     
     public async Task<Page<FuelTypeDto>> Handle(GetAllFuelTypesQuery request, CancellationToken cancellationToken)
     {
-        var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new FuelTypeColumnSelector());
+        var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new FuelTypeDtoColumnSelector());
         var result = await _fuelTypeRepository.GetAllAsync(pageRequest);
         return Page<FuelTypeDto>.From(result, _mapper.Map<IEnumerable<FuelTypeDto>>(result.Data));
     }

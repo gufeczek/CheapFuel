@@ -15,7 +15,7 @@ public sealed class StationChainDtoProfile : Profile
     }
 }
 
-public sealed class StationChainColumnSelector : IColumnSelector<StationChain>
+public sealed class StationChainDtoColumnSelector : IColumnSelector<StationChain>
 {
     public Dictionary<string, Expression<Func<StationChain, object>>> ColumnSelector { get; } = new()
     {
