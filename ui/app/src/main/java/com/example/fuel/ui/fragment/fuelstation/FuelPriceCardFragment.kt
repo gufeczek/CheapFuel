@@ -44,6 +44,6 @@ class FuelPriceCardFragment(
         fuelPriceTextView.text = viewModel.parsePrice(fuelTypeWithPrice.fuelPrice, resources)
 
         val timePeriodTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelPriceLastUpdateDate)
-        timePeriodTextView.text = viewModel.parseCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
+        timePeriodTextView.text = viewModel.parseFuelPriceCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
     }
 }

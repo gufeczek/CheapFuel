@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
+import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.repository.StationChainRepository
 import com.example.fuel.repository.TestRepository
 import com.example.fuel.repository.UserRepository
@@ -20,7 +21,9 @@ class ViewModelFactory : ViewModelProvider.Factory {
             FuelTypeRepository(),
             FuelStationServiceRepository(),
             StationChainRepository()) as T
-        FuelStationDetailsViewModel::class.java -> FuelStationDetailsViewModel(FuelStationRepository()) as T
+        FuelStationDetailsViewModel::class.java -> FuelStationDetailsViewModel(
+            FuelStationRepository(),
+            ReviewRepository()) as T
         TestViewModel::class.java -> TestViewModel(TestRepository()) as T
         else -> {
             throw NoSuchViewModelException(
