@@ -2,7 +2,6 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -19,11 +18,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_review_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="chrysoberyl" />
+                android:textColor="@color/black"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -33,6 +32,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/acrb_review_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:attr/ratingBarStyleSmall"
@@ -46,12 +46,12 @@
                     android:rating="2" />
 
                 <TextView
+                    android:id="@+id/tv_review_created_at"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:translationX="-4dp"
                     android:textSize="11sp"
-                    android:textColor="@color/dark_gray"
-                    android:text="2 miesiące temu"/>
+                    android:textColor="@color/dark_gray"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -77,14 +77,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
+        android:id="@+id/tv_review_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:textColor="@color/dark_gray"
         android:layout_marginTop="5dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+        android:visibility="gone"/>
 
     <TextView
+        android:id="@+id/tv_review_updated_at"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
@@ -92,7 +94,7 @@
         android:layout_marginTop="5dp"
         android:textSize="11sp"
         android:textColor="@color/dark_gray"
-        android:text="Edytowany 2 miesiące temu"/>
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

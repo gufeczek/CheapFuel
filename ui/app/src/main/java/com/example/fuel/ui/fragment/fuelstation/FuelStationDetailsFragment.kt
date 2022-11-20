@@ -1,6 +1,7 @@
 package com.example.fuel.ui.fragment.fuelstation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentFuelStationDetailsBinding
     private lateinit var viewModel: FuelStationDetailsViewModel
     private lateinit var fuelStationDetailsView: View
+    private var fuelStationId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +43,14 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         binding = FragmentFuelStationDetailsBinding.inflate(inflater, container, false)
         fuelStationDetailsView = inflater.inflate(R.layout.fragment_fuel_station_details, container, false)
 
-        val fuelStationId = requireArguments().getLong("fuelStationId")
-        loadData(fuelStationId)
-
+        fuelStationId = requireArguments().getLong("fuelStationId")
+        loadData()
+        Log.d("fuelStation", fuelStationId.toString())
         return fuelStationDetailsView
     }
 
-    private fun loadData(fuelStationId: Long) {
-        viewModel.getFuelStationDetails(fuelStationId)
+    private fun loadData() {
+        viewModel.getFuelStationDetails(fuelStationId!!)
         viewModel.fuelStationDetails.observe(viewLifecycleOwner) { response ->
             val fuelStationData = response.body()
 
@@ -56,6 +58,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             showLayout()
             addFuelPriceCards(fuelStationData.fuelTypes)
             addFuelStationServices(fuelStationData.services)
+            initCommentObserver()
             initCommentSection()
         }
     }
@@ -115,6 +118,16 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             val chip = createServiceChip(service)
             serviceContainer.addView(chip)
         }
+
+        if (!viewModel.hasAnyServices()) hideFuelStationServicesSection()
+    }
+
+    private fun hideFuelStationServicesSection() {
+        val servicesSection = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_servicesSection)
+        servicesSection.visibility = View.GONE
+
+        val serviceSectionSpacer = fuelStationDetailsView.findViewById<View>(R.id.v_serviceSectionSpacer)
+        serviceSectionSpacer.visibility = View.GONE
     }
 
     private fun createServiceChip(service: FuelStationService): Chip {
@@ -134,26 +147,35 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
                 val nsv = v as NestedScrollView
 
                 if (oldScrollY < scrollY
-                    && scrollY == (nsv.getChildAt(0).measuredHeight - nsv.measuredHeight)) {
+                    && scrollY == (nsv.getChildAt(0).measuredHeight - nsv.measuredHeight)
+                    && viewModel.hasMoreReviews()) {
+
                     loadComments()
                 }
             }
     }
 
-    private fun loadComments() {
-        val fragmentManager = childFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
+    private fun initCommentObserver() {
+        viewModel.fuelStationReviews.observe(viewLifecycleOwner) { response ->
+            val fragmentManager = childFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_commentsContainer)
 
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_comments_container)
+            val page = response.body()
 
-        for (i in 0..10) {
-            val commentFragment = FuelStationCommentFragment()
-            fragmentTransaction.add(parent.id, commentFragment)
+            for (comment in page?.data!!) {
+                val commentFragment = FuelStationCommentFragment(comment)
+                fragmentTransaction.add(parent.id, commentFragment)
+            }
+            fragmentTransaction.commitNow()
+
+            if (!viewModel.hasMoreReviews()) hideCommentSectionProgressBar()
         }
-
-        fragmentTransaction.commitNow()
     }
 
+    private fun loadComments() {
+        viewModel.getNextPageOfFuelStationReviews(fuelStationId!!)
+    }
 
     private fun hideCommentSectionProgressBar() {
         val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_comment_load)

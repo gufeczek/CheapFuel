@@ -7,4 +7,6 @@ namespace Domain.Interfaces.Repositories;
 public interface IReviewRepository : IBaseRepository<Review>
 {
     Task<Page<Review>> GetAllForFuelStationAsync(long fuelStationId, PageRequest<Review> pageRequest);
+
+    Task<bool> ExistsByFuelStationAndUsername(long fuelStationId, string username);
 }
