@@ -19,4 +19,11 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
         
         return await Paginate(query, pageRequest);
     }
+
+    public async Task<bool> ExistsByFuelStationAndUsername(long fuelStationId, string username)
+    {
+        return await Context.Reviews
+            .Where(r => r.User!.Username == username && r.FuelStationId == fuelStationId)
+            .AnyAsync();
+    }
 }
