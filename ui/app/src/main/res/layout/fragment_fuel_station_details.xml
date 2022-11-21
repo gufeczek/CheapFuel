@@ -175,12 +175,13 @@
                         android:text="@string/comments_uppercase"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_rateFuelStation"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Oceń" />
+                        android:text="@string/rate" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

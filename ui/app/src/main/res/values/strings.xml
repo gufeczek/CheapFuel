@@ -42,4 +42,8 @@
     <string name="fuel_price_uppercase">CENY PALIW</string>
     <string name="services_uppercase">USŁUGI</string>
     <string name="comments_uppercase">KOMENTARZE</string>
+    <string name="rate">Oceń</string>
+    <string name="publish">Opublikuj</string>
+    <string name="published">Opublikowano</string>
+    <string name="an_error_occurred">Wystąpił błąd</string>
 </resources>

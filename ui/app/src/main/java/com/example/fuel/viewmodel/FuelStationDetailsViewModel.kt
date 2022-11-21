@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fuel.R
-import com.example.fuel.model.Review
+import com.example.fuel.model.review.Review
 import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.Price
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
+import com.example.fuel.model.review.NewReview
+import com.example.fuel.model.review.UpdateReview
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.utils.converters.Converter
@@ -27,6 +29,11 @@ class FuelStationDetailsViewModel(
 
     var fuelStationDetails: MutableLiveData<Response<FuelStationDetails>> = MutableLiveData()
     var fuelStationReviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
+    var userReview: MutableLiveData<Response<Review>> = MutableLiveData()
+    var newUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
+    var deleteUserReview: MutableLiveData<Response<Void>> = MutableLiveData()
+
+    var fuelStationId: Long? = null
 
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
@@ -85,8 +92,55 @@ class FuelStationDetailsViewModel(
 
     fun hasReviewBeenEdited(review: Review): Boolean = review.createdAt != review.updatedAt
 
+    fun isReviewValid(rate: Int, content: String?): Boolean =
+        rate in 1..5 && (content == null || content.length <= 300)
+
+    fun getUserReview(fuelStationId: Long) {
+        viewModelScope.launch {
+            userReview.value = reviewRepository.getUserReviewOfFuelStation(fuelStationId)
+        }
+    }
+
+    fun createNewReviewForUser(rate: Int, content: String?) {
+        if (fuelStationDetails.value?.body()?.id == null) return
+
+        val newReview = NewReview(rate, content, fuelStationDetails.value!!.body()!!.id)
+        viewModelScope.launch {
+            newUserReview.value = reviewRepository.createFuelStationReview(newReview)
+            userReview.value = newUserReview.value
+        }
+    }
+
+    fun editUserReview(rate: Int, content: String?) {
+        if (userReview.value?.body() == null) return
+
+        val reviewId = userReview.value!!.body()!!.id
+        val review = UpdateReview(rate, content)
+
+        viewModelScope.launch {
+            newUserReview.value = reviewRepository.editFuelStationReview(reviewId, review)
+            userReview.value = newUserReview.value
+        }
+    }
+
+    fun deleteUserReview() {
+        if (userReview.value?.body() == null) return
+
+        val reviewId = userReview.value!!.body()!!.id
+        viewModelScope.launch {
+            deleteUserReview.value = reviewRepository.deleteFuelStationReview(reviewId)
+
+            if (deleteUserReview.value?.isSuccessful == true) {
+                userReview = MutableLiveData()
+            }
+        }
+    }
+
     fun clear() {
         fuelStationDetails = MutableLiveData()
         fuelStationReviews = MutableLiveData()
+        userReview = MutableLiveData()
+        newUserReview = MutableLiveData()
+        deleteUserReview = MutableLiveData()
     }
 }

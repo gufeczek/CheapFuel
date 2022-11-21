@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
-import com.example.fuel.model.Review
+import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
