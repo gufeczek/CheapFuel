@@ -15,6 +15,7 @@ import com.example.fuel.model.review.UpdateReview
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.utils.converters.Converter
+import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
 import com.example.fuel.utils.extension.DurationExtension.Companion.toMonths
 import com.example.fuel.utils.extension.DurationExtension.Companion.toYears
 import kotlinx.coroutines.launch
@@ -90,7 +91,10 @@ class FuelStationDetailsViewModel(
 
     fun hasReviewContent(review: Review): Boolean = review.content != null
 
-    fun hasReviewBeenEdited(review: Review): Boolean = review.createdAt != review.updatedAt
+    fun hasReviewBeenEdited(review: Review): Boolean =
+        !Duration
+        .between(review.createdAt.toInstant(), review.updatedAt.toInstant())
+        .areClose(Duration.ofMillis(500))
 
     fun isReviewValid(rate: Int, content: String?): Boolean =
         rate in 1..5 && (content == null || content.length <= 300)

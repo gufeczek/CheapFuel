@@ -65,7 +65,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             initReviewObserver()
             initUserReview()
             initReviewSection()
-            initAddCommentButton()
+            initAddReviewButton()
             initNewReviewObserver()
         }
     }
@@ -182,6 +182,11 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun hideCommentSectionProgressBar() {
+        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_comment_load)
+        progressBar.visibility = View.GONE
+    }
+
     private fun initNewReviewObserver() {
         viewModel.newUserReview.observe(viewLifecycleOwner) { response ->
             val text = if (response.isSuccessful) resources.getString(R.string.published)
@@ -200,7 +205,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         viewModel.userReview.observe(viewLifecycleOwner) { response ->
             if (response.isSuccessful && response.body() != null) {
                 addUserReviewToReviewSection(response.body()!!)
-                Log.d("Tutja", "User review")
+                hideAddReviewButton()
             }
         }
     }
@@ -216,13 +221,13 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fragmentTransaction.commitNow()
     }
 
-    private fun hideCommentSectionProgressBar() {
-        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_comment_load)
-        progressBar.visibility = View.GONE
+    private fun hideAddReviewButton() {
+        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
+        button.visibility = View.GONE
     }
 
-    private fun initAddCommentButton() {
-        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation);
+    private fun initAddReviewButton() {
+        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
         button.setOnClickListener {
             val reviewEditorFragment = FuelStationReviewEditorFragment(false)
             reviewEditorFragment.show(requireFragmentManager(), FuelStationReviewEditorFragment.TAG)
