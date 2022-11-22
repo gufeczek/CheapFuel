@@ -32,9 +32,8 @@ class FuelStationDetailsViewModel(
     var fuelStationReviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
     var userReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var newUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
+    var updateUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var deleteUserReview: MutableLiveData<Response<Void>> = MutableLiveData()
-
-    var fuelStationId: Long? = null
 
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
@@ -111,7 +110,6 @@ class FuelStationDetailsViewModel(
         val newReview = NewReview(rate, content, fuelStationDetails.value!!.body()!!.id)
         viewModelScope.launch {
             newUserReview.value = reviewRepository.createFuelStationReview(newReview)
-            userReview.value = newUserReview.value
         }
     }
 
@@ -122,8 +120,7 @@ class FuelStationDetailsViewModel(
         val review = UpdateReview(rate, content)
 
         viewModelScope.launch {
-            newUserReview.value = reviewRepository.editFuelStationReview(reviewId, review)
-            userReview.value = newUserReview.value
+            updateUserReview.value = reviewRepository.editFuelStationReview(reviewId, review)
         }
     }
 
@@ -133,10 +130,6 @@ class FuelStationDetailsViewModel(
         val reviewId = userReview.value!!.body()!!.id
         viewModelScope.launch {
             deleteUserReview.value = reviewRepository.deleteFuelStationReview(reviewId)
-
-            if (deleteUserReview.value?.isSuccessful == true) {
-                userReview = MutableLiveData()
-            }
         }
     }
 

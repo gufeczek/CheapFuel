@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
+import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -20,7 +21,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
 
-class FuelStationReviewEditorFragment(val editing: Boolean) : BottomSheetDialogFragment() {
+class FuelStationReviewEditorFragment(val review: Review?, private val editing: Boolean) : BottomSheetDialogFragment() {
     private lateinit var fuelStationReviewEditorFragment: View
     private lateinit var viewModel: FuelStationDetailsViewModel
 
@@ -32,7 +33,7 @@ class FuelStationReviewEditorFragment(val editing: Boolean) : BottomSheetDialogF
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
         fuelStationReviewEditorFragment =  inflater.inflate(R.layout.fragment_fuel_station_review_editor, container, false)
 
-        setReviewObserver()
+        setInitialData()
         initPublishButton()
         initRatingBar()
         initReviewContentTextInput()
@@ -76,14 +77,11 @@ class FuelStationReviewEditorFragment(val editing: Boolean) : BottomSheetDialogF
         contentInput.addTextChangedListener { checkRequiredFields() }
     }
 
-    private fun setReviewObserver() {
-        viewModel.userReview.observe(viewLifecycleOwner) { response ->
-            if (response.body() == null) return@observe
+    private fun setInitialData() {
+        if (review == null) return
 
-            val review = response.body()
-            setInitialRate(review!!.rate)
-            setInitialContent(review.content)
-        }
+        setInitialRate(review.rate)
+        setInitialContent(review.content)
     }
 
     private fun setInitialRate(rate: Int) {

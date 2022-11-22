@@ -67,6 +67,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             initReviewSection()
             initAddReviewButton()
             initNewReviewObserver()
+            initEditedReviewObserver()
+            initDeleteUserReviewObserver()
         }
     }
 
@@ -162,6 +164,10 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             }
     }
 
+    private fun loadReviews() {
+        viewModel.getNextPageOfFuelStationReviews(fuelStationId!!)
+    }
+
     private fun initReviewObserver() {
         viewModel.fuelStationReviews.observe(viewLifecycleOwner) { response ->
             val fragmentManager = childFragmentManager
@@ -182,13 +188,10 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun hideReviewSectionProgressBar() {
-        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
-        progressBar.visibility = View.GONE
-    }
-
     private fun initNewReviewObserver() {
         viewModel.newUserReview.observe(viewLifecycleOwner) { response ->
+            viewModel.getUserReview(fuelStationId!!)
+
             val text = if (response.isSuccessful) resources.getString(R.string.published)
                        else resources.getString(R.string.an_error_occurred)
             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
@@ -196,8 +199,15 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun loadReviews() {
-        viewModel.getNextPageOfFuelStationReviews(fuelStationId!!)
+    private fun initEditedReviewObserver() {
+        viewModel.updateUserReview.observe(viewLifecycleOwner) { response ->
+            viewModel.getUserReview(fuelStationId!!)
+
+            val text = if (response.isSuccessful) resources.getString(R.string.edited_review)
+                       else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     private fun initUserReview() {
@@ -213,7 +223,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private fun addUserReviewToReviewSection(review: Review) {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_userReviewContainer)
+        parent.removeAllViews()
 
         val reviewFragment = FuelStationReviewFragment(review)
         fragmentTransaction.add(parent.id, reviewFragment)
@@ -221,15 +232,29 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fragmentTransaction.commitNow()
     }
 
-    private fun hideAddReviewButton() {
-        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
-        button.visibility = View.GONE
+    private fun initDeleteUserReviewObserver() {
+        viewModel.deleteUserReview.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                removeUserReviewFromReviewSection()
+                showAddReviewButton()
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.deleted)
+                       else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun removeUserReviewFromReviewSection() {
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_userReviewContainer)
+        parent.removeAllViews()
     }
 
     private fun initAddReviewButton() {
         val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
         button.setOnClickListener {
-            val reviewEditorFragment = FuelStationReviewEditorFragment(false)
+            val reviewEditorFragment = FuelStationReviewEditorFragment(null, false)
             reviewEditorFragment.show(requireFragmentManager(), FuelStationReviewEditorFragment.TAG)
         }
     }
@@ -248,6 +273,21 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
         val progressSpinner = fuelStationDetailsView.findViewById<ProgressBar>(R.id.fuel_station_details_loading_spinner)
         progressSpinner.visibility = View.VISIBLE
+    }
+
+    private fun showAddReviewButton() {
+        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
+        button.visibility = View.VISIBLE
+    }
+
+    private fun hideAddReviewButton() {
+        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
+        button.visibility = View.GONE
+    }
+
+    private fun hideReviewSectionProgressBar() {
+        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
+        progressBar.visibility = View.GONE
     }
 
     override fun onDestroyView() {

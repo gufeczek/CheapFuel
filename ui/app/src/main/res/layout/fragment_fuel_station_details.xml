@@ -186,12 +186,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llc_userReviewContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/llc_reviewsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:orientation="vertical" />
 
                 <ProgressBar
                     android:id="@+id/pb_reviewsLoad"
