@@ -155,7 +155,7 @@
                 android:background="@color/light_gray"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llc_commentsSection"
+                android:id="@+id/llc_reviewsSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -186,7 +186,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/llc_commentsContainer"
+                    android:id="@+id/llc_reviewsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -194,7 +194,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <ProgressBar
-                    android:id="@+id/pb_comment_load"
+                    android:id="@+id/pb_reviewsLoad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:indeterminateTint="@color/dark_blue"

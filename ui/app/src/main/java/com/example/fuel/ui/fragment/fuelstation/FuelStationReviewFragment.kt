@@ -13,9 +13,9 @@ import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
-class FuelStationCommentFragment(private val review: Review) : Fragment() {
+class FuelStationReviewFragment(private val review: Review) : Fragment() {
     private lateinit var viewModel: FuelStationDetailsViewModel
-    private lateinit var fuelStationCommentView: View
+    private lateinit var fuelStationReviewView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,31 +23,31 @@ class FuelStationCommentFragment(private val review: Review) : Fragment() {
     ): View {
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
-        fuelStationCommentView = inflater.inflate(R.layout.fragment_fuel_station_comment, container, false)
+        fuelStationReviewView = inflater.inflate(R.layout.fragment_fuel_station_review, container, false)
 
         initWithData()
 
-        return fuelStationCommentView
+        return fuelStationReviewView
     }
 
     private fun initWithData() {
-        val reviewAuthorTextView = fuelStationCommentView.findViewById<TextView>(R.id.tv_review_author)
+        val reviewAuthorTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_author)
         reviewAuthorTextView.text = review.username
 
-        val ratingBar = fuelStationCommentView.findViewById<AppCompatRatingBar>(R.id.acrb_review_rating)
+        val ratingBar = fuelStationReviewView.findViewById<AppCompatRatingBar>(R.id.acrb_review_rating)
         ratingBar.rating = review.rate.toFloat()
 
-        val createdAtTextView = fuelStationCommentView.findViewById<TextView>(R.id.tv_review_created_at)
+        val createdAtTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_created_at)
         createdAtTextView.text = viewModel.parseReviewDate(review.createdAt, resources)
 
         if (viewModel.hasReviewContent(review)) {
-            val contentTextView = fuelStationCommentView.findViewById<TextView>(R.id.tv_review_content)
+            val contentTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_content)
             contentTextView.text = review.content
             contentTextView.visibility = View.VISIBLE
         }
 
         if (viewModel.hasReviewBeenEdited(review)) {
-            val updatedAtTextView = fuelStationCommentView.findViewById<TextView>(R.id.tv_review_updated_at)
+            val updatedAtTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_updated_at)
             updatedAtTextView.text = resources.getString(R.string.edited, viewModel.parseReviewDate(review.updatedAt, resources))
             updatedAtTextView.visibility = View.VISIBLE
         }

@@ -49,6 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
+                        android:hint="@string/express_your_opinion"
                         app:layout_constraintTop_toBottomOf="@id/acrb_rateFuelStation">
 
                     </com.google.android.material.textfield.TextInputEditText>

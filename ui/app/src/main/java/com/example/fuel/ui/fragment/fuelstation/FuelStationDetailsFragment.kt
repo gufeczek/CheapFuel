@@ -166,24 +166,24 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         viewModel.fuelStationReviews.observe(viewLifecycleOwner) { response ->
             val fragmentManager = childFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_commentsContainer)
+            val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
 
             val page = response.body()
 
-            for (comment in page?.data!!) {
-                if (comment.username == Auth.username) continue
+            for (review in page?.data!!) {
+                if (review.username == Auth.username) continue
 
-                val commentFragment = FuelStationCommentFragment(comment)
-                fragmentTransaction.add(parent.id, commentFragment)
+                val reviewFragment = FuelStationReviewFragment(review)
+                fragmentTransaction.add(parent.id, reviewFragment)
             }
             fragmentTransaction.commitNow()
 
-            if (!viewModel.hasMoreReviews()) hideCommentSectionProgressBar()
+            if (!viewModel.hasMoreReviews()) hideReviewSectionProgressBar()
         }
     }
 
-    private fun hideCommentSectionProgressBar() {
-        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_comment_load)
+    private fun hideReviewSectionProgressBar() {
+        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
         progressBar.visibility = View.GONE
     }
 
@@ -213,10 +213,10 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private fun addUserReviewToReviewSection(review: Review) {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_commentsContainer)
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
 
-        val commentFragment = FuelStationCommentFragment(review)
-        fragmentTransaction.add(parent.id, commentFragment)
+        val reviewFragment = FuelStationReviewFragment(review)
+        fragmentTransaction.add(parent.id, reviewFragment)
 
         fragmentTransaction.commitNow()
     }
