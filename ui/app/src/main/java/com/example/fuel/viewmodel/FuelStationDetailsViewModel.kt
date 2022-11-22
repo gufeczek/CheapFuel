@@ -138,6 +138,7 @@ class FuelStationDetailsViewModel(
         fuelStationReviews = MutableLiveData()
         userReview = MutableLiveData()
         newUserReview = MutableLiveData()
+        updateUserReview = MutableLiveData()
         deleteUserReview = MutableLiveData()
     }
 }
