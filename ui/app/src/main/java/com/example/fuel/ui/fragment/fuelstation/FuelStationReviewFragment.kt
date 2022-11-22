@@ -99,7 +99,7 @@ class FuelStationReviewFragment(private val review: Review) : Fragment() {
     }
 
     private fun askForDeleteConfirmation() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
             .setMessage(resources.getString(R.string.ask_if_delete))
             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                 viewModel.deleteUserReview()

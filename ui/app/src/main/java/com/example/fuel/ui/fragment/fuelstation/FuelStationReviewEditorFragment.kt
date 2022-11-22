@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.widget.AppCompatRatingBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.model.review.Review
+import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -37,6 +39,7 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
         initPublishButton()
         initRatingBar()
         initReviewContentTextInput()
+        initKeyboardHiding()
 
         return fuelStationReviewEditorFragment
     }
@@ -112,6 +115,11 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
 
             dismiss()
         }
+    }
+
+    private fun initKeyboardHiding() {
+        val main = fuelStationReviewEditorFragment.findViewById<ConstraintLayout>(R.id.cl_reviewEditorContainer)
+        main.setOnClickListener { view -> view.hideKeyboard() }
     }
 
     private fun getRate(): Int {
