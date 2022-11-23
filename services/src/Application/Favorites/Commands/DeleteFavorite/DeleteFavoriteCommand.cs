@@ -2,4 +2,4 @@
 
 namespace Application.Favorites.Commands.DeleteFavorite;
 
-public sealed record DeleteFavoriteCommand(long FuelStationId) : IRequest<Unit>;
+public sealed record DeleteFavoriteCommand(long? FuelStationId) : IRequest<Unit>;

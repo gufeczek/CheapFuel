@@ -12,6 +12,7 @@ public class FavoriteRepository : Repository<Favorite>, IFavoriteRepository
     public async Task<Favorite?> GetByUsernameAndFuelStationIdAsync(string username, long fuelStationId)
     {
         return await Context.Favorites
+            .Include(f => f.User)
             .Where(f => f.User!.Username == username && f.FuelStationId == fuelStationId)
             .FirstOrDefaultAsync();
     }

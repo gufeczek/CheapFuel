@@ -10,7 +10,7 @@ namespace WebAPI.Controllers.Favourite;
 [ApiController]
 [AuthorizeUser]
 [Route("api/v1/favourites")]
-public class FavouriteCommandController : ControllerBase
+public sealed class FavouriteCommandController : ControllerBase
 {
     private readonly IMediator _mediator;
 

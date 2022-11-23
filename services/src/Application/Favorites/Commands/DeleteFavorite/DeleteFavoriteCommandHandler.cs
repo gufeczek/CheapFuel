@@ -8,10 +8,10 @@ namespace Application.Favorites.Commands.DeleteFavorite;
 
 public sealed class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteCommand, Unit>
 {
-    private IUnitOfWork _unitOfWork;
-    private IUserRepository _userRepository;
-    private IFuelStationRepository _fuelStationRepository;
-    private IFavoriteRepository _favoriteRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
+    private readonly IFuelStationRepository _fuelStationRepository;
+    private readonly IFavoriteRepository _favoriteRepository;
     private readonly IUserPrincipalService _userPrincipalService;
 
     public DeleteFavoriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService)
@@ -33,12 +33,12 @@ public sealed class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavorit
             throw new NotFoundException($"User not found for username = {username}");
         }
 
-        if (!await _fuelStationRepository.ExistsById(request.FuelStationId))
+        if (!await _fuelStationRepository.ExistsById((long)request.FuelStationId!))
         {
             throw new NotFoundException($"Fuel station not found for id = {request.FuelStationId}");
         }
 
-        var userFavourite = await _favoriteRepository.GetByUsernameAndFuelStationIdAsync(username, request.FuelStationId)
+        var userFavourite = await _favoriteRepository.GetByUsernameAndFuelStationIdAsync(username, (long)request.FuelStationId!)
                             ?? throw new NotFoundException($"User with username {username} does not have fuel station with id {request.FuelStationId} in his favourites");
         
         _favoriteRepository.Remove(userFavourite);
