@@ -9,7 +9,10 @@
     <color name="white">#FFFFFF</color>
     <color name="et_gray">#e0e0e0</color>
     <color name="light_gray">#eaeaea</color>
+    <color name="gray">#41566b</color>
     <color name="dark_gray">#6F7378</color>
+    <color name="light_blue">#ebf8ff</color>
+    <color name="dark_blue">#0b59cf</color>
     <color name="red">#FF0000</color>
     <color name="light_red">#E60000</color>
     <color name="facebook">#3e5e9d</color>

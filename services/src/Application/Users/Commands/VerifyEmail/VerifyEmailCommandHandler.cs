@@ -1,13 +1,13 @@
 ﻿using Application.Common.Authentication;
 using Application.Common.Exceptions;
-using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Interfaces;
-using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using MediatR;
 
 namespace Application.Users.Commands.VerifyEmail;
 
-public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand>
+public sealed class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailVerificationTokenRepository _emailVerificationTokenRepository;
@@ -20,7 +20,6 @@ public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand>
         _userPrincipalService = userPrincipalService;
     }
 
-
     public async Task<Unit> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
         var username = _userPrincipalService.GetUserName() 
@@ -28,7 +27,7 @@ public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand>
         var token = await _emailVerificationTokenRepository.GetUserToken(username) 
                     ?? throw new NotFoundException($"Not found email verification token for user {username}.");
 
-        var expired = DateTime.Now - token.CreatedAt > TimeSpan.FromHours(2);
+        var expired = DateTime.UtcNow - token.CreatedAt > TimeSpan.FromHours(2);
         if (token.Count > 2 || expired)
         {
             throw new BadRequestException("Token has expired");

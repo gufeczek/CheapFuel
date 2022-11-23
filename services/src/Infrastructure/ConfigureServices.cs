@@ -4,12 +4,17 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 using Infrastructure.Common.Services.Email;
 using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Policies.EmailVerifiedRequirement;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Pipeline;
+using Infrastructure.Persistence.Pipeline.Operations;
+using Infrastructure.Persistence.Pipeline.Operations.Interfaces;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +51,15 @@ public static class ConfigureServices
         }
     }
 
+    public static void AddBeforeSaveChangesPipeline(this IServiceCollection services)
+    {
+        services.AddScoped<IAddCreationInfoOperation, AddCreationInfoOperation>();
+        services.AddScoped<IAddUpdateInfoOperation, AddUpdateInfoOperation>();
+        services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperation>();
+
+        services.AddScoped<IBeforeSaveChangesPipelineBuilder, BeforeSaveChangesPipelineBuilder>();
+    }
+
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IFavoriteRepository, FavoriteRepository>();
@@ -61,6 +75,7 @@ public static class ConfigureServices
         services.AddScoped<IStationChainRepository, StationChainRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IEmailVerificationTokenRepository, EmailVerificationTokenRepository>();
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

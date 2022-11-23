@@ -21,7 +21,7 @@ public class GetAllStationChainsQueryHandler : IRequestHandler<GetAllStationChai
     
     public async Task<Page<StationChainDto>> Handle(GetAllStationChains.GetAllStationChainsQuery request, CancellationToken cancellationToken)
     {
-        var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new StationChainColumnSelector());
+        var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new StationChainDtoColumnSelector());
         var result = await _stationChainRepository.GetAllAsync(pageRequest);
         return Page<StationChainDto>.From(result, _mapper.Map<IEnumerable<StationChainDto>>(result.Data));
     }

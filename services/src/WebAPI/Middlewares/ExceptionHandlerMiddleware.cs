@@ -48,7 +48,9 @@ public class ExceptionHandlerMiddleware : IMiddleware
             NotFoundException notFoundException => HandleNotFoundException(notFoundException),
             ConflictException conflictException => HandleConflictException(conflictException),
             UnauthorizedException unauthorizedException => HandleUnauthorizedException(unauthorizedException),
+            ForbiddenException forbiddenException => HandleForbiddenException(forbiddenException),
             ValidationException validationException => HandleValidationException(validationException),
+            FilterValidationException filterValidationException => HandleFilterValidationException(filterValidationException),
             _ => HandleUnexpectedException(e)
         };
 
@@ -101,6 +103,17 @@ public class ExceptionHandlerMiddleware : IMiddleware
         );
     }
 
+    private ErrorMessage HandleForbiddenException(ForbiddenException e)
+    {
+        return new ErrorMessage
+        (
+            StatusCode: HttpStatusCode.Forbidden,
+            Title: "Forbidden",
+            Details: e.Message,
+            Timestamp: DateTime.UtcNow
+        );
+    }
+
     private ErrorMessage HandleValidationException(ValidationException e)
     {
         var failures = e.Errors
@@ -121,6 +134,17 @@ public class ExceptionHandlerMiddleware : IMiddleware
             Details: "Validation failed",
             Timestamp: DateTime.UtcNow,
             Violations: failures
+        );
+    }
+
+    private ErrorMessage HandleFilterValidationException(FilterValidationException e)
+    {
+        return new ErrorMessage
+        (
+            StatusCode: HttpStatusCode.BadRequest,
+            Title: "Bad request",
+            Details: string.Join("\n", e.ValidationErrors),
+            Timestamp: DateTime.UtcNow
         );
     }
 

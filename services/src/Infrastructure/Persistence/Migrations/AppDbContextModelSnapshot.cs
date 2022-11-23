@@ -19,38 +19,6 @@ namespace Infrastructure.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Domain.Entities.EmailVerificationToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Count")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("varchar(6)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("EmailVerificationTokens");
-                });
-
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
                 {
                     b.Property<long>("UserId")
@@ -137,7 +105,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -150,11 +118,15 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("FuelStationId");
 
                     b.HasIndex("FuelTypeId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("Status", "FuelTypeId", "Available", "Price");
 
                     b.ToTable("FuelPrices");
                 });
@@ -172,7 +144,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -406,6 +377,70 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("StationChains");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Tokens.EmailVerificationToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Count")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmailVerificationTokens");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.PasswordResetToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Count")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PasswordResetTokens");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -474,17 +509,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Domain.Entities.EmailVerificationToken", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
@@ -526,7 +550,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.FuelPrice", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("FuelPrices")
                         .HasForeignKey("FuelStationId");
 
                     b.HasOne("Domain.Entities.FuelType", "FuelType")
@@ -596,13 +620,13 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<decimal>("Latitude")
-                                .HasPrecision(10, 8)
-                                .HasColumnType("decimal(10,8)")
+                                .HasPrecision(17, 15)
+                                .HasColumnType("decimal(17,15)")
                                 .HasColumnName("Latitude");
 
                             b1.Property<decimal>("Longitude")
-                                .HasPrecision(11, 8)
-                                .HasColumnType("decimal(11,8)")
+                                .HasPrecision(17, 15)
+                                .HasColumnType("decimal(17,15)")
                                 .HasColumnName("Longitude");
 
                             b1.HasKey("FuelStationId");
@@ -672,7 +696,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.ServiceAtStation", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("ServiceAtStations")
                         .HasForeignKey("FuelStationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -688,9 +712,35 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Tokens.EmailVerificationToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.PasswordResetToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.FuelStation", b =>
                 {
+                    b.Navigation("FuelPrices");
+
                     b.Navigation("OpeningClosingTimes");
+
+                    b.Navigation("ServiceAtStations");
                 });
 #pragma warning restore 612, 618
         }

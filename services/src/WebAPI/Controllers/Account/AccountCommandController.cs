@@ -1,8 +1,11 @@
 ﻿using Application.Models;
 using Application.Users.Commands.AuthenticateUser;
+using Application.Users.Commands.ChangePassword;
 using Application.Users.Commands.ChangeUserRole;
 using Application.Users.Commands.GenerateEmailVerificationToken;
+using Application.Users.Commands.GeneratePasswordResetToken;
 using Application.Users.Commands.RegisterUser;
+using Application.Users.Commands.ResetPassword;
 using Application.Users.Commands.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +16,7 @@ namespace WebAPI.Controllers.Account;
 
 [ApiController]
 [Route("api/v1/accounts")]
-public class AccountCommandController : ControllerBase
+public sealed class AccountCommandController : ControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -30,7 +33,7 @@ public class AccountCommandController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<ActionResult<string>> LoginAsync([FromBody] AuthenticateUserCommand command)
+    public async Task<ActionResult<JwtTokenDto>> LoginAsync([FromBody] AuthenticateUserCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
@@ -57,6 +60,28 @@ public class AccountCommandController : ControllerBase
     public async Task<ActionResult> GenerateEmailAddressVerificationToken()
     {
         await _mediator.Send(new GenerateEmailVerificationTokenCommand());
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("generate-password-reset-token")]
+    public async Task<ActionResult> GeneratePasswordResetToken([FromBody] GeneratePasswordResetTokenCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+    {
+        await _mediator.Send(command);
         return Ok();
     }
 }

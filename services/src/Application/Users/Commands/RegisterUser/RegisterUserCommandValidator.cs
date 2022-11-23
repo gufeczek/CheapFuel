@@ -6,15 +6,9 @@ namespace Application.Users.Commands.RegisterUser;
 public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     private const string AllowedSpecialCharactersForUsername = "._-";
-    private const string AllowedSpecialCharactersForPassword = @"!#$%&'()*+,-.:;<=>?@[]^_`{}|~";
-
     private const string AllowedCharactersForUsernameRegex = @"^[a-zA-Z0-9._-]+$";
-    private const string AllowedCharactersForPasswordRegex = @"^[a-zA-Z0-9!#$%&'()*+,-.:;<=>?@\[\]^_`{}|~]+$";
 
     private const string LettersAndDigitsRegex = "[a-zA-Z0-9]";
-    private const string LowercaseLettersRegex = "[a-z]";
-    private const string UppercaseLettersRegex = "[A-Z]";
-    private const string DigitsRegex = "[0-9]";
 
     public RegisterUserCommandValidator()
     {
@@ -37,19 +31,7 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
             .MaximumLength(256);
         
         RuleFor(r => r.Password)
-            .NotEmpty()
-            .MinimumLength(8)
-            .MaximumLength(32)
-            .Must(password => 
-                password is not null &&
-                Regex.IsMatch(password, LowercaseLettersRegex) &&
-                Regex.IsMatch(password, UppercaseLettersRegex) && 
-                Regex.IsMatch(password, DigitsRegex))
-            .WithMessage("Password must contain at least one number and one uppercase and lowercase letter")
-            .Must(password => 
-                password is not null && 
-                Regex.IsMatch(password, AllowedCharactersForPasswordRegex))
-            .WithMessage($"Password can contain only latin letters, numbers and {AllowedSpecialCharactersForPassword}")
+            .SetValidator(new PasswordValidator())
             .Must((model, password) => 
                 password is not null &&
                 password.Equals(model.ConfirmPassword))

@@ -15,4 +15,20 @@ public abstract class BaseRepository<TEntity> : Repository<TEntity>, IBaseReposi
             .Where(t => t.Id == id)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> ExistsById(long id)
+    {
+        return await Context.Set<TEntity>()
+            .Where(t => t.Id == id)
+            .AnyAsync();
+    }
+
+    public async Task<bool> ExistsAllById(IEnumerable<long> ids)
+    {
+        var validIds = await Context.Set<TEntity>()
+            .Select(x => x.Id)
+            .ToListAsync();
+        
+        return ids.All(id => validIds.Contains(id));
+    }
 }

@@ -80,5 +80,26 @@ namespace Infrastructure.Properties {
                 return ResourceManager.GetString("EmailVerificationTemplate", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional //EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:v=&quot;urn:schemas-microsoft-com:vml&quot; xmlns:o=&quot;urn:schemas-microsoft-com:office:office&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;!--[if gte mso 9]&gt;
+        ///&lt;xml&gt;
+        ///  &lt;o:OfficeDocumentSettings&gt;
+        ///    &lt;o:AllowPNG/&gt;
+        ///    &lt;o:PixelsPerInch&gt;96&lt;/o:PixelsPerInch&gt;
+        ///  &lt;/o:OfficeDocumentSettings&gt;
+        ///&lt;/xml&gt;
+        ///&lt;![endif]--&gt;
+        ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+        ///  &lt;meta name= [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResetPasswordTemplate {
+            get {
+                return ResourceManager.GetString("ResetPasswordTemplate", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Tokens;
 
 namespace Domain.Interfaces;
 
@@ -17,6 +18,7 @@ public interface IUnitOfWork : IDisposable
     IStationChainRepository StationChains { get; }
     IUserRepository Users { get; }
     IEmailVerificationTokenRepository EmailVerificationTokens { get; }
+    IPasswordResetTokenRepository PasswordResetTokenRepository { get; }
 
     Task SaveAsync();
 }

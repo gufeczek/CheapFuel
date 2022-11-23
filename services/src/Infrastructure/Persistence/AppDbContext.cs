@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
-using Application.Common.Authentication;
-using Domain.Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Tokens;
+using Infrastructure.Persistence.Pipeline;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 public sealed class AppDbContext : DbContext
 {
-    private readonly IUserPrincipalService _userPrincipalIdentityService;
+    private readonly BeforeSaveChangesPipeline _beforeSaveChangesPipeline;
     
     public DbSet<FuelType> FuelTypes => Set<FuelType>();
     public DbSet<FuelStationService> Services => Set<FuelStationService>();
@@ -22,11 +22,12 @@ public sealed class AppDbContext : DbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
     public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
-    public AppDbContext(DbContextOptions<AppDbContext> options, IUserPrincipalService userPrincipalIdentityService) 
+    public AppDbContext(DbContextOptions<AppDbContext> options, IBeforeSaveChangesPipelineBuilder builder) 
         : base(options)
     {
-        _userPrincipalIdentityService = userPrincipalIdentityService;
+        _beforeSaveChangesPipeline = builder.Build();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,65 +39,15 @@ public sealed class AppDbContext : DbContext
 
     public override int SaveChanges()
     {
-        BeforeSaveChanges();
+        _beforeSaveChangesPipeline.Invoke(ChangeTracker.Entries());
+        
         return base.SaveChanges();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
-        BeforeSaveChanges();
+        _beforeSaveChangesPipeline.Invoke(ChangeTracker.Entries());
+
         return base.SaveChangesAsync(cancellationToken);
-    }
-
-    private void BeforeSaveChanges()
-    {
-        HandleCreation();
-        HandleUpdate();
-        HandleRemoval();
-    }
-
-    private void HandleCreation()
-    {
-        ChangeTracker.Entries()
-            .Where(e => e.Entity is ICreatable && e.State is EntityState.Added)
-            .Select(e => e.Entity)
-            .Cast<ICreatable>()
-            .ToList()
-            .ForEach(e =>
-            {
-                e.CreatedAt = DateTime.UtcNow;
-                e.CreatedBy = _userPrincipalIdentityService.GetUserPrincipalId();
-            });
-    }
-
-    private void HandleUpdate()
-    {
-        ChangeTracker.Entries()
-            .Where(e => e.Entity is IUpdatable && e.State is EntityState.Added or EntityState.Modified)
-            .Select(e => e.Entity)
-            .Cast<IUpdatable>()
-            .ToList()
-            .ForEach(e =>
-            {
-                e.UpdatedAt = DateTime.UtcNow;
-                e.UpdatedBy =_userPrincipalIdentityService.GetUserPrincipalId();
-            });
-    }
-
-    private void HandleRemoval()
-    {
-        ChangeTracker.Entries()
-            .Where(e => e.Entity is ISoftlyDeletable && e.State is EntityState.Deleted)
-            .ToList()
-            .ForEach(e =>
-            {
-                var permanentEntity = (ISoftlyDeletable)e.Entity;
-
-                permanentEntity.Deleted = true;
-                permanentEntity.DeletedAt = DateTime.UtcNow;
-                permanentEntity.DeletedBy = _userPrincipalIdentityService.GetUserPrincipalId();
-            
-                e.State = EntityState.Modified;
-            });
     }
 }
