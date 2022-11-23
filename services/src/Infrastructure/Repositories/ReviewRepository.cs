@@ -26,4 +26,12 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
             .Where(r => r.User!.Username == username && r.FuelStationId == fuelStationId)
             .AnyAsync();
     }
+
+    public async Task<Review?> GetByFuelStationAndUsername(long fuelStationId, string username)
+    {
+        return await Context.Reviews
+            .Include(r => r.User)
+            .Where(r => r.User!.Username == username && r.FuelStationId == fuelStationId)
+            .FirstOrDefaultAsync();
+    }
 }

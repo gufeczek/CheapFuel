@@ -155,7 +155,7 @@
                 android:background="@color/light_gray"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llc_commentsSection"
+                android:id="@+id/llc_reviewsSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -175,25 +175,30 @@
                         android:text="@string/comments_uppercase"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_rateFuelStation"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Oceń" />
+                        android:text="@string/rate" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/llc_commentsContainer"
+                    android:id="@+id/llc_userReviewContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical" />
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llc_reviewsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
                 <ProgressBar
-                    android:id="@+id/pb_comment_load"
+                    android:id="@+id/pb_reviewsLoad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:indeterminateTint="@color/dark_blue"

@@ -42,4 +42,16 @@
     <string name="fuel_price_uppercase">CENY PALIW</string>
     <string name="services_uppercase">USŁUGI</string>
     <string name="comments_uppercase">KOMENTARZE</string>
+    <string name="rate">Oceń</string>
+    <string name="publish">Opublikuj</string>
+    <string name="published">Opublikowano</string>
+    <string name="edited_review">Edytowano</string>
+    <string name="deleted">Usunięto</string>
+    <string name="ask_if_delete">Czy na pewno chcesz usunąć swoją opinię?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
+    <string name="an_error_occurred">Wystąpił błąd</string>
+    <string name="express_your_opinion">Wyraź swoją opinię</string>
 </resources>
