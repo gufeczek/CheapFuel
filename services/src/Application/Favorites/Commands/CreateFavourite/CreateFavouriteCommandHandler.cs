@@ -7,9 +7,9 @@ using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace Application.Favorites.Commands.CreateFavorite;
+namespace Application.Favorites.Commands.CreateFavourite;
 
-public sealed class CreateFavoriteCommandHandler : IRequestHandler<CreateFavouriteCommand, SimpleUserFavouriteDto>
+public sealed class CreateFavouriteCommandHandler : IRequestHandler<CreateFavouriteCommand, SimpleUserFavouriteDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
@@ -18,7 +18,7 @@ public sealed class CreateFavoriteCommandHandler : IRequestHandler<CreateFavouri
     private readonly IFuelStationRepository _fuelStationRepository;
     private readonly IMapper _mapper;
 
-    public CreateFavoriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService, IMapper mapper)
+    public CreateFavouriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;

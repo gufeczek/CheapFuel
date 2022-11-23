@@ -1,5 +1,5 @@
-﻿using Application.Favorites.Commands.CreateFavorite;
-using Application.Favorites.Commands.DeleteFavorite;
+﻿using Application.Favorites.Commands.CreateFavourite;
+using Application.Favorites.Commands.DeleteFavourite;
 using Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,7 @@ public sealed class FavouriteCommandController : ControllerBase
     [HttpDelete("{fuelStationId}")]
     public async Task<IActionResult> DeleteFavourite([FromRoute] long fuelStationId)
     {
-        await _mediator.Send(new DeleteFavoriteCommand(fuelStationId));
+        await _mediator.Send(new DeleteFavouriteCommand(fuelStationId));
         return NoContent();
     }
 }

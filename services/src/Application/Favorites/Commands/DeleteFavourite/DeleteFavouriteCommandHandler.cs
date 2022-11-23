@@ -4,9 +4,9 @@ using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace Application.Favorites.Commands.DeleteFavorite;
+namespace Application.Favorites.Commands.DeleteFavourite;
 
-public sealed class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteCommand, Unit>
+public sealed class DeleteFavouriteCommandHandler : IRequestHandler<DeleteFavouriteCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
@@ -14,7 +14,7 @@ public sealed class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavorit
     private readonly IFavoriteRepository _favoriteRepository;
     private readonly IUserPrincipalService _userPrincipalService;
 
-    public DeleteFavoriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService)
+    public DeleteFavouriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
@@ -23,7 +23,7 @@ public sealed class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavorit
         _userPrincipalService = userPrincipalService;
     }
 
-    public async Task<Unit> Handle(DeleteFavoriteCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteFavouriteCommand request, CancellationToken cancellationToken)
     {
         var username = _userPrincipalService.GetUserName()
                        ?? throw new UnauthorizedException("User is not logged in!");
