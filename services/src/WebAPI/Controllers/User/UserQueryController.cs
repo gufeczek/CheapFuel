@@ -12,8 +12,6 @@ namespace WebAPI.Controllers.User;
 
 [ApiController]
 [Route("api/v1/users")]
-
-
 public class UserQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -21,20 +19,18 @@ public class UserQueryController : ControllerBase
     public UserQueryController(IMediator mediator)
     {
         _mediator = mediator;
-        
     }
     
     [HttpGet]
-    [AuthorizeAdmin]
-    public async Task<ActionResult<IEnumerable<UserDetailsDto>>> GetInfoAboutUser([FromQuery] string pageRequestDto)
+    public async Task<ActionResult<UserDto>> GetInfoAboutUser([FromQuery] string username)
     {
-        var userInfo = await _mediator.Send(new GetUserQuery(pageRequestDto));
+        var userInfo = await _mediator.Send(new GetUserQuery(username));
         return Ok(userInfo);
     }
     
     [HttpGet]
     [AuthorizeAdmin]
-    [Route("AllUsers")]
+    [Route("all-users")]
     public async Task<ActionResult<Page<UserDetailsDto>>> GetAllAsync([FromQuery] PageRequestDto pageRequestDto)
     {
         var result = await _mediator.Send(new GetAllUsersQuery(pageRequestDto));
@@ -42,8 +38,8 @@ public class UserQueryController : ControllerBase
     }
     
     [HttpGet]
-    [AuthorizeAdmin]
-    [Route("LoggedUserInfo")]
+    [AuthorizeOwner]
+    [Route("logged-user-info")]
     public async Task<ActionResult<UserDetailsDto>> GetInfoAboutLoggedUser()
     {
         var userInfo = await _mediator.Send(new GetLoggedUserQuery());

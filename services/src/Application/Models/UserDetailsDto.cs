@@ -6,9 +6,7 @@ using Domain.Enums;
 
 namespace Application.Models;
 
-
-
-public sealed record UserDetailsDto(string Username, string? Email, Role Role)
+public sealed record UserDetailsDto()
 {
     public string? Username { get; init; }
     public string? Email { get; init; }

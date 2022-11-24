@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Application.Users.Queries.GetAllUsers;
 
-public sealed class GetAllUserQueryHandler : IRequestHandler<GetAllUsers.GetAllUsersQuery, Page<UserDetailsDto>>
+public sealed class GetAllUserQueryHandler : IRequestHandler<GetAllUsersQuery, Page<UserDetailsDto>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
@@ -18,6 +18,7 @@ public sealed class GetAllUserQueryHandler : IRequestHandler<GetAllUsers.GetAllU
         _userRepository = unitOfWork.Users;
         _mapper = mapper;
     }
+    
     public async Task<Page<UserDetailsDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new UserDetailColumnSelector());

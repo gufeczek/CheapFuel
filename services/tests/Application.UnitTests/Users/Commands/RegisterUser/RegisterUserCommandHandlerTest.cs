@@ -59,7 +59,7 @@ public class RegisterUserCommandHandlerTest
         const string password = "Password";
         const string passwordHash = "Password hash";
 
-        var userDetailsDto = new UserDetailsDto(username, email, Role.User) { Username = username, Email = email, Role = Role.User };
+        var userDetailsDto = new UserDetailsDto() { Username = username, Email = email, Role = Role.User };
         
         var command = new RegisterUserCommand(username, email, password, password);
 

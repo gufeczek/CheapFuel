@@ -17,14 +17,14 @@ public class GetAllUsersQueryValidatorTest
     [Fact]
     public void Validation_passes_for_correct_data()
     {
-        //Arrange
+        // Arrange
         var pageRequest = new PageRequestDto { PageNumber = 1, PageSize = 10, Sort = null };
         var query = new GetAllUsersQuery(pageRequest);
         
-        //Act
+        // Act
         var result = _validator.TestValidate(query);
         
-        //Assert
+        // Assert
         result.ShouldNotHaveValidationErrorFor(r => r.PageRequestDto);
     }
 }

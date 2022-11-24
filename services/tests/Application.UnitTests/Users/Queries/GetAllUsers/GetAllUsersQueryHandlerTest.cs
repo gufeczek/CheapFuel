@@ -40,7 +40,7 @@ public class GetAllUsersQueryHandlerTest
     [Fact]
     public async Task Returns_page_of_users()
     {
-        //Arrange
+        // Arrange
         var pageRequestDto = new PageRequestDto { PageSize = 1, PageNumber = 10, Sort = null };
         var pageRequest = new PageRequest<User>
         {
@@ -62,10 +62,10 @@ public class GetAllUsersQueryHandlerTest
             .Setup(x => x.Map<IEnumerable<UserDetailsDto>>(data))
             .Returns(dataDtos);
         
-        //Act
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
         
-        //Asssert
+        // Asssert
         result.Should().NotBeNull();
         result.Data.Should().NotBeNull();
         result.Data.Should().HaveCount(2);
@@ -74,7 +74,7 @@ public class GetAllUsersQueryHandlerTest
     [Fact]
     public async Task Throw_exception_for_invalid_sort_column()
     {
-        //Arrange
+        // Arrange
         const string column = "Invalid column";
 
         var pageRequestDto = new PageRequestDto()
@@ -85,16 +85,16 @@ public class GetAllUsersQueryHandlerTest
         };
         var query = new GetAllUsersQuery(pageRequestDto);
         
-        //Act
+        // Act
         Func<Task<Page<UserDetailsDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
         
-        //Assert
+        // Assert
         await act
             .Should()
             .ThrowAsync<BadRequestException>();
         
         _userRepository.Verify(x => x.GetAllAsync(It.IsAny<PageRequest<User>>()), Times.Never);
-        _mapper.Verify(x => x.Map<IEnumerable<AddressDto>>(It.IsAny<IEnumerable<Address>>()), Times.Never);
+        _mapper.Verify(x => x.Map<IEnumerable<UserDetailsDto>>(It.IsAny<IEnumerable<User>>()), Times.Never);
     }
 
     private List<User> CreateData() => new()
@@ -119,8 +119,8 @@ public class GetAllUsersQueryHandlerTest
 
     private List<UserDetailsDto> CreateDto(List<User> data) => new()
     {
-        new(data[0].Username!, data[0].Email!, data[0].Role!),
-        new(data[1].Username!, data[1].Email!, data[1].Role)
+        new(),
+        new()
     };
     
     private Page<E> CreatePage<E>(PageRequest<User> pageRequest, IEnumerable<E> data) => new()

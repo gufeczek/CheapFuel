@@ -72,7 +72,7 @@ public class GetUserQueryHandlerTest
             .ReturnsAsync((User)null!);
         
         // Act
-        Func<Task<UserDetailsDto>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
+        Func<Task<UserDto>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
 
         // Assert
         await act
