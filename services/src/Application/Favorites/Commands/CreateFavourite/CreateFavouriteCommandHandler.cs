@@ -14,8 +14,8 @@ public sealed class CreateFavouriteCommandHandler : IRequestHandler<CreateFavour
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
     private readonly IFavoriteRepository _favoriteRepository;
-    private readonly IUserPrincipalService _userPrincipalService;
     private readonly IFuelStationRepository _fuelStationRepository;
+    private readonly IUserPrincipalService _userPrincipalService;
     private readonly IMapper _mapper;
 
     public CreateFavouriteCommandHandler(IUnitOfWork unitOfWork, IUserPrincipalService userPrincipalService, IMapper mapper)
