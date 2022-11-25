@@ -16,7 +16,7 @@ namespace WebAPI.Controllers.Account;
 
 [ApiController]
 [Route("api/v1/accounts")]
-public class AccountCommandController : ControllerBase
+public sealed class AccountCommandController : ControllerBase
 {
     private readonly IMediator _mediator;
 

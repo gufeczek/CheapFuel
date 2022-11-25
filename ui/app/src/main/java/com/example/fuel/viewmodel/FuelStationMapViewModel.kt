@@ -154,10 +154,15 @@ class FuelStationMapViewModel(
         if (fuelStations != null && fuelStations.size > 10) {
             fuelStations.sortedByDescending { it.price }
             val threshold = (fuelStations.size * 0.01).toInt()
+            var minPriceBoundary = fuelStations.size - threshold;
+            var maxPriceBoundary = threshold
+
+            if (minPriceBoundary >= fuelStations.size) minPriceBoundary = fuelStations.size - 1
+            if (maxPriceBoundary < 0) maxPriceBoundary = 0
 
             fuelStatistics = FuelStatistics(
-                fuelStations[fuelStations.size - threshold].price,
-                fuelStations[threshold].price)
+                fuelStations[minPriceBoundary].price,
+                fuelStations[maxPriceBoundary].price)
         }
     }
 

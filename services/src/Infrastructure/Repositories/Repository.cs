@@ -36,6 +36,9 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     protected async Task<Page<TEntity>> Paginate(IQueryable<TEntity> query, PageRequest<TEntity> pageRequest)
     {
+        var totalElements = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling((decimal)totalElements / pageRequest.PageSize);
+
         if (pageRequest.Sort is not null)
         {
             query = pageRequest.Sort.Direction == SortDirection.Asc
@@ -46,10 +49,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         var data = await query.Skip(pageRequest.PageSize * (pageRequest.PageNumber - 1))
             .Take(pageRequest.PageSize)
             .ToListAsync();
-
-        var totalElements = await Context.Set<TEntity>().CountAsync();
-        var totalPages = (int)Math.Ceiling((decimal)totalElements / pageRequest.PageSize);
-
+        
         return new Page<TEntity>
         {
             PageNumber = pageRequest.PageNumber,

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using WebAPI.Common.Authorization.Swagger;
+using WebAPI.Common.Json;
 using WebAPI.Middlewares;
 
 namespace WebAPI;
@@ -13,6 +14,7 @@ public static class ConfigureServices
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
             });
         services.AddEndpointsApiExplorer();
         

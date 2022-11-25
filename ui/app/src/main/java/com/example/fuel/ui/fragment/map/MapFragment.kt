@@ -30,6 +30,7 @@ import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
 import com.example.fuel.model.SimpleMapFuelStation
+import com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment
 import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
 import com.example.fuel.viewmodel.FuelStationMapViewModel
@@ -176,6 +177,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         marker.position = GeoPoint(fuelStation.latitude, fuelStation.longitude)
         marker.setInfoWindow(null)
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        marker.setOnMarkerClickListener { _, _ ->
+            val bundle = Bundle()
+            bundle.putLong("fuelStationId", fuelStation.id)
+
+            val fuelStationDetails = FuelStationDetailsFragment()
+            fuelStationDetails.arguments = bundle
+            fuelStationDetails.show(requireFragmentManager(), FuelStationDetailsFragment.TAG)
+            true
+        }
         return marker
     }
 

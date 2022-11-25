@@ -9,7 +9,7 @@ namespace WebAPI.Controllers.StationChain;
 
 [ApiController]
 [Route("api/v1/station-chains")]
-public class StationChainQueryController : ControllerBase
+public sealed class StationChainQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
 
