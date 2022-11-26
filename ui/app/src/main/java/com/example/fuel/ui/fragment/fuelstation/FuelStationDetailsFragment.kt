@@ -1,13 +1,13 @@
 package com.example.fuel.ui.fragment.fuelstation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
@@ -48,12 +48,13 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fuelStationDetailsView = inflater.inflate(R.layout.fragment_fuel_station_details, container, false)
 
         fuelStationId = requireArguments().getLong("fuelStationId")
-        loadData()
-        Log.d("fuelStation", fuelStationId.toString())
+
+        loadFuelStationData()
+
         return fuelStationDetailsView
     }
 
-    private fun loadData() {
+    private fun loadFuelStationData() {
         viewModel.getFuelStationDetails(fuelStationId!!)
         viewModel.fuelStationDetails.observe(viewLifecycleOwner) { response ->
             val fuelStationData = response.body()
@@ -69,6 +70,9 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             initNewReviewObserver()
             initEditedReviewObserver()
             initDeleteUserReviewObserver()
+            initUserFavouriteObserver()
+            initAddToFavouriteObserver()
+            initRemoveFavouriteObserver()
         }
     }
 
@@ -246,6 +250,43 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun initUserFavouriteObserver() {
+        viewModel.getUserFavourite(fuelStationId!!)
+        viewModel.userFavourite.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                prepareFavouriteButtonToRemoving()
+            } else {
+                prepareFavouriteButtonStateToAdding()
+            }
+        }
+    }
+
+    private fun initAddToFavouriteObserver() {
+        viewModel.addToFavourite.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                prepareFavouriteButtonToRemoving()
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.added_to_favourite)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initRemoveFavouriteObserver() {
+        viewModel.deleteFavourite.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                prepareFavouriteButtonStateToAdding()
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.removed_from_favourite)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
     private fun removeUserReviewFromReviewSection() {
         val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_userReviewContainer)
         parent.removeAllViews()
@@ -257,6 +298,26 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             val reviewEditorFragment = FuelStationReviewEditorFragment(null, false)
             reviewEditorFragment.show(requireFragmentManager(), FuelStationReviewEditorFragment.TAG)
         }
+    }
+
+    private fun prepareFavouriteButtonToRemoving() {
+        val button = fuelStationDetailsView.findViewById<AppCompatImageButton>(R.id.acib_addToFavourite)
+        button.isClickable = true
+        button.setOnClickListener {
+            button.isClickable = false
+            viewModel.removeFuelStationFromFavourite(fuelStationId!!)
+        }
+        button.setImageResource(R.drawable.ic_baseline_star_24)
+    }
+
+    private fun prepareFavouriteButtonStateToAdding() {
+        val button = fuelStationDetailsView.findViewById<AppCompatImageButton>(R.id.acib_addToFavourite)
+        button.isClickable = true
+        button.setOnClickListener {
+            button.isClickable = false
+            viewModel.addFuelStationToFavourite(fuelStationId!!)
+        }
+        button.setImageResource(R.drawable.ic_baseline_star_border_24)
     }
 
     private fun showLayout() {

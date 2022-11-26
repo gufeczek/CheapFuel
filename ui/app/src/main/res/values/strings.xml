@@ -54,4 +54,6 @@
     <string name="delete">Usuń</string>
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="express_your_opinion">Wyraź swoją opinię</string>
+    <string name="added_to_favourite">Dodano do ulubionych</string>
+    <string name="removed_from_favourite">Usunięto z ulubionych</string>
 </resources>

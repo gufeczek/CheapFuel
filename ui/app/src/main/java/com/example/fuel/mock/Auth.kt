@@ -1,6 +1,6 @@
 package com.example.fuel.mock
 
 object Auth {
-    const val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEwMDEiLCJuYW1laWQiOiJVc2VyIiwicm9sZSI6IlVzZXIiLCJuYmYiOjE2NjkwNTU2NDgsImV4cCI6MTY3MDM1MTY0OCwiaWF0IjoxNjY5MDU1NjQ4LCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIn0.4AjQY2bzzNqWFSoGih5puOKT-1Y-rzKMmLOL8XENIj0"
+    const val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEwMDEiLCJuYW1laWQiOiJVc2VyIiwicm9sZSI6IlVzZXIiLCJuYmYiOjE2NjkzMTQ0MjQsImV4cCI6MTY3MDYxMDQyNCwiaWF0IjoxNjY5MzE0NDI0LCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIn0.Bbj5fDnJwhdj5KqYrXJQPT-IT4PFbKuMxqzH1pIIJ9E"
     const val username = "User"
 }
