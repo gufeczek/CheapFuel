@@ -268,9 +268,9 @@ public class FuelStationQueryControllerData : IPredefinedData
         }
     };
 
-    private static FuelPrice[] FuelPrices() => new[]
+    private static Domain.Entities.FuelPrice[] FuelPrices() => new[]
     {
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.23M,
             Available = true,
@@ -281,7 +281,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 1)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.12M,
             Available = true,
@@ -292,7 +292,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 2)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.43M,
             Available = true,
@@ -303,7 +303,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 3)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.21M,
             Available = true,
@@ -314,7 +314,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 3)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.14M,
             Available = true,
@@ -325,7 +325,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 3.52M,
             Available = true,
@@ -336,7 +336,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 1)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 3.56M,
             Available = true,
@@ -347,7 +347,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 4.56M,
             Available = true,
@@ -358,7 +358,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 4.26M,
             Available = true,
@@ -369,7 +369,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.51M,
             Available = true,
@@ -380,7 +380,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 5)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.54M,
             Available = true,
@@ -391,7 +391,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 2.52M,
             Available = true,
@@ -402,7 +402,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 5)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 4.54M,
             Available = true,
@@ -413,7 +413,7 @@ public class FuelStationQueryControllerData : IPredefinedData
             UserId = AccountsData.UserId,
             CreatedAt = new DateTime(2022, 1, 4)
         },
-        new FuelPrice
+        new Domain.Entities.FuelPrice
         {
             Price = 4.54M,
             Available = true,

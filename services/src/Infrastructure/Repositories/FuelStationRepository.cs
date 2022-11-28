@@ -10,7 +10,7 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
 {
     public FuelStationRepository(AppDbContext context) : base(context) { }
 
-    public async Task<FuelStation?> GetFuelStationWithAllDetails(long id)
+    public async Task<FuelStation?> GetFuelStationWithAllDetailsAsync(long id)
     {
         return await Context.FuelStations
             .Include(fs => fs.StationChain)
@@ -19,6 +19,14 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
                 .ThenInclude(ss => ss.Service)
             .Include(fs => fs.FuelTypes)
                 .ThenInclude(ft => ft.FuelType)
+            .Where(fs => fs.Id == id)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<FuelStation?> GetFuelStationWithFuelTypesAsync(long id)
+    {
+        return await Context.FuelStations
+            .Include(fs => fs.FuelTypes)
             .Where(fs => fs.Id == id)
             .FirstOrDefaultAsync();
     }

@@ -53,7 +53,7 @@ public class GetFuelStationDetailsQueryHandlerTest
         var fuelPrice = GetFuelPrice();
 
         _fuelStationRepository
-            .Setup(x => x.GetFuelStationWithAllDetails(fuelStationId))
+            .Setup(x => x.GetFuelStationWithAllDetailsAsync(fuelStationId))
             .ReturnsAsync(fuelStation);
 
         _fuelPriceRepository
@@ -86,7 +86,7 @@ public class GetFuelStationDetailsQueryHandlerTest
         var query = new GetFuelStationDetailsQuery(fuelStationId);
 
         _fuelStationRepository
-            .Setup(x => x.GetFuelStationWithAllDetails(fuelStationId))
+            .Setup(x => x.GetFuelStationWithAllDetailsAsync(fuelStationId))
             .ReturnsAsync((FuelStation)null!);
         
         // Act
