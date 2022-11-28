@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
+import com.example.fuel.enums.Role
 import com.example.fuel.mock.Auth
 import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
@@ -80,29 +81,71 @@ class FuelStationReviewFragment(private val review: Review) : Fragment() {
         val deleteItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.delete))
 
         editItem.setOnMenuItemClickListener {
-            openReviewEditor()
+            openReviewEditor(viewModel.userReview.value?.body())
             true
         }
         deleteItem.setOnMenuItemClickListener {
-            askForDeleteConfirmation()
+            askForDeleteConfirmationOfOwnedReview()
             true
         }
     }
 
     private fun initActionButtonForReviewOfDifferentUser(popupMenu: PopupMenu) {
-        // TODO: Should be implemented after adding to backend feature to report other users reviews
+        if (Auth.role == Role.ADMIN) {
+            initActionButtonForAdmin(popupMenu)
+        } else {
+            initActionButtonForUser(popupMenu)
+        }
     }
 
-    private fun openReviewEditor() {
-        val reviewEditorFragment = FuelStationReviewEditorFragment(viewModel.userReview.value?.body(), true)
+    private fun initActionButtonForUser(popupMenu: PopupMenu) {
+        val reportItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.report))
+
+        reportItem.setOnMenuItemClickListener {
+            askForReportConfirmation()
+            true
+        }
+    }
+
+    private fun initActionButtonForAdmin(popupMenu: PopupMenu) {
+        val deleteItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.delete))
+
+        deleteItem.setOnMenuItemClickListener {
+            askForDeleteConfirmationOfDifferentUserReview()
+            true
+        }
+    }
+
+    private fun openReviewEditor(review: Review?) {
+        val reviewEditorFragment = FuelStationReviewEditorFragment(review, true)
         reviewEditorFragment.show(requireFragmentManager(), FuelStationReviewEditorFragment.TAG)
     }
 
-    private fun askForDeleteConfirmation() {
+    private fun askForDeleteConfirmationOfOwnedReview() {
         MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
             .setMessage(resources.getString(R.string.ask_if_delete))
             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                 viewModel.deleteUserReview()
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
+    }
+
+    private fun askForDeleteConfirmationOfDifferentUserReview() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(resources.getString(R.string.ask_if_delete_diff_user_review, review.username))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.deleteUserReview(review.id)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
+    }
+
+    private fun askForReportConfirmation() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(resources.getString(R.string.ask_if_report_user, review.username))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                // TODO: Should be implemented after adding to backend feature to report other users reviews
             }
             .setNegativeButton(resources.getString(R.string.no), null)
             .show()

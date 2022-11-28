@@ -48,10 +48,13 @@
     <string name="edited_review">Edytowano</string>
     <string name="deleted">Usunięto</string>
     <string name="ask_if_delete">Czy na pewno chcesz usunąć swoją opinię?</string>
+    <string name="ask_if_delete_diff_user_review">Czy na pewno chcesz usunąć opinię użytkownika %1$s?</string>
+    <string name="ask_if_report_user">Czy na pewno chcesz zgłosić komentarz użytkownika %1$s?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="edit">Edytuj</string>
     <string name="delete">Usuń</string>
+    <string name="report">Zgłoś</string>
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="express_your_opinion">Wyraź swoją opinię</string>
     <string name="added_to_favourite">Dodano do ulubionych</string>
