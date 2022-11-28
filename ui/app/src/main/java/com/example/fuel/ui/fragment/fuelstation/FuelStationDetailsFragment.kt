@@ -70,6 +70,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             initNewReviewObserver()
             initEditedReviewObserver()
             initDeleteUserReviewObserver()
+            initDeleteDiffUserReviewObserver()
             initUserFavouriteObserver()
             initAddToFavouriteObserver()
             initRemoveFavouriteObserver()
@@ -250,6 +251,27 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun initDeleteDiffUserReviewObserver() {
+        viewModel.deleteDiffUserReview.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                refreshReviews()
+                showReviewSectionProgressBar()
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.deleted)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun refreshReviews() {
+        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
+        parent.removeAllViews()
+
+        viewModel.getFirstPageOfFuelStationReviews(fuelStationId!!)
+    }
+
     private fun initUserFavouriteObserver() {
         viewModel.getUserFavourite(fuelStationId!!)
         viewModel.userFavourite.observe(viewLifecycleOwner) { response ->
@@ -344,6 +366,11 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private fun hideAddReviewButton() {
         val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
         button.visibility = View.GONE
+    }
+
+    private fun showReviewSectionProgressBar() {
+        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
+        progressBar.visibility = View.VISIBLE
     }
 
     private fun hideReviewSectionProgressBar() {

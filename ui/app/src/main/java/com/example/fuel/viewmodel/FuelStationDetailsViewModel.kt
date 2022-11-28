@@ -38,6 +38,7 @@ class FuelStationDetailsViewModel(
     var newUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var updateUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var deleteUserReview: MutableLiveData<Response<Void>> = MutableLiveData()
+    var deleteDiffUserReview: MutableLiveData<Response<Void>> = MutableLiveData()
     var userFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var addToFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var deleteFavourite: MutableLiveData<Response<Void>> = MutableLiveData()
@@ -45,6 +46,13 @@ class FuelStationDetailsViewModel(
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
             fuelStationDetails.value = fuelStationRepository.getFuelStationDetails(fuelStationId)
+        }
+    }
+
+    fun getFirstPageOfFuelStationReviews(fuelStationId: Long) {
+        viewModelScope.launch {
+            val pageRequest = PageRequest(1, 10, "CreatedAt", "Desc")
+            fuelStationReviews.value = reviewRepository.getFuelStationReviews(fuelStationId, pageRequest)
         }
     }
 
@@ -146,6 +154,12 @@ class FuelStationDetailsViewModel(
         }
     }
 
+    fun deleteUserReview(reviewId: Long) {
+        viewModelScope.launch {
+            deleteDiffUserReview.value = reviewRepository.deleteFuelStationReview(reviewId)
+        }
+    }
+
     fun addFuelStationToFavourite(fuelStationId: Long) {
         viewModelScope.launch {
             addToFavourite.value = favouriteRepository.addToFavourite(fuelStationId)
@@ -165,5 +179,6 @@ class FuelStationDetailsViewModel(
         newUserReview = MutableLiveData()
         updateUserReview = MutableLiveData()
         deleteUserReview = MutableLiveData()
+        deleteDiffUserReview = MutableLiveData()
     }
 }
