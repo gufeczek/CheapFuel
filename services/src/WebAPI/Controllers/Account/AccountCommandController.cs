@@ -87,8 +87,9 @@ public sealed class AccountCommandController : ControllerBase
     }
 
     [HttpDelete("{username}")]
-    public async Task<ActionResult> Deactivateuser([FromRoute] string username)
+    public async Task<ActionResult> DeactivateUser([FromRoute] string username)
     {
-        throw new NotImplementedException();
+        await _mediator.Send(new DeactivateUserCommand(username));
+        return NoContent();
     }
 }
