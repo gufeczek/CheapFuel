@@ -658,4 +658,80 @@ public class AccountCommandControllerTest : IntegrationTest
             .First(u => u.Username == AccountAdditionalData.UserWithPasswordResetTokenUsername);
         user.Password.Should().Be(AccountsData.DefaultPasswordHash);
     }
+
+    [Fact]
+    public async Task Deactivates_user_account_if_performed_by_logged_user()
+    {
+        // Arrange
+        await this.AuthorizeUser();
+
+        // Act
+        var response = await HttpClient.DeleteAsync($"api/v1/accounts/{AccountsData.UserUsername}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        
+        var user = this.GetAll<User>()
+            .FirstOrDefault(u => u.Username == AccountsData.UserUsername);
+        user.Should().BeNull();
+
+        this.CountAll<User>().Should().Be(AccountsData.InitialUserCount + AccountAdditionalData.InitialUserCount - 1);
+    }
+
+    [Fact]
+    public async Task Deactivates_user_account_if_performed_by_admin()
+    {
+        // Arrange
+        await this.AuthorizeAdmin();
+
+        // Act
+        var response = await HttpClient.DeleteAsync($"api/v1/accounts/{AccountsData.UserUsername}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        
+        var user = this.GetAll<User>()
+            .FirstOrDefault(u => u.Username == AccountsData.UserUsername);
+        user.Should().BeNull();
+
+        this.CountAll<User>().Should().Be(AccountsData.InitialUserCount + AccountAdditionalData.InitialUserCount - 1);
+    }
+    
+    [Fact]
+    public async Task Fails_to_deactivate_user_tries_to_deactivate_not_his_account()
+    {
+        // Arrange
+        await this.AuthorizeUser();
+
+        // Act
+        var response = await HttpClient.DeleteAsync($"api/v1/accounts/{AccountsData.OwnerUsername}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        
+        var user = this.GetAll<User>()
+            .FirstOrDefault(u => u.Username == AccountsData.UserUsername);
+        user.Should().NotBeNull();
+
+        this.CountAll<User>().Should().Be(AccountsData.InitialUserCount + AccountAdditionalData.InitialUserCount);
+    }
+    
+    [Fact]
+    public async Task Fails_to_deactivate_user_if_user_not_found()
+    {
+        // Arrange
+        await this.AuthorizeAdmin();
+
+        // Act
+        var response = await HttpClient.DeleteAsync($"api/v1/accounts/{AccountsData.InvalidUsername}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        
+        var user = this.GetAll<User>()
+            .FirstOrDefault(u => u.Username == AccountsData.UserUsername);
+        user.Should().NotBeNull();
+
+        this.CountAll<User>().Should().Be(AccountsData.InitialUserCount + AccountAdditionalData.InitialUserCount);
+    }
 }
