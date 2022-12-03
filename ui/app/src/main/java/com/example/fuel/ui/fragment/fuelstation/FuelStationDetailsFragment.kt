@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
@@ -27,31 +24,27 @@ import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 
 
 class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentFuelStationDetailsBinding
     private lateinit var viewModel: FuelStationDetailsViewModel
-    private lateinit var fuelStationDetailsView: View
     private var fuelStationId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
         binding = FragmentFuelStationDetailsBinding.inflate(inflater, container, false)
-        fuelStationDetailsView = inflater.inflate(R.layout.fragment_fuel_station_details, container, false)
 
         fuelStationId = requireArguments().getLong("fuelStationId")
 
         loadFuelStationData()
 
-        return fuelStationDetailsView
+        return binding.root
     }
 
     private fun loadFuelStationData() {
@@ -78,13 +71,13 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun populateViewWithData(fuelStation: FuelStationDetails) {
-        fuelStationDetailsView.findViewById<TextView>(R.id.tv_stationChainName).text = fuelStation.name ?: fuelStation.stationChain.name
-        fuelStationDetailsView.findViewById<TextView>(R.id.tv_fuelStationAddress).text = fuelStation.address.toString()
+        binding.tvStationChainName.text = fuelStation.name ?: fuelStation.stationChain.name
+        binding.tvFuelStationAddress.text = fuelStation.address.toString()
         setDistance(fuelStation.location)
     }
 
     private fun setDistance(fuelStationLocation: FuelStationLocation) {
-        val textView = fuelStationDetailsView.findViewById<TextView>(R.id.tv_distanceBetweenUserAndStation)
+        val textView = binding.tvDistanceBetweenUserAndStation
 
         if (!isGpsEnabled(requireContext())) {
             textView.visibility = View.GONE
@@ -102,7 +95,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_fuelPriceContainer)
+        val parent = binding.llcFuelPriceContainer
         var llc: LinearLayoutCompat? = null
 
         for (i in fuelTypes.indices) {
@@ -126,7 +119,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun addFuelStationServices(services: Array<FuelStationService>) {
-        val serviceContainer = fuelStationDetailsView.findViewById<ChipGroup>(R.id.cg_fuelStationServicesContainer);
+        val serviceContainer = binding.cgFuelStationServicesContainer
 
         for (service in services) {
             val chip = createServiceChip(service)
@@ -137,11 +130,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun hideFuelStationServicesSection() {
-        val servicesSection = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_servicesSection)
-        servicesSection.visibility = View.GONE
-
-        val serviceSectionSpacer = fuelStationDetailsView.findViewById<View>(R.id.v_serviceSectionSpacer)
-        serviceSectionSpacer.visibility = View.GONE
+        binding.llcServicesSection.visibility = View.GONE
+        binding.vServiceSectionSpacer.visibility = View.GONE
     }
 
     private fun createServiceChip(service: FuelStationService): Chip {
@@ -156,8 +146,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private fun initReviewSection() {
         loadReviews()
 
-        fuelStationDetailsView.findViewById<NestedScrollView>(R.id.nsv_fuel_details_bottom_sheet)
-            .setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        binding.nsvFuelDetailsBottomSheet
+            .setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val nsv = v as NestedScrollView
 
                 if (oldScrollY < scrollY
@@ -177,7 +167,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         viewModel.fuelStationReviews.observe(viewLifecycleOwner) { response ->
             val fragmentManager = childFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
+            val parent = binding.llcReviewsContainer
 
             val page = response.body()
 
@@ -228,7 +218,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     private fun addUserReviewToReviewSection(review: Review) {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_userReviewContainer)
+        val parent = binding.llcUserReviewContainer
         parent.removeAllViews()
 
         val reviewFragment = FuelStationReviewFragment(review)
@@ -266,7 +256,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun refreshReviews() {
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_reviewsContainer)
+        val parent = binding.llcReviewsContainer
         parent.removeAllViews()
 
         viewModel.getFirstPageOfFuelStationReviews(fuelStationId!!)
@@ -310,12 +300,12 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun removeUserReviewFromReviewSection() {
-        val parent = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.llc_userReviewContainer)
+        val parent = binding.llcUserReviewContainer
         parent.removeAllViews()
     }
 
     private fun initAddReviewButton() {
-        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
+        val button = binding.mbRateFuelStation
         button.setOnClickListener {
             val reviewEditorFragment = FuelStationReviewEditorFragment(null, false)
             reviewEditorFragment.show(requireFragmentManager(), FuelStationReviewEditorFragment.TAG)
@@ -323,7 +313,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun prepareFavouriteButtonToRemoving() {
-        val button = fuelStationDetailsView.findViewById<AppCompatImageButton>(R.id.acib_addToFavourite)
+        val button = binding.acibAddToFavourite
         button.isClickable = true
         button.setOnClickListener {
             button.isClickable = false
@@ -333,7 +323,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun prepareFavouriteButtonStateToAdding() {
-        val button = fuelStationDetailsView.findViewById<AppCompatImageButton>(R.id.acib_addToFavourite)
+        val button = binding.acibAddToFavourite
         button.isClickable = true
         button.setOnClickListener {
             button.isClickable = false
@@ -343,39 +333,29 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun showLayout() {
-        val layout = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.ll_mainFuelDetailsLayout)
-        layout.visibility = View.VISIBLE
-
-        val progressSpinner = fuelStationDetailsView.findViewById<ProgressBar>(R.id.fuel_station_details_loading_spinner)
-        progressSpinner.visibility = View.GONE
+        binding.llMainFuelDetailsLayout.visibility = View.VISIBLE
+        binding.fuelStationDetailsLoadingSpinner.visibility = View.GONE
     }
 
     private fun hideLayout() {
-        val layout = fuelStationDetailsView.findViewById<LinearLayoutCompat>(R.id.ll_mainFuelDetailsLayout)
-        layout.visibility = View.GONE
-
-        val progressSpinner = fuelStationDetailsView.findViewById<ProgressBar>(R.id.fuel_station_details_loading_spinner)
-        progressSpinner.visibility = View.VISIBLE
+        binding.llMainFuelDetailsLayout.visibility = View.GONE
+        binding.fuelStationDetailsLoadingSpinner.visibility = View.VISIBLE
     }
 
     private fun showAddReviewButton() {
-        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
-        button.visibility = View.VISIBLE
+        binding.mbRateFuelStation.visibility = View.VISIBLE
     }
 
     private fun hideAddReviewButton() {
-        val button = fuelStationDetailsView.findViewById<MaterialButton>(R.id.mb_rateFuelStation)
-        button.visibility = View.GONE
+        binding.mbRateFuelStation.visibility = View.GONE
     }
 
     private fun showReviewSectionProgressBar() {
-        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
-        progressBar.visibility = View.VISIBLE
+        binding.pbReviewsLoad.visibility = View.VISIBLE
     }
 
     private fun hideReviewSectionProgressBar() {
-        val progressBar = fuelStationDetailsView.findViewById<ProgressBar>(R.id.pb_reviewsLoad)
-        progressBar.visibility = View.GONE
+        binding.pbReviewsLoad.visibility = View.GONE
     }
 
     override fun onDestroyView() {

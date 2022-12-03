@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
@@ -19,7 +18,6 @@ class FuelPriceCardFragment(
 
     private lateinit var binding: FragmentFuelPriceCardBinding
     private lateinit var viewModel: FuelStationDetailsViewModel
-    private lateinit var fuelPriceCardView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,21 +27,15 @@ class FuelPriceCardFragment(
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
         binding = FragmentFuelPriceCardBinding.inflate(inflater, container, false)
-        fuelPriceCardView = inflater.inflate(R.layout.fragment_fuel_price_card, container, false)
 
         initWithData()
 
-        return fuelPriceCardView
+        return binding.root
     }
 
     private fun initWithData() {
-        val fuelTypeNameTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelTypeName)
-        fuelTypeNameTextView.text = fuelTypeWithPrice.name
-
-        val fuelPriceTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelPrice)
-        fuelPriceTextView.text = viewModel.parsePrice(fuelTypeWithPrice.fuelPrice, resources)
-
-        val timePeriodTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelPriceLastUpdateDate)
-        timePeriodTextView.text = viewModel.parseFuelPriceCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
+        binding.tvFuelTypeName.text = fuelTypeWithPrice.name
+        binding.tvFuelPrice.text = viewModel.parsePrice(fuelTypeWithPrice.fuelPrice, resources)
+        binding.tvFuelPriceLastUpdateDate.text = viewModel.parseFuelPriceCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
     }
 }

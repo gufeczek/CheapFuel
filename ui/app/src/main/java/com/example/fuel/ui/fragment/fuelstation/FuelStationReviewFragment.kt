@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.PopupMenu
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
+import com.example.fuel.databinding.FragmentFuelStationReviewBinding
 import com.example.fuel.enums.Role
 import com.example.fuel.mock.Auth
 import com.example.fuel.model.review.Review
@@ -21,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class FuelStationReviewFragment(private val review: Review) : Fragment() {
     private lateinit var viewModel: FuelStationDetailsViewModel
-    private lateinit var fuelStationReviewView: View
+    private lateinit var binding: FragmentFuelStationReviewBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,39 +27,34 @@ class FuelStationReviewFragment(private val review: Review) : Fragment() {
     ): View {
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
-        fuelStationReviewView = inflater.inflate(R.layout.fragment_fuel_station_review, container, false)
+        binding = FragmentFuelStationReviewBinding.inflate(inflater, container, false)
 
         initWithData()
         initPopupMenu()
 
-        return fuelStationReviewView
+        return binding.root
     }
 
     private fun initWithData() {
-        val reviewAuthorTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_author)
-        reviewAuthorTextView.text = review.username
-
-        val ratingBar = fuelStationReviewView.findViewById<AppCompatRatingBar>(R.id.acrb_review_rating)
-        ratingBar.rating = review.rate.toFloat()
-
-        val createdAtTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_created_at)
-        createdAtTextView.text = viewModel.parseReviewDate(review.createdAt, resources)
+        binding.tvReviewAuthor.text = review.username
+        binding.acrbReviewRating.rating = review.rate.toFloat()
+        binding.tvReviewCreatedAt.text = viewModel.parseReviewDate(review.createdAt, resources)
 
         if (viewModel.hasReviewContent(review)) {
-            val contentTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_content)
+            val contentTextView = binding.tvReviewContent
             contentTextView.text = review.content
             contentTextView.visibility = View.VISIBLE
         }
 
         if (viewModel.hasReviewBeenEdited(review)) {
-            val updatedAtTextView = fuelStationReviewView.findViewById<TextView>(R.id.tv_review_updated_at)
+            val updatedAtTextView = binding.tvReviewUpdatedAt
             updatedAtTextView.text = resources.getString(R.string.edited, viewModel.parseReviewDate(review.updatedAt, resources))
             updatedAtTextView.visibility = View.VISIBLE
         }
     }
 
     private fun initPopupMenu() {
-        val actionButton = fuelStationReviewView.findViewById<ImageButton>(R.id.acib_reviewActionButton)
+        val actionButton = binding.acibReviewActionButton
 
         actionButton.setOnClickListener {
             val popupMenu = PopupMenu(requireActivity(), actionButton)
