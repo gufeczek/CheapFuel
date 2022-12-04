@@ -2,6 +2,7 @@
 using Application.Users.Commands.AuthenticateUser;
 using Application.Users.Commands.ChangePassword;
 using Application.Users.Commands.ChangeUserRole;
+using Application.Users.Commands.DeactivateUser;
 using Application.Users.Commands.GenerateEmailVerificationToken;
 using Application.Users.Commands.GeneratePasswordResetToken;
 using Application.Users.Commands.RegisterUser;
@@ -83,5 +84,12 @@ public sealed class AccountCommandController : ControllerBase
     {
         await _mediator.Send(command);
         return Ok();
+    }
+
+    [HttpDelete("{username}")]
+    public async Task<ActionResult> DeactivateUser([FromRoute] string username)
+    {
+        await _mediator.Send(new DeactivateUserCommand(username));
+        return NoContent();
     }
 }

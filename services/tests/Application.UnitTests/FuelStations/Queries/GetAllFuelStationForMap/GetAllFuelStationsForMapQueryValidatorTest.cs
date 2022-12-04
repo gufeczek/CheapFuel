@@ -17,7 +17,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
 
     [Theory]
     [MemberData(nameof(CorrectData))]
-    public void validation_passes_for_correct_data(FuelStationFilterDto filterDto)
+    public void Validation_passes_for_correct_data(FuelStationFilterDto filterDto)
     {
         // Arrange
         var query = new GetAllFuelStationsForMapQuery(filterDto);
@@ -35,7 +35,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
     }
 
     [Fact]
-    public void validation_fails_for_null_filter()
+    public void Validation_fails_for_null_filter()
     {
         // Arrange
         var query = new GetAllFuelStationsForMapQuery(null!);
@@ -56,7 +56,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
     [InlineData(null)]
     [InlineData(-10)]
     [InlineData(0)]
-    public void validation_fails_for_invalid_id(long id)
+    public void Validation_fails_for_invalid_id(long id)
     {
         // Arrange
         var filter = new FuelStationFilterDto(
@@ -81,7 +81,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
     }
 
     [Fact]
-    public void validation_fails_for_negative_min_price()
+    public void Validation_fails_for_negative_min_price()
     {
         // Arrange
         var filter = new FuelStationFilterDto(
@@ -106,7 +106,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
     }
     
     [Fact]
-    public void validation_fails_for_negative_max_price()
+    public void Validation_fails_for_negative_max_price()
     {
         // Arrange
         var filter = new FuelStationFilterDto(
@@ -131,7 +131,7 @@ public class GetAllFuelStationsForMapQueryValidatorTest
     }
 
     [Fact]
-    public void validation_fails_if_min_price_is_greater_than_max_price()
+    public void Validation_fails_if_min_price_is_greater_than_max_price()
     {
         // Arrange
         var filter = new FuelStationFilterDto(
