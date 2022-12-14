@@ -34,6 +34,7 @@
     <string name="one_month_ago">Miesiąc temu</string>
     <string name="months_ago">%1$s miesięcy temu</string>
     <string name="less_then_hour_ago">Mniej niż godzinę temu</string>
+    <string name="one_hour_ago">Godzinę temu</string>
     <string name="hours_ago">%1$s godzin temu</string>
     <string name="one_day_ago">1 dzień temu</string>
     <string name="days_ago">%1$s dni temu</string>

@@ -107,7 +107,7 @@ class FuelStationDetailsViewModel(
         if (diff.toDays() > 1) return resources.getString(R.string.days_ago, diff.toDays().toString())
         if (diff.toHours() > 1) return resources.getString(R.string.hours_ago, diff.toHours().toString())
 
-        return resources.getString(R.string.less_then_hour_ago)
+        return resources.getString(R.string.one_hour_ago)
     }
 
     fun parseReviewDate(date: Date, resources: Resources): String {
