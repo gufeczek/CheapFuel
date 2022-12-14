@@ -1,10 +1,11 @@
 package com.example.fuel.ui.fragment.fuelstation
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
@@ -19,7 +20,6 @@ class FuelPriceCardFragment(
 
     private lateinit var binding: FragmentFuelPriceCardBinding
     private lateinit var viewModel: FuelStationDetailsViewModel
-    private lateinit var fuelPriceCardView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,21 +29,26 @@ class FuelPriceCardFragment(
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
         binding = FragmentFuelPriceCardBinding.inflate(inflater, container, false)
-        fuelPriceCardView = inflater.inflate(R.layout.fragment_fuel_price_card, container, false)
 
         initWithData()
 
-        return fuelPriceCardView
+        return binding.root
     }
 
     private fun initWithData() {
-        val fuelTypeNameTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelTypeName)
-        fuelTypeNameTextView.text = fuelTypeWithPrice.name
+        binding.tvFuelTypeName.text = fuelTypeWithPrice.name
+        binding.tvFuelPriceLastUpdateDate.text = viewModel.parseFuelPriceCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
 
-        val fuelPriceTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelPrice)
-        fuelPriceTextView.text = viewModel.parsePrice(fuelTypeWithPrice.fuelPrice, resources)
+        initPriceTextView()
+    }
 
-        val timePeriodTextView = fuelPriceCardView.findViewById<TextView>(R.id.tv_fuelPriceLastUpdateDate)
-        timePeriodTextView.text = viewModel.parseFuelPriceCreatedAt(fuelTypeWithPrice.fuelPrice, resources)
+    private fun initPriceTextView() {
+        val priceTextView = binding.tvFuelPrice
+        priceTextView.text = viewModel.parsePrice(fuelTypeWithPrice.fuelPrice, resources)
+
+        if (fuelTypeWithPrice.fuelPrice?.available == false) {
+            priceTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+            priceTextView.paintFlags = priceTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }
     }
 }

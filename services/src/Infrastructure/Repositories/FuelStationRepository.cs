@@ -19,6 +19,8 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
                 .ThenInclude(ss => ss.Service)
             .Include(fs => fs.FuelTypes)
                 .ThenInclude(ft => ft.FuelType)
+            .Include(fs => fs.OwnedStations)
+                .ThenInclude(os => os.User)
             .Where(fs => fs.Id == id)
             .FirstOrDefaultAsync();
     }

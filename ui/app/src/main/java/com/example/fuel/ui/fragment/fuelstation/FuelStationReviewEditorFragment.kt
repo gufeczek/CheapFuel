@@ -1,31 +1,22 @@
 package com.example.fuel.ui.fragment.fuelstation
 
-import android.app.Dialog
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.appcompat.widget.AppCompatRatingBar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import com.example.fuel.R
+import com.example.fuel.databinding.FragmentFuelStationReviewEditorBinding
 import com.example.fuel.model.review.Review
+import com.example.fuel.ui.fragment.common.FullHeightBottomSheetDialogFragment
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 
 
-class FuelStationReviewEditorFragment(val review: Review?, private val editing: Boolean) : BottomSheetDialogFragment() {
-    private lateinit var fuelStationReviewEditorFragment: View
+class FuelStationReviewEditorFragment(val review: Review?, private val editing: Boolean) : FullHeightBottomSheetDialogFragment() {
     private lateinit var viewModel: FuelStationDetailsViewModel
+    private lateinit var binding: FragmentFuelStationReviewEditorBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +24,7 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
     ): View {
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationDetailsViewModel::class.java]
-        fuelStationReviewEditorFragment =  inflater.inflate(R.layout.fragment_fuel_station_review_editor, container, false)
+        binding = FragmentFuelStationReviewEditorBinding.inflate(inflater, container, false)
 
         setInitialData()
         initPublishButton()
@@ -41,42 +32,16 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
         initReviewContentTextInput()
         initKeyboardHiding()
 
-        return fuelStationReviewEditorFragment
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext(), theme)
-        dialog.setOnShowListener {
-            val bottomSheetDialog = it as BottomSheetDialog
-            val parentLayout = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            parentLayout?.let {
-                val behavior = BottomSheetBehavior.from(it)
-                setupPeekHeight(behavior)
-                setupFullHeight(it)
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        return dialog
-    }
-
-    private fun setupFullHeight(bottomSheetDialog: View) {
-        val layoutParams = bottomSheetDialog.layoutParams
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-        bottomSheetDialog.layoutParams = layoutParams
-    }
-
-    private fun setupPeekHeight(bottomSheetDialog: BottomSheetBehavior<View>) {
-        val maxHeight = Resources.getSystem().displayMetrics.heightPixels
-        bottomSheetDialog.peekHeight = maxHeight
+        return binding.root
     }
 
     private fun initRatingBar() {
-        val ratingBar = fuelStationReviewEditorFragment.findViewById<AppCompatRatingBar>(R.id.acrb_rateFuelStation)
+        val ratingBar = binding.acrbRateFuelStation
         ratingBar.setOnRatingBarChangeListener { _, _, _ -> checkRequiredFields() }
     }
 
     private fun initReviewContentTextInput() {
-        val contentInput = fuelStationReviewEditorFragment.findViewById<TextInputEditText>(R.id.tiet_reviewContent)
+        val contentInput = binding.tietReviewContent
         contentInput.addTextChangedListener { checkRequiredFields() }
     }
 
@@ -88,19 +53,19 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
     }
 
     private fun setInitialRate(rate: Int) {
-        val ratingBar = fuelStationReviewEditorFragment.findViewById<AppCompatRatingBar>(R.id.acrb_rateFuelStation)
+        val ratingBar = binding.acrbRateFuelStation
         ratingBar.rating = rate.toFloat()
     }
 
     private fun setInitialContent(content: String?) {
         if (content == null) return
 
-        val contentInput = fuelStationReviewEditorFragment.findViewById<TextInputEditText>(R.id.tiet_reviewContent)
+        val contentInput = binding.tietReviewContent
         contentInput.setText(content)
     }
 
     private fun initPublishButton() {
-        val button = fuelStationReviewEditorFragment.findViewById<MaterialButton>(R.id.mb_publishReview)
+        val button = binding.mbPublishReview
         button.isEnabled = false
 
         button.setOnClickListener {
@@ -118,19 +83,13 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
     }
 
     private fun initKeyboardHiding() {
-        val main = fuelStationReviewEditorFragment.findViewById<ConstraintLayout>(R.id.cl_reviewEditorContainer)
+        val main = binding.clReviewEditorContainer
         main.setOnClickListener { view -> view.hideKeyboard() }
     }
 
-    private fun getRate(): Int {
-        val ratingBar = fuelStationReviewEditorFragment.findViewById<AppCompatRatingBar>(R.id.acrb_rateFuelStation)
-        return ratingBar.rating.toInt()
-    }
+    private fun getRate(): Int = binding.acrbRateFuelStation.rating.toInt()
 
-    private fun getContent(): String {
-        val contentInput = fuelStationReviewEditorFragment.findViewById<TextInputEditText>(R.id.tiet_reviewContent)
-        return contentInput.text.toString()
-    }
+    private fun getContent(): String = binding.tietReviewContent.text.toString()
 
     private fun checkRequiredFields() {
         val rate = getRate()
@@ -144,13 +103,11 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
     }
 
     private fun enablePublishButton() {
-        val button = fuelStationReviewEditorFragment.findViewById<MaterialButton>(R.id.mb_publishReview)
-        button.isEnabled = true
+            binding.mbPublishReview.isEnabled = true
     }
 
     private fun disablePublishButton() {
-        val button = fuelStationReviewEditorFragment.findViewById<MaterialButton>(R.id.mb_publishReview)
-        button.isEnabled = false
+        binding.mbPublishReview.isEnabled = false
     }
 
     companion object {
