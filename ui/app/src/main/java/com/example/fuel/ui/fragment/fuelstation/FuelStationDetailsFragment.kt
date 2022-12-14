@@ -43,7 +43,6 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fuelStationId = requireArguments().getLong("fuelStationId")
 
         loadFuelStationData()
-        initUserSpecificLayout()
         initReviewObserver()
         initUserReview()
         initReviewSection()
@@ -66,6 +65,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             val fuelStationData = response.body()
 
             populateViewWithData(fuelStationData!!)
+            initUserSpecificLayout()
             showLayout()
             addFuelPriceCards(fuelStationData.fuelTypes)
             addFuelStationServices(fuelStationData.services)

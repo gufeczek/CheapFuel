@@ -22,4 +22,7 @@ public class FuelStation : AuditableEntity
 
     private List<ServiceAtStation> _services = new();
     public IReadOnlyCollection<ServiceAtStation> ServiceAtStations => _services;
+
+    private List<OwnedStation> _owned = new();
+    public IReadOnlyCollection<OwnedStation> OwnedStations => _owned;
 }

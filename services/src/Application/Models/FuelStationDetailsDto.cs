@@ -10,4 +10,5 @@ public sealed class FuelStationDetailsDto
     public IEnumerable<OpeningClosingTimeDto>? OpeningClosingTimes { get; set; }
     public IEnumerable<FuelTypeWithPriceDto>? FuelTypes { get; set; }
     public IEnumerable<FuelStationServiceDto>? Services { get; set; }
+    public IEnumerable<string>? Owners { get; set; }
 }

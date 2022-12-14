@@ -71,7 +71,8 @@ public sealed class GetFuelStationDetailsQueryHandler : IRequestHandler<GetFuelS
             StationChain = _mapper.Map<StationChainDto>(fuelStation.StationChain),
             OpeningClosingTimes = _mapper.Map<IEnumerable<OpeningClosingTimeDto>>(fuelStation.OpeningClosingTimes),
             Services = _mapper.Map<IEnumerable<FuelStationServiceDto>>(services),
-            FuelTypes = fuelTypesWithPrice
+            FuelTypes = fuelTypesWithPrice,
+            Owners = fuelStation.OwnedStations.Select(os => os.User!.Username)!
         };
     }
 }

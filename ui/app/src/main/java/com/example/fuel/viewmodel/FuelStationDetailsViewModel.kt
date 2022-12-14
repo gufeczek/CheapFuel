@@ -89,7 +89,8 @@ class FuelStationDetailsViewModel(
 
     fun isAdmin(): Boolean = Auth.role == Role.ADMIN
 
-    fun isFuelStationOwner(): Boolean = Auth.role == Role.OWNER && true // TODO: Implement logic to check if fuel station is owned by current user
+    fun isFuelStationOwner(): Boolean = Auth.role == Role.OWNER
+            && fuelStationDetails.value?.body()?.owners?.contains(Auth.username) == true
 
     fun parsePrice(fuelPrice: Price?, resources: Resources): String {
         if (fuelPrice == null) return "-"
