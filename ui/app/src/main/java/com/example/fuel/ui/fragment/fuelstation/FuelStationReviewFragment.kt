@@ -10,7 +10,6 @@ import android.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationReviewBinding
-import com.example.fuel.enums.Role
 import com.example.fuel.mock.Auth
 import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
@@ -84,7 +83,7 @@ class FuelStationReviewFragment(private val review: Review) : Fragment() {
     }
 
     private fun initActionButtonForReviewOfDifferentUser(popupMenu: PopupMenu) {
-        if (Auth.role == Role.ADMIN) {
+        if (viewModel.isAdmin()) {
             initActionButtonForAdmin(popupMenu)
         } else {
             initActionButtonForUser(popupMenu)

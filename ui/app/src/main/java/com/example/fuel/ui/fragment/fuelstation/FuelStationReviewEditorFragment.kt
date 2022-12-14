@@ -1,25 +1,20 @@
 package com.example.fuel.ui.fragment.fuelstation
 
-import android.app.Dialog
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.databinding.FragmentFuelStationReviewEditorBinding
 import com.example.fuel.model.review.Review
+import com.example.fuel.ui.fragment.common.FullHeightBottomSheetDialogFragment
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class FuelStationReviewEditorFragment(val review: Review?, private val editing: Boolean) : BottomSheetDialogFragment() {
+class FuelStationReviewEditorFragment(val review: Review?, private val editing: Boolean) : FullHeightBottomSheetDialogFragment() {
     private lateinit var viewModel: FuelStationDetailsViewModel
     private lateinit var binding: FragmentFuelStationReviewEditorBinding
 
@@ -38,32 +33,6 @@ class FuelStationReviewEditorFragment(val review: Review?, private val editing: 
         initKeyboardHiding()
 
         return binding.root
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext(), theme)
-        dialog.setOnShowListener {
-            val bottomSheetDialog = it as BottomSheetDialog
-            val parentLayout = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            parentLayout?.let {
-                val behavior = BottomSheetBehavior.from(it)
-                setupPeekHeight(behavior)
-                setupFullHeight(it)
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        return dialog
-    }
-
-    private fun setupFullHeight(bottomSheetDialog: View) {
-        val layoutParams = bottomSheetDialog.layoutParams
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-        bottomSheetDialog.layoutParams = layoutParams
-    }
-
-    private fun setupPeekHeight(bottomSheetDialog: BottomSheetBehavior<View>) {
-        val maxHeight = Resources.getSystem().displayMetrics.heightPixels
-        bottomSheetDialog.peekHeight = maxHeight
     }
 
     private fun initRatingBar() {

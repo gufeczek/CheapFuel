@@ -43,6 +43,19 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fuelStationId = requireArguments().getLong("fuelStationId")
 
         loadFuelStationData()
+        initUserSpecificLayout()
+        initReviewObserver()
+        initUserReview()
+        initReviewSection()
+        initAddReviewButton()
+        initNewReviewObserver()
+        initEditedReviewObserver()
+        initDeleteUserReviewObserver()
+        initDeleteDiffUserReviewObserver()
+        initUserFavouriteObserver()
+        initAddToFavouriteObserver()
+        initRemoveFavouriteObserver()
+        initNewFuelPriceObserver()
 
         return binding.root
     }
@@ -56,17 +69,6 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             showLayout()
             addFuelPriceCards(fuelStationData.fuelTypes)
             addFuelStationServices(fuelStationData.services)
-            initReviewObserver()
-            initUserReview()
-            initReviewSection()
-            initAddReviewButton()
-            initNewReviewObserver()
-            initEditedReviewObserver()
-            initDeleteUserReviewObserver()
-            initDeleteDiffUserReviewObserver()
-            initUserFavouriteObserver()
-            initAddToFavouriteObserver()
-            initRemoveFavouriteObserver()
         }
     }
 
@@ -98,6 +100,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         val parent = binding.llcFuelPriceContainer
         var llc: LinearLayoutCompat? = null
 
+        parent.removeAllViews()
+
         for (i in fuelTypes.indices) {
             if (i % 2 == 0) {
                 llc = createEmptyRow()
@@ -120,6 +124,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
     private fun addFuelStationServices(services: Array<FuelStationService>) {
         val serviceContainer = binding.cgFuelStationServicesContainer
+        serviceContainer.removeAllViews()
 
         for (service in services) {
             val chip = createServiceChip(service)
@@ -141,6 +146,44 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         chip.isChecked = false
         chip.isEnabled = false
         return chip
+    }
+
+    private fun initUserSpecificLayout() {
+        if (viewModel.isAdmin()) {
+            initLayoutForAdmin()
+        }
+
+        if (viewModel.isFuelStationOwner()) {
+            initLayoutForOwner()
+        }
+    }
+
+    private fun initLayoutForAdmin() {
+        initEditFuelStationButton()
+    }
+
+    private fun initLayoutForOwner() {
+        initEditFuelStationButton()
+        initEditFuelPriceButton()
+    }
+
+    private fun initEditFuelStationButton() {
+        val editFuelStationButton = binding.acibEditFuelStation
+        editFuelStationButton.visibility = View.VISIBLE
+
+        editFuelStationButton.setOnClickListener {
+
+        }
+    }
+
+    private fun initEditFuelPriceButton() {
+        val editFuelPriceButton = binding.acibEditFuelPrice
+        editFuelPriceButton.visibility = View.VISIBLE
+
+        editFuelPriceButton.setOnClickListener {
+            val fuelPriceEditorFragment = FuelPriceEditorFragment()
+            fuelPriceEditorFragment.show(requireFragmentManager(), FuelPriceEditorFragment.TAG)
+        }
     }
 
     private fun initReviewSection() {
@@ -293,6 +336,19 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             }
 
             val text = if (response.isSuccessful) resources.getString(R.string.removed_from_favourite)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initNewFuelPriceObserver() {
+        viewModel.createNewFuelPrices.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                viewModel.getFuelStationDetails(viewModel.getFuelStationId()!!)
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.published)
             else resources.getString(R.string.an_error_occurred)
             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
             toast.show()

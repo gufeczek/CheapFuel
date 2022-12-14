@@ -5,16 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fuel.R
+import com.example.fuel.enums.Role
 import com.example.fuel.mock.Auth
 import com.example.fuel.model.review.Review
 import com.example.fuel.model.FuelStationDetails
+import com.example.fuel.model.FuelTypeWithPrice
 import com.example.fuel.model.Price
 import com.example.fuel.model.favourite.UserFavourite
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
+import com.example.fuel.model.price.NewFuelPrice
+import com.example.fuel.model.price.NewFuelPriceResponse
+import com.example.fuel.model.price.NewPricesAtFuelStation
 import com.example.fuel.model.review.NewReview
 import com.example.fuel.model.review.UpdateReview
 import com.example.fuel.repository.FavouriteRepository
+import com.example.fuel.repository.FuelPriceRepository
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.utils.converters.Converter
@@ -30,7 +36,8 @@ import java.util.Date
 class FuelStationDetailsViewModel(
     private val fuelStationRepository: FuelStationRepository,
     private val reviewRepository: ReviewRepository,
-    private val favouriteRepository: FavouriteRepository): ViewModel() {
+    private val favouriteRepository: FavouriteRepository,
+    private val fuelPriceRepository: FuelPriceRepository): ViewModel() {
 
     var fuelStationDetails: MutableLiveData<Response<FuelStationDetails>> = MutableLiveData()
     var fuelStationReviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
@@ -42,6 +49,7 @@ class FuelStationDetailsViewModel(
     var userFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var addToFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var deleteFavourite: MutableLiveData<Response<Void>> = MutableLiveData()
+    var createNewFuelPrices: MutableLiveData<Response<Array<NewFuelPriceResponse>>> = MutableLiveData()
 
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
@@ -71,9 +79,17 @@ class FuelStationDetailsViewModel(
         }
     }
 
+    fun getFuelStationId(): Long? = fuelStationDetails.value?.body()?.id
+
+    fun getFuelTypes(): Array<FuelTypeWithPrice>? = fuelStationDetails.value?.body()?.fuelTypes
+
     fun hasAnyServices(): Boolean = !fuelStationDetails.value?.body()?.services.isNullOrEmpty()
 
     fun hasMoreReviews(): Boolean = fuelStationReviews.value?.body()?.nextPage != null
+
+    fun isAdmin(): Boolean = Auth.role == Role.ADMIN
+
+    fun isFuelStationOwner(): Boolean = Auth.role == Role.OWNER && true // TODO: Implement logic to check if fuel station is owned by current user
 
     fun parsePrice(fuelPrice: Price?, resources: Resources): String {
         if (fuelPrice == null) return "-"
@@ -172,6 +188,16 @@ class FuelStationDetailsViewModel(
         }
     }
 
+    fun createNewFuelPrices(fuelPrices: Array<NewFuelPrice>) {
+        if (getFuelStationId() == null) return
+
+        val fuelPricesAtStation = NewPricesAtFuelStation(getFuelStationId()!!, fuelPrices)
+
+        viewModelScope.launch {
+            createNewFuelPrices.value = fuelPriceRepository.createNewFuelPrices(fuelPricesAtStation)
+        }
+    }
+
     fun clear() {
         fuelStationDetails = MutableLiveData()
         fuelStationReviews = MutableLiveData()
@@ -180,5 +206,8 @@ class FuelStationDetailsViewModel(
         updateUserReview = MutableLiveData()
         deleteUserReview = MutableLiveData()
         deleteDiffUserReview = MutableLiveData()
+        addToFavourite = MutableLiveData()
+        deleteFavourite = MutableLiveData()
+        createNewFuelPrices = MutableLiveData()
     }
 }
