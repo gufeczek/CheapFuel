@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.FuelStations.Commands.CreateFuelStation;
 
-public class CreateFuelStationCommandHandler : IRequestHandler<CreateFuelStationCommand, FuelStationDto>
+public sealed class CreateFuelStationCommandHandler : IRequestHandler<CreateFuelStationCommand, FuelStationDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IStationChainRepository _stationChainRepository;

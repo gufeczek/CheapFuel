@@ -16,6 +16,13 @@ public class FuelAtStationRepository : Repository<FuelAtStation>, IFuelAtStation
             .CountAsync();
     }
 
+    public async Task<bool> Exists(long fuelTypeId, long fuelStationId)
+    {
+        return await Context.FuelAtStations
+            .Where(fas => fas.FuelTypeId == fuelTypeId && fas.FuelStationId == fuelStationId)
+            .AnyAsync();
+    }
+
     public async Task RemoveAllByFuelStationId(long fuelStationId)
     {
         var toDelete = await Context.FuelAtStations

@@ -1,6 +1,6 @@
 ﻿namespace Application.Models.FuelStationDtos;
 
-public class NewFuelStationDto
+public sealed class NewFuelStationDto
 {
     public string? Name { get; set; }
     public NewAddressDto? Address { get; set; }
