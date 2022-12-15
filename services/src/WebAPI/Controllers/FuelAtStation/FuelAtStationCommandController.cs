@@ -8,7 +8,7 @@ using WebAPI.Common.Authorization;
 namespace WebAPI.Controllers.FuelAtStation;
 
 [ApiController]
-[Route("api/v1/fuel-at-stations")]
+[Route("api/v1/fuel-at-station")]
 public sealed class FuelAtStationCommandController : ControllerBase
 {
     private readonly IMediator _mediator;
