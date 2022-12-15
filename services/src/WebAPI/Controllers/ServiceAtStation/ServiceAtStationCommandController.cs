@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.ServiceAtStations.Commands.AddServiceToStation;
+using Application.ServiceAtStations.Commands.RemoveServiceFromStation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Common.Authorization;
@@ -23,5 +24,13 @@ public class ServiceAtStationCommandController : ControllerBase
     {
         var result = await _mediator.Send(command);
         return Ok(result); // Should be updated after creating endpoint ot get service at station
+    }
+
+    [AuthorizeOwner]
+    [HttpDelete("{fuelStationId}/{serviceId}")]
+    public async Task<ActionResult> DeleteServiceAtStation([FromRoute] long fuelStationId, [FromRoute] long serviceId)
+    {
+        await _mediator.Send(new RemoveServiceFromStationCommand(fuelStationId, serviceId));
+        return NoContent();
     }
 }
