@@ -34,4 +34,12 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
             .Where(r => r.User!.Username == username && r.FuelStationId == fuelStationId)
             .FirstOrDefaultAsync();
     }
+
+    public async Task RemoveAllByFuelStationId(long fuelStationId)
+    {
+        var toDelete = await Context.Reviews
+            .Where(r => r.FuelStationId == fuelStationId)
+            .ToListAsync();
+        Context.Reviews.RemoveRange(toDelete);
+    }
 }

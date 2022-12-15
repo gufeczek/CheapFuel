@@ -251,7 +251,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("FuelStationId", "DayOfWeek");
 
-                    b.ToTable("OpeningClosingTime");
+                    b.ToTable("OpeningClosingTimes");
                 });
 
             modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
@@ -531,7 +531,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.FuelAtStation", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("FuelTypes")
                         .HasForeignKey("FuelStationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -660,7 +660,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.OwnedStation", b =>
                 {
                     b.HasOne("Domain.Entities.FuelStation", "FuelStation")
-                        .WithMany()
+                        .WithMany("OwnedStations")
                         .HasForeignKey("FuelStationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -738,7 +738,11 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("FuelPrices");
 
+                    b.Navigation("FuelTypes");
+
                     b.Navigation("OpeningClosingTimes");
+
+                    b.Navigation("OwnedStations");
 
                     b.Navigation("ServiceAtStations");
                 });

@@ -15,4 +15,12 @@ public class FuelAtStationRepository : Repository<FuelAtStation>, IFuelAtStation
             .Where(fas => fas.FuelStationId == fuelStationId && fuelTypesIds.Contains(fas.FuelTypeId))
             .CountAsync();
     }
+
+    public async Task RemoveAllByFuelStationId(long fuelStationId)
+    {
+        var toDelete = await Context.FuelAtStations
+            .Where(fas => fas.FuelStationId == fuelStationId)
+            .ToListAsync();
+        Context.FuelAtStations.RemoveRange(toDelete);
+    }
 }

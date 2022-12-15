@@ -1,4 +1,5 @@
 ﻿using Application.FuelStations.Commands.CreateFuelStation;
+using Application.FuelStations.Commands.DeleteFuelStation;
 using Application.Models;
 using Application.Models.FuelStationDtos;
 using MediatR;
@@ -24,5 +25,13 @@ public sealed class FuelStationCommandController : ControllerBase
     {
         var result = await _mediator.Send(new CreateFuelStationCommand(dto));
         return Ok(result);
+    }
+
+    [AuthorizeAdmin]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteFuelStation([FromRoute] long id)
+    {
+        await _mediator.Send(new DeleteFuelStationCommand(id));
+        return NoContent();
     }
 }
