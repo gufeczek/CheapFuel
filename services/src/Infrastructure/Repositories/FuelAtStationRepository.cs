@@ -8,7 +8,14 @@ namespace Infrastructure.Repositories;
 public class FuelAtStationRepository : Repository<FuelAtStation>, IFuelAtStationRepository
 {
     public FuelAtStationRepository(AppDbContext context) : base(context) { }
-    
+
+    public async Task<FuelAtStation?> GetAsync(long fuelStationId, long fuelTypeId)
+    {
+        return await Context.FuelAtStations
+            .Where(fas => fas.FuelStationId == fuelStationId && fas.FuelTypeId == fuelTypeId)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<int> CountAllByFuelStationIdAndFuelTypesIdsAsync(long fuelStationId, IEnumerable<long> fuelTypesIds)
     {
         return await Context.FuelAtStations
@@ -16,10 +23,10 @@ public class FuelAtStationRepository : Repository<FuelAtStation>, IFuelAtStation
             .CountAsync();
     }
 
-    public async Task<bool> Exists(long fuelTypeId, long fuelStationId)
+    public async Task<bool> ExistsAsync(long fuelStationId, long fuelTypeId)
     {
         return await Context.FuelAtStations
-            .Where(fas => fas.FuelTypeId == fuelTypeId && fas.FuelStationId == fuelStationId)
+            .Where(fas => fas.FuelStationId == fuelStationId && fas.FuelTypeId == fuelTypeId)
             .AnyAsync();
     }
 

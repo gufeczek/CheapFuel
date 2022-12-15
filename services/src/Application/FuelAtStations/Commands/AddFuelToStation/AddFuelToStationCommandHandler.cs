@@ -12,7 +12,7 @@ public sealed class AddFuelToStationCommandHandler : IRequestHandler<AddFuelToSt
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFuelStationRepository _fuelStationRepository;
-    private readonly IFuelTypeRepository _fuelFuelTypeRepository;
+    private readonly IFuelTypeRepository _fuelTypeRepository;
     private readonly IFuelAtStationRepository _fuelAtStationRepository;
     private readonly IMapper _mapper;
 
@@ -20,21 +20,21 @@ public sealed class AddFuelToStationCommandHandler : IRequestHandler<AddFuelToSt
     {
         _unitOfWork = unitOfWork;
         _fuelStationRepository = unitOfWork.FuelStations;
-        _fuelFuelTypeRepository = unitOfWork.FuelTypes;
+        _fuelTypeRepository = unitOfWork.FuelTypes;
         _fuelAtStationRepository = unitOfWork.FuelsAtStation;
         _mapper = mapper;
     }
     
     public async Task<FuelAtStationDto> Handle(AddFuelToStationCommand request, CancellationToken cancellationToken)
     {
-        if (await _fuelAtStationRepository.Exists(request.FuelTypeId, request.FuelStationId))
+        if (await _fuelAtStationRepository.ExistsAsync(request.FuelStationId, request.FuelTypeId))
         {
             throw new ConflictException($"Fuel station with id = {request.FuelStationId} already has fuel type with id = {request.FuelTypeId}");
         }
         
         var fuelStation = await _fuelStationRepository.GetAsync(request.FuelStationId)
                           ?? throw new NotFoundException($"Fuel station not found for id = {request.FuelStationId}");
-        var fuelType = await _fuelFuelTypeRepository.GetAsync(request.FuelTypeId)
+        var fuelType = await _fuelTypeRepository.GetAsync(request.FuelTypeId)
                        ?? throw new NotFoundException($"Fuel type not found for id = {request.FuelTypeId}");
 
         var fuelAtStation = new FuelAtStation

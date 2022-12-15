@@ -1,4 +1,5 @@
 ﻿using Application.FuelAtStations.Commands.AddFuelToStation;
+using Application.FuelAtStations.Commands.RemoveFuelFromStation;
 using Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,13 @@ public sealed class FuelAtStationCommandController : ControllerBase
     {
         var result = await _mediator.Send(command);
         return Ok(result); // Should be updated after creating endpoint ot get fuel at station
+    }
+
+    [AuthorizeOwner]
+    [HttpDelete("{fuelStationId}/{fuelTypeId}")]
+    public async Task<ActionResult> DeleteFuelAtStation([FromRoute] long fuelStationId, [FromRoute] long fuelTypeId)
+    {
+        await _mediator.Send(new RemoveFuelFromStationCommand(fuelStationId, fuelTypeId));
+        return NoContent();
     }
 }
