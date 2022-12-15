@@ -34,7 +34,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -62,7 +62,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -91,7 +91,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -120,7 +120,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -150,7 +150,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -185,7 +185,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -211,7 +211,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -237,7 +237,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -263,7 +263,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -288,7 +288,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -307,7 +307,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -328,7 +328,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -349,7 +349,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

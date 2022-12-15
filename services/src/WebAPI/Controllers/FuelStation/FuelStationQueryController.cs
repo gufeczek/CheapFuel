@@ -27,7 +27,7 @@ public sealed class FuelStationQueryController : ControllerBase
     }
 
     [AuthorizeUser]
-    [HttpPost]
+    [HttpPost("filter")]
     public async Task<ActionResult<IEnumerable<SimpleMapFuelStationDto>>> GetAllFuelStationForMapView([FromBody] FuelStationFilterDto filterDto)
     {
         var result = await _mediator.Send(new GetAllFuelStationsForMapQuery(filterDto));

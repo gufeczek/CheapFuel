@@ -12,7 +12,7 @@ import retrofit2.http.Path
 
 interface FuelStationApiService {
 
-    @POST("api/v1/fuel-stations")
+    @POST("api/v1/fuel-stations/filter")
     suspend fun getSimpleMapFuelStations(
         @Body filter: FuelStationsFilter,
         @Header("Authorization") authHeader: String
