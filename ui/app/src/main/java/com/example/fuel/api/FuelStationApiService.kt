@@ -5,6 +5,7 @@ import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleMapFuelStation
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -23,4 +24,10 @@ interface FuelStationApiService {
         @Path("id") fuelStationId: Long,
         @Header("Authorization") authHeader: String
     ): Response<FuelStationDetails>
+
+    @DELETE("api/v1/fuel-stations/{id}")
+    suspend fun deleteFuelStation(
+        @Path("id") fuelStationId: Long,
+        @Header("Authorization") authHeader: String
+    ): Response<Void>
 }

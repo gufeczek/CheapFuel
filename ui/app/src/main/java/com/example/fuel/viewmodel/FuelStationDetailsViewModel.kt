@@ -81,6 +81,8 @@ class FuelStationDetailsViewModel(
 
     fun getFuelStationId(): Long? = fuelStationDetails.value?.body()?.id
 
+    fun getFuelStation(): FuelStationDetails? = fuelStationDetails.value?.body();
+
     fun getFuelTypes(): Array<FuelTypeWithPrice>? = fuelStationDetails.value?.body()?.fuelTypes
 
     fun hasAnyServices(): Boolean = !fuelStationDetails.value?.body()?.services.isNullOrEmpty()

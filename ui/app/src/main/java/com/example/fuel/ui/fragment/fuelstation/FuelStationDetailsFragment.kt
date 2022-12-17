@@ -172,7 +172,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         editFuelStationButton.visibility = View.VISIBLE
 
         editFuelStationButton.setOnClickListener {
-
+            val fuelStationEditorFragment = FuelStationEditorFragment()
+            fuelStationEditorFragment.show(requireFragmentManager(), FuelStationEditorFragment.TAG)
         }
     }
 

@@ -47,6 +47,7 @@
     <string name="publish">Opublikuj</string>
     <string name="published">Opublikowano</string>
     <string name="edited_review">Edytowano</string>
+    <string name="added">Dodano</string>
     <string name="deleted">Usunięto</string>
     <string name="ask_if_delete">Czy na pewno chcesz usunąć swoją opinię?</string>
     <string name="ask_if_delete_diff_user_review">Czy na pewno chcesz usunąć opinię użytkownika %1$s?</string>
@@ -60,4 +61,8 @@
     <string name="express_your_opinion">Wyraź swoją opinię</string>
     <string name="added_to_favourite">Dodano do ulubionych</string>
     <string name="removed_from_favourite">Usunięto z ulubionych</string>
+    <string name="fuel_type">Typ paliwa</string>
+    <string name="fuel_station_services">Usługi</string>
+    <string name="fuel_stations">Stacje paliw</string>
+    <string name="price_range">Przedział ceny</string>
 </resources>
