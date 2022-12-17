@@ -23,10 +23,33 @@ public class FuelPriceCommandControllerTest : IntegrationTest
             new IPredefinedData[] { new AccountsData(), new FuelPriceCommandControllerData() }) { }
 
     [Fact]
-    public async Task Creates_new_fuel_prices()
+    public async Task Creates_new_fuel_prices_performed_by_owner()
     {
         // Arrange
         await this.AuthorizeGenericUser(FuelPriceCommandControllerData.FuelStationOwnerUsername, AccountsData.DefaultPassword);
+        
+        var dto = CreateDto();
+        var body = this.Serialize(dto);
+        
+        // Act
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
+
+        var createdObjects = await this.Deserialize<IEnumerable<FuelPriceDto>>(response.Content);
+        createdObjects!.Count().Should().Be(2);
+
+        this.CountAll<Domain.Entities.FuelPrice>().Should()
+            .Be(FuelPriceCommandControllerData.FuelPriceInitialCount + 2);
+    }
+    
+    [Fact]
+    public async Task Creates_new_fuel_prices_performed_by_admin()
+    {
+        // Arrange
+        await this.AuthorizeAdmin();
         
         var dto = CreateDto();
         var body = this.Serialize(dto);

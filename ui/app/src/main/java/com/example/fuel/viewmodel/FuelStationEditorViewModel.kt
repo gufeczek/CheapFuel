@@ -16,6 +16,7 @@ import com.example.fuel.repository.FuelAtStationRepository
 import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.ServiceAtStationRepository
+import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -56,6 +57,9 @@ class FuelStationEditorViewModel(
         } else {
             removeFuelType(fuelTypeId)
         }
+
+        isChange = true
+        MapViewModelMediator.fuelStationChanged()
     }
 
     private fun addFuelType(fuelTypeId: Long) {
@@ -64,7 +68,6 @@ class FuelStationEditorViewModel(
         viewModelScope.launch {
             val addFuelToStation = AddFuelToStation(fuelStation!!.id, fuelTypeId)
             addFuelType.value = fuelAtStationRepository.addFuelToStation(addFuelToStation)
-            isChange = true
         }
     }
 
@@ -73,7 +76,6 @@ class FuelStationEditorViewModel(
 
         viewModelScope.launch {
             removeFuelType.value = fuelAtStationRepository.deleteFuelFromStation(fuelStation!!.id, fuelTypeId)
-            isChange = true
         }
     }
 
@@ -83,6 +85,9 @@ class FuelStationEditorViewModel(
         } else {
             removeService(serviceId)
         }
+
+        isChange = true
+        MapViewModelMediator.fuelStationChanged()
     }
 
     private fun addService(serviceId: Long) {
@@ -91,7 +96,6 @@ class FuelStationEditorViewModel(
         viewModelScope.launch {
             val addServiceToStation = AddServiceToStation(fuelStation!!.id, serviceId)
             addService.value = serviceAtStationRepository.addServiceToStation(addServiceToStation)
-            isChange = true
         }
     }
 
@@ -100,7 +104,6 @@ class FuelStationEditorViewModel(
 
         viewModelScope.launch {
             removeService.value = serviceAtStationRepository.deleteServiceFromStation(fuelStation!!.id, serviceId)
-            isChange = true
         }
     }
 

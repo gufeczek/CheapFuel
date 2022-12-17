@@ -8,6 +8,7 @@ using Application.FuelPrices.Commands.UpdateFuelPriceByOwner;
 using Application.Models.FuelPriceDtos;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using FluentAssertions;
@@ -58,7 +59,7 @@ public class UpdateFuelPriceByOwnerCommandHandlerTest
     }
 
     [Fact]
-    public async Task Creates_new_fuel_prices_for_fuel_station()
+    public async Task Creates_new_fuel_prices_for_fuel_station_when_performed_by_owner()
     {
         // Arrange
         const string username = "Owner";
@@ -85,6 +86,49 @@ public class UpdateFuelPriceByOwnerCommandHandlerTest
         _ownedStationRepository
             .Setup(x => x.ExistsByUserIdAndFuelStationIdAsync(userId, fuelStationId))
             .ReturnsAsync(true);
+
+        _fuelAtStationRepository
+            .Setup(x => x.CountAllByFuelStationIdAndFuelTypesIdsAsync(fuelStationId, new List<long> { 1, 2 }))
+            .ReturnsAsync(2);
+        
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+        
+        // Assert
+        result.Should().NotBeNull();
+        
+        _fuelPriceRepository.Verify(x => x.AddAll(It.IsAny<IEnumerable<FuelPrice>>()), Times.Once);
+        _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+    }
+    
+    [Fact]
+    public async Task Creates_new_fuel_prices_for_fuel_station_when_performed_by_admin()
+    {
+        // Arrange
+        const string username = "Admin";
+        const long userId = 1;
+        const long fuelStationId = 1;
+        var user = new User { Id = userId, Username = username, Role = Role.Admin};
+        var fuelStation = new FuelStation { Id = fuelStationId };
+        
+        var dto = CreateDto();
+        var command = new UpdateFuelPriceByOwnerCommand(dto);
+
+        _userPrincipalService
+            .Setup(x => x.GetUserName())
+            .Returns(username);
+
+        _userRepository
+            .Setup(x => x.GetByUsernameAsync(username))
+            .ReturnsAsync(user);
+
+        _fuelStationRepository
+            .Setup(x => x.GetFuelStationWithFuelTypesAsync(fuelStationId))
+            .ReturnsAsync(fuelStation);
+
+        _ownedStationRepository
+            .Setup(x => x.ExistsByUserIdAndFuelStationIdAsync(userId, fuelStationId))
+            .ReturnsAsync(false);
 
         _fuelAtStationRepository
             .Setup(x => x.CountAllByFuelStationIdAndFuelTypesIdsAsync(fuelStationId, new List<long> { 1, 2 }))
