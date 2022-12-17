@@ -25,6 +25,7 @@ import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class FuelStationDetailsFragment : BottomSheetDialogFragment() {
@@ -43,6 +44,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         fuelStationId = requireArguments().getLong("fuelStationId")
 
         loadFuelStationData()
+        initDeleteFuelStationObserver()
         initReviewObserver()
         initUserReview()
         initReviewSection()
@@ -159,7 +161,9 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun initLayoutForAdmin() {
-        initEditFuelStationButton()
+        initDeleteFuelStationButton()
+
+        initLayoutForOwner()
     }
 
     private fun initLayoutForOwner() {
@@ -172,8 +176,28 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         editFuelStationButton.visibility = View.VISIBLE
 
         editFuelStationButton.setOnClickListener {
-
+            val fuelStationEditorFragment = FuelStationEditorFragment()
+            fuelStationEditorFragment.show(requireFragmentManager(), FuelStationEditorFragment.TAG)
         }
+    }
+
+    private fun initDeleteFuelStationButton() {
+        val deleteFuelStationButton = binding.acibDeleteFuelStation
+        deleteFuelStationButton.visibility = View.VISIBLE
+
+        deleteFuelStationButton.setOnClickListener {
+            askForDeleteConfirmationOfFuelStation()
+        }
+    }
+
+    private fun askForDeleteConfirmationOfFuelStation() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage("Czy na pewno chcesz usunąć tą stację paliw?")
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.deleteFuelStation(fuelStationId!!)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
     }
 
     private fun initEditFuelPriceButton() {
@@ -204,6 +228,20 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
     private fun loadReviews() {
         viewModel.getNextPageOfFuelStationReviews(fuelStationId!!)
+    }
+
+    private fun initDeleteFuelStationObserver() {
+        viewModel.deleteFuelStation.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                dismiss()
+            }
+
+            val text = if (response.isSuccessful) resources.getString(R.string.deleted)
+            else resources.getString(R.string.an_error_occurred)
+
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     private fun initReviewObserver() {
@@ -416,6 +454,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.notifyAboutChanges()
         viewModel.clear()
         hideLayout()
     }

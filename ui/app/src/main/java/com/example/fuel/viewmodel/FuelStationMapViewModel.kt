@@ -14,6 +14,7 @@ import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.StationChainRepository
+import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -30,10 +31,10 @@ class FuelStationMapViewModel(
     private val fuelStationServiceRepository: FuelStationServiceRepository,
     private val stationChainRepository: StationChainRepository): ViewModel() {
 
-    val fuelTypes: MutableLiveData<Response<Page<FuelType>>> = MutableLiveData()
-    val fuelStationServices: MutableLiveData<Response<Page<FuelStationService>>> = MutableLiveData()
-    val stationChains: MutableLiveData<Response<Page<StationChain>>> = MutableLiveData()
-    val fuelStations: MutableLiveData<Response<Array<SimpleMapFuelStation>>> = MutableLiveData()
+    var fuelTypes: MutableLiveData<Response<Page<FuelType>>> = MutableLiveData()
+    var fuelStationServices: MutableLiveData<Response<Page<FuelStationService>>> = MutableLiveData()
+    var stationChains: MutableLiveData<Response<Page<StationChain>>> = MutableLiveData()
+    var fuelStations: MutableLiveData<Response<Array<SimpleMapFuelStation>>> = MutableLiveData()
 
     private var isFuelStationInitialized = false
     private var fuelStatistics: FuelStatistics? = null
@@ -43,9 +44,18 @@ class FuelStationMapViewModel(
 
     private var currentFilter: FuelStationsFilter? = null
 
+    private var hardReload = false
+
     fun getFuelStations() {
         viewModelScope.launch {
-            if (initFilter()) {
+            val result = initFilter()
+
+            if (hardReload) {
+                fetchFuelStations()
+                return@launch
+            }
+
+            if (result) {
                 fetchFuelStationsIfFilterChanged()
             }
         }
@@ -66,6 +76,12 @@ class FuelStationMapViewModel(
     private suspend fun fetchFuelStationsIfFilterChanged() {
         if (filter != currentFilter) {
             currentFilter = filter.copy()
+            fuelStations.value = fuelStationRepository.getSimpleMapFuelStations(filter)
+        }
+    }
+
+    private fun fetchFuelStations() {
+        viewModelScope.launch {
             fuelStations.value = fuelStationRepository.getSimpleMapFuelStations(filter)
         }
     }
@@ -103,7 +119,6 @@ class FuelStationMapViewModel(
 
         _filter?.let {
             filter.fuelTypeId = fuelTypeId
-            println(filter)
         }
     }
 
@@ -111,7 +126,6 @@ class FuelStationMapViewModel(
         _filter?.let {
             filter.stationChainsIds = filter.stationChainsIds ?: mutableListOf()
             addOrRemove(filter.stationChainsIds!!, stationChainId)
-            println(filter)
         }
     }
 
@@ -119,7 +133,6 @@ class FuelStationMapViewModel(
         _filter?.let {
             filter.servicesIds = filter.servicesIds ?: mutableListOf()
             addOrRemove(filter.servicesIds!!, serviceId)
-            println(filter)
         }
     }
 
@@ -181,6 +194,22 @@ class FuelStationMapViewModel(
     fun shouldBeBold(fuelStation: SimpleMapFuelStation): Boolean {
         val color = getPriceColor(fuelStation)
         return color == PRICE_COLOR_RED || color == PRICE_COLOR_GREEN
+    }
+
+    fun hardReload() {
+        hardReload = true
+    }
+
+    fun clearHardReload() {
+        hardReload = false
+    }
+
+    fun init() {
+        MapViewModelMediator.subscribe(this)
+    }
+
+    fun clear() {
+        MapViewModelMediator.unsubscribe()
     }
 
     private data class FuelStatistics(

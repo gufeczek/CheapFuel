@@ -50,8 +50,9 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
                     (minPrice == null || minPrice <= fp.Price) &&
                     (maxPrice == null || maxPrice >= fp.Price))
                 .OrderByDescending(fp => fp.CreatedAt)
-                .Take(1));
-        
+                .Take(1))
+            .Include(fs => fs.FuelTypes);
+
         if (stationChainsIds is null && servicesIds is null)
             return await query.ToListAsync();
 

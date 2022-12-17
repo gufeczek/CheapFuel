@@ -38,7 +38,10 @@ public sealed class GetAllFuelStationsForMapQueryHandler
             filter.MinPrice,
             filter.MaxPrice);
 
-        fuelStations = fuelStations.Where(f => f.FuelPrices.Any()).ToList();
+        fuelStations = fuelStations.Where(
+            f => f.FuelPrices.Any()
+            && f.FuelTypes.Any(ft => ft.FuelTypeId == filter.FuelTypeId))
+            .ToList();
         
         return _mapper.Map<IEnumerable<SimpleMapFuelStationDto>>(fuelStations);
     }

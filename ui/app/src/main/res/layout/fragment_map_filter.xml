@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/gray"
                     android:paddingBottom="10dp"
-                    android:text="Typ paliwa"/>
+                    android:text="@string/fuel_type"/>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/gray"
                     android:paddingBottom="10dp"
-                    android:text="Stacje paliw"/>
+                    android:text="@string/fuel_stations"/>
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/cg_mapStationChains"
@@ -112,7 +112,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/gray"
                     android:paddingBottom="10dp"
-                    android:text="Usługi"/>
+                    android:text="@string/fuel_station_services"/>
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/cg_mapFuelStationServices"
@@ -146,7 +146,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/gray"
                     android:paddingBottom="10dp"
-                    android:text="Przedział ceny"/>
+                    android:text="@string/price_range"/>
 
                 <com.google.android.material.slider.RangeSlider
                     android:id="@+id/rg_fuelPriceRange"

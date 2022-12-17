@@ -89,6 +89,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         setHasOptionsMenu(true)
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationMapViewModel::class.java]
+        viewModel.init()
+
         binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.fabCenter.setOnClickListener {
             askToEnableGps()
@@ -163,7 +165,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             binding.map.overlays.add(markerCluster)
             binding.map.invalidate()
         }
-
     }
 
     private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {
@@ -305,6 +306,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.clear()
         requireActivity().unregisterReceiver(gpsSwitchStateReceiver)
     }
 }

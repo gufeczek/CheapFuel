@@ -47,7 +47,7 @@ public sealed class UpdateFuelPriceByOwnerCommandHandler : IRequestHandler<Updat
         CheckForDuplicateFuelTypes(dto);
         await CheckIfAllFuelTypesExistsAtFuelStation(dto, fuelStation.Id);
 
-        if (!await _ownedStationRepository.ExistsByUserIdAndFuelStationIdAsync(user.Id, (long)dto.FuelStationId!))
+        if (user.Role != Role.Admin && !await _ownedStationRepository.ExistsByUserIdAndFuelStationIdAsync(user.Id, (long)dto.FuelStationId!))
         {
             throw new NotFoundException($"Not found fuel station with id = {dto.FuelStationId} and owner with username = {username}");
         }

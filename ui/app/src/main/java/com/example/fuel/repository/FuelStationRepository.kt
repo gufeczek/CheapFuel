@@ -16,4 +16,8 @@ class FuelStationRepository {
     suspend fun getFuelStationDetails(fuelStationId: Long): Response<FuelStationDetails> {
         return RetrofitInstance.fuelStationApi.getFuelStationDetails(fuelStationId, Auth.token)
     }
+
+    suspend fun deleteFuelStation(fuelStationId: Long): Response<Void> {
+        return RetrofitInstance.fuelStationApi.deleteFuelStation(fuelStationId, Auth.token)
+    }
 }

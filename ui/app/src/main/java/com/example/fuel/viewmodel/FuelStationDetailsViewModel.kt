@@ -27,6 +27,7 @@ import com.example.fuel.utils.converters.Converter
 import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
 import com.example.fuel.utils.extension.DurationExtension.Companion.toMonths
 import com.example.fuel.utils.extension.DurationExtension.Companion.toYears
+import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.time.Duration
@@ -41,6 +42,7 @@ class FuelStationDetailsViewModel(
 
     var fuelStationDetails: MutableLiveData<Response<FuelStationDetails>> = MutableLiveData()
     var fuelStationReviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
+    var deleteFuelStation: MutableLiveData<Response<Void>> = MutableLiveData()
     var userReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var newUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
     var updateUserReview: MutableLiveData<Response<Review>> = MutableLiveData()
@@ -54,6 +56,13 @@ class FuelStationDetailsViewModel(
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
             fuelStationDetails.value = fuelStationRepository.getFuelStationDetails(fuelStationId)
+        }
+    }
+
+    fun deleteFuelStation(fuelStationId: Long) {
+        viewModelScope.launch {
+            deleteFuelStation.value = fuelStationRepository.deleteFuelStation(fuelStationId)
+            MapViewModelMediator.fuelStationChanged()
         }
     }
 
@@ -80,6 +89,8 @@ class FuelStationDetailsViewModel(
     }
 
     fun getFuelStationId(): Long? = fuelStationDetails.value?.body()?.id
+
+    fun getFuelStation(): FuelStationDetails? = fuelStationDetails.value?.body();
 
     fun getFuelTypes(): Array<FuelTypeWithPrice>? = fuelStationDetails.value?.body()?.fuelTypes
 
@@ -196,11 +207,17 @@ class FuelStationDetailsViewModel(
 
         viewModelScope.launch {
             createNewFuelPrices.value = fuelPriceRepository.createNewFuelPrices(fuelPricesAtStation)
+            MapViewModelMediator.fuelStationChanged()
         }
+    }
+
+    fun notifyAboutChanges() {
+        MapViewModelMediator.act()
     }
 
     fun clear() {
         fuelStationDetails = MutableLiveData()
+        deleteFuelStation = MutableLiveData()
         fuelStationReviews = MutableLiveData()
         userReview = MutableLiveData()
         newUserReview = MutableLiveData()
