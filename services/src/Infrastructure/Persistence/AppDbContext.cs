@@ -15,6 +15,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<StationChain> StationChains => Set<StationChain>();
     public DbSet<User> Users => Set<User>();
     public DbSet<FuelStation> FuelStations => Set<FuelStation>();
+    public DbSet<OpeningClosingTime> OpeningClosingTimes => Set<OpeningClosingTime>();
     public DbSet<Favorite> Favorites => Set<Favorite>();
     public DbSet<FuelAtStation> FuelAtStations => Set<FuelAtStation>();
     public DbSet<ServiceAtStation> ServiceAtStations => Set<ServiceAtStation>();

@@ -23,4 +23,12 @@ public class FavoriteRepository : Repository<Favorite>, IFavoriteRepository
             .Where(f => f.User!.Username == username && f.FuelStationId == fuelStationId)
             .AnyAsync();
     }
+
+    public async Task RemoveAllByFuelStationId(long fuelStationId)
+    {
+        var toDelete = await Context.Reviews
+            .Where(f => f.FuelStationId == fuelStationId)
+            .ToListAsync();
+        Context.Reviews.RemoveRange(toDelete);
+    }
 }

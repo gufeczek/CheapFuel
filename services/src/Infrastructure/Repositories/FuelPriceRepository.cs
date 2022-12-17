@@ -20,4 +20,12 @@ public class FuelPriceRepository : BaseRepository<FuelPrice>, IFuelPriceReposito
             .OrderByDescending(f => f.CreatedAt)
             .FirstOrDefaultAsync();
     }
+
+    public async Task RemoveAllByFuelStationId(long fuelStationId)
+    {
+        var toDelete = await Context.FuelPrices
+            .Where(f => f.FuelStationId == fuelStationId)
+            .ToListAsync();
+        Context.FuelPrices.RemoveRange(toDelete);
+    }
 }

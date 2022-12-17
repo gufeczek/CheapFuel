@@ -10,4 +10,5 @@ public interface IReviewRepository : IBaseRepository<Review>
 
     Task<bool> ExistsByFuelStationAndUsername(long fuelStationId, string username);
     Task<Review?> GetByFuelStationAndUsername(long fuelStationId, string username);
+    Task RemoveAllByFuelStationId(long fuelStationId);
 }
