@@ -14,8 +14,8 @@
             android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
             app:destination="@id/setUsernameFragment" />
         <action
-            android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            android:id="@+id/action_setRegisterMethodFragment_to_fuelStationListFragment"
+            app:destination="@id/fuelStationListFragment" />
     </fragment>
     <fragment
         android:id="@+id/setUsernameFragment"
@@ -52,5 +52,14 @@
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
         android:label="MapFilter" />
+    <fragment
+        android:id="@+id/fuelStationListFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
+        android:label="fragment_fuel_station_list"
+        tools:layout="@layout/fragment_fuel_station_list" >
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
 
 </navigation>
