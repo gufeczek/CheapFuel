@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Domain.Common.Pagination.Request;
+using Domain.Common.Pagination.Response;
+using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
@@ -25,6 +27,24 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
             .FirstOrDefaultAsync();
     }
 
+    public async Task<Page<FuelStation>> GetFuelStationsWithPrices(
+        long fuelTypeId,
+        IEnumerable<long>? servicesIds, 
+        IEnumerable<long>? stationChainsIds,
+        decimal? minPrice, 
+        decimal? maxPrice,
+        PageRequest<FuelStation> pageRequest)
+    {
+        var query = GetQueryForFuelStationsWithFuelPrice(
+            fuelTypeId, 
+            servicesIds, 
+            stationChainsIds, 
+            minPrice, 
+            maxPrice);
+
+        return await Paginate(query, pageRequest);
+    }
+
     public async Task<FuelStation?> GetFuelStationWithFuelTypesAsync(long id)
     {
         return await Context.FuelStations
@@ -40,6 +60,20 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
         decimal? minPrice, 
         decimal? maxPrice)
     {
+        return await GetQueryForFuelStationsWithFuelPrice(
+            fuelTypeId, 
+            servicesIds, 
+            stationChainsIds, 
+            minPrice, 
+            maxPrice).ToListAsync();
+    }
+
+    private IQueryable<FuelStation> GetQueryForFuelStationsWithFuelPrice(long fuelTypeId,
+        IEnumerable<long>? servicesIds,
+        IEnumerable<long>? stationChainsIds,
+        decimal? minPrice,
+        decimal? maxPrice)
+    {
         var query = Context.FuelStations
             .Include(fs => fs.StationChain)
             .Include(fs => fs.FuelPrices
@@ -51,54 +85,47 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
                     (maxPrice == null || maxPrice >= fp.Price))
                 .OrderByDescending(fp => fp.CreatedAt)
                 .Take(1))
-            .Include(fs => fs.FuelTypes);
+            .Where(fs => 
+                fs.FuelPrices.Any() 
+                && fs.FuelTypes.Any(ft => ft.FuelTypeId == fuelTypeId));
 
         if (stationChainsIds is null && servicesIds is null)
-            return await query.ToListAsync();
+            return query;
 
         if (stationChainsIds is not null && servicesIds is null)
-            return await GetFuelStationsWithFuelPriceByFuelTypeIdAndStationChain(query, stationChainsIds);
+            return GetQueryForFuelStationsWithFuelPriceByFuelTypeIdAndStationChain(query, stationChainsIds);
 
         if (servicesIds is not null && stationChainsIds is null)
-            return await GetFuelStationWithFuelPriceByFuelTypeIdAndServices(query, servicesIds);
+            return GetQueryForFuelStationWithFuelPriceByFuelTypeIdAndServices(query, servicesIds);
 
-        return await GetFuelStationWithFuelPriceByFuelTypeIdAndStationChainsAndServices(query, stationChainsIds!, servicesIds!);
+        return GetQueryForFuelStationWithFuelPriceByFuelTypeIdAndStationChainsAndServices(query, stationChainsIds!, servicesIds!);
     }
 
-    private async Task<IEnumerable<FuelStation>> GetFuelStationsWithFuelPriceByFuelTypeIdAndStationChain(
-        IQueryable<FuelStation> query, 
+    private IQueryable<FuelStation> GetQueryForFuelStationsWithFuelPriceByFuelTypeIdAndStationChain(
+        IQueryable<FuelStation> query,
         IEnumerable<long> stationChainIds)
     {
-        return await query
-            .Where(fs => 
-                fs.FuelPrices.Any() &&
-                stationChainIds.Contains(fs.StationChain!.Id))
-            .ToListAsync();
+        return query
+            .Where(fs => stationChainIds.Contains(fs.StationChain!.Id));
     }
 
-    private async Task<IEnumerable<FuelStation>> GetFuelStationWithFuelPriceByFuelTypeIdAndServices(
+    private IQueryable<FuelStation> GetQueryForFuelStationWithFuelPriceByFuelTypeIdAndServices(
         IQueryable<FuelStation> query, 
         IEnumerable<long> servicesIds)
     {
-        return await query
+        return query
             .Include(fs => fs.ServiceAtStations)
-            .Where(fs => 
-                fs.FuelPrices.Any() &&
-                fs.ServiceAtStations.Any(ss => servicesIds.Contains(ss.ServiceId)))
-            .ToListAsync();
+            .Where(fs => fs.ServiceAtStations.Any(ss => servicesIds.Contains(ss.ServiceId)));
     }
     
-    private async Task<IEnumerable<FuelStation>> GetFuelStationWithFuelPriceByFuelTypeIdAndStationChainsAndServices(
+    private IQueryable<FuelStation> GetQueryForFuelStationWithFuelPriceByFuelTypeIdAndStationChainsAndServices(
         IQueryable<FuelStation> query, 
         IEnumerable<long> stationChainsIds, 
         IEnumerable<long> servicesIds)
     {
-        return await query
-            .Where(fs => 
-                fs.FuelPrices.Any() &&
+        return query
+            .Where(fs =>
                 fs.ServiceAtStations.Any(ss => servicesIds.Contains(ss.ServiceId)) && 
-                stationChainsIds.Contains(fs.StationChain!.Id))
-            .ToListAsync();
+                stationChainsIds.Contains(fs.StationChain!.Id));
     }
-
 }
