@@ -63,6 +63,14 @@ object RetrofitInstance {
         retrofit.create(FuelPriceApiService::class.java)
     }
 
+    val fuelAtStationApiService: FuelAtStationApiService by lazy {
+        retrofit.create(FuelAtStationApiService::class.java)
+    }
+
+    val serviceAtStationService: ServiceAtStationApiService by lazy {
+        retrofit.create(ServiceAtStationApiService::class.java)
+    }
+
     val testApi: TestApiService by lazy {
         retrofit.create(TestApiService::class.java)
     }
