@@ -48,12 +48,13 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 private const val INITIAL_ZOOM = 7.0;
-private const val USER_LOCATION_INITIAL_ZOOM = 15.0
+private const val LOCATION_DETAILS_INITIAL_ZOOM = 15.0
 private const val MIN_ZOOM = 2.9
 private const val MAX_ZOOM = 18.0
 
 class MapFragment : Fragment(R.layout.fragment_map) {
     private val centerOfPoland: GeoPoint = GeoPoint(52.44819702037008, 19.418026355263613);
+    private var fuelStationLocation: GeoPoint? = null
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationOverlay: MyLocationNewOverlay
@@ -110,6 +111,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             initLocationOverly()
             centerMapViewOnFixedPoint()
             addMarkers()
+            animateToFuelStationLocationIfExists()
         }
     }
 
@@ -190,11 +192,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         return marker
     }
 
-    private fun animateMapToLocation() =
-        if (allPermissionsGranted(requireContext(), optionalPermissions) && isGpsEnabled()) animateMapToUserLocation()
-        else animateMapToStartLocation(centerOfPoland)
+    private fun animateMapToLocation() {
+        if (fuelStationLocation != null) {
+            binding.map.overlays.remove(locationOverlay)
+            animateMapToStartLocation(fuelStationLocation!!, LOCATION_DETAILS_INITIAL_ZOOM)
+            return
+        }
+
+        if (allPermissionsGranted(requireContext(), optionalPermissions) && isGpsEnabled())
+            animateMapToUserLocation()
+        else
+            animateMapToStartLocation(centerOfPoland)
+    }
 
     private fun animateMapToUserLocation() {
+        if (!binding.map.overlays.contains(locationOverlay)) {
+            binding.map.overlays.add(locationOverlay)
+        }
+
         if (!locationOverlay.isMyLocationEnabled) {
             locationOverlay.enableMyLocation()
             locationOverlay.enableFollowLocation()
@@ -203,13 +218,13 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         val mapController: IMapController = binding.map.controller
 
         locationOverlay.runOnFirstFix { requireActivity().runOnUiThread {
-            mapController.animateTo(locationOverlay.myLocation, USER_LOCATION_INITIAL_ZOOM, 1000)
+            mapController.animateTo(locationOverlay.myLocation, LOCATION_DETAILS_INITIAL_ZOOM, 1000)
         } }
     }
 
-    private fun animateMapToStartLocation(geoPoint: GeoPoint) {
+    private fun animateMapToStartLocation(geoPoint: GeoPoint, zoom: Double = INITIAL_ZOOM) {
         val mapController: IMapController = binding.map.controller
-        mapController.animateTo(geoPoint, INITIAL_ZOOM, 1000)
+        mapController.animateTo(geoPoint, zoom, 1000)
     }
 
     private fun animateMapToAddress(address: Address) {
@@ -218,7 +233,18 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         val location = GeoPoint(address.latitude, address.longitude)
 
         val mapController: IMapController = binding.map.controller
-        mapController.animateTo(location, USER_LOCATION_INITIAL_ZOOM, 1000)
+        mapController.animateTo(location, LOCATION_DETAILS_INITIAL_ZOOM, 1000)
+    }
+
+    private fun animateToFuelStationLocationIfExists() {
+        if (arguments != null) {
+            val lat = requireArguments().getDouble("lat")
+            val lon = requireArguments().getDouble("lon")
+
+            fuelStationLocation = GeoPoint(lat, lon)
+
+            animateMapToStartLocation(fuelStationLocation!!, LOCATION_DETAILS_INITIAL_ZOOM)
+        }
     }
 
     private fun searchForLocation(searchPhrase: String) {

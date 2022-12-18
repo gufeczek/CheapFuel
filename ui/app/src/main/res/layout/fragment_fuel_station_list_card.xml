@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_mainContainer"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:paddingStart="15dp"
@@ -64,7 +65,7 @@
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/acib_reviewActionButton"
+            android:id="@+id/acib_fuelStationActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"

@@ -156,6 +156,11 @@ class FuelStationListViewModel(
 
     fun currentSort(): Int = currentSort!!
 
+
+    fun getFuelTypeId(): Long {
+        return _filter?.fuelTypeId ?: 1
+    }
+
     fun clear() {
         fuelTypes = MutableLiveData()
         fuelStations = MutableLiveData()

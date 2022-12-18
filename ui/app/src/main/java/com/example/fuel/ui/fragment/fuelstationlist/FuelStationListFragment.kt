@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationListBinding
 import com.example.fuel.utils.getUserLocation
@@ -37,6 +38,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 //        binding.btnGoToMap.setOnClickListener {
 //            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
 //        }
+
         initUserLocation()
         initFuelStationsSection()
         initFuelStationObserver()

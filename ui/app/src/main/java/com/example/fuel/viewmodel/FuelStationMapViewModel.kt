@@ -1,5 +1,6 @@
 package com.example.fuel.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.StationChainRepository
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
+import com.example.fuel.viewmodel.mediator.SharedFuelStationFilter
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -49,8 +51,9 @@ class FuelStationMapViewModel(
     fun getFuelStations() {
         viewModelScope.launch {
             val result = initFilter()
+            Log.d("tutaj", SharedFuelStationFilter.fuelTypeId.toString())
 
-            if (hardReload) {
+            if (hardReload || SharedFuelStationFilter.isNotEmpty()) {
                 fetchFuelStations()
                 return@launch
             }
@@ -82,12 +85,27 @@ class FuelStationMapViewModel(
 
     private fun fetchFuelStations() {
         viewModelScope.launch {
+            if (SharedFuelStationFilter.isNotEmpty()) {
+                refreshFilter()
+            }
+
             fuelStations.value = fuelStationRepository.getSimpleMapFuelStations(filter)
         }
     }
 
+    private fun refreshFilter() {
+        filter.fuelTypeId = SharedFuelStationFilter.fuelTypeId ?: filter.fuelTypeId
+        filter.stationChainsIds = null
+        filter.servicesIds = null
+        filter.minPrice = null
+        filter.maxPrice = null
+
+        currentFilter = filter.copy()
+        SharedFuelStationFilter.clear()
+    }
+
     fun willDataChange(): Boolean {
-        return _filter == null || _filter != currentFilter
+        return _filter == null || _filter != currentFilter || SharedFuelStationFilter.isNotEmpty()
     }
 
     fun initDataForFilter() {
