@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fuel.R
-import com.example.fuel.model.FuelStationPageRequest
-import com.example.fuel.model.FuelStationsFilter
+import com.example.fuel.model.FuelStationFilterWithLocation
 import com.example.fuel.model.FuelType
 import com.example.fuel.model.SimpleFuelStation
+import com.example.fuel.model.UserLocation
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
+import com.example.fuel.model.page.SortOption
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.utils.converters.Converter
@@ -29,16 +30,27 @@ class FuelStationListViewModel(
 
     private var isFuelStationInitialized = false
 
-    private var _filter: FuelStationsFilter? = null
+    private var sortOptions = arrayOf(
+        SortOption("Price", "ASC"),
+        SortOption("Price", "DESC"),
+        SortOption("Updated", "DESC"),
+        SortOption("Distance", "ASC")
+    )
+    private var selectedSort: Int? = null
+    private var currentSort: Int? = null
+
+    private var _filter: FuelStationFilterWithLocation? = null
     val filter get() = _filter!!
 
-    private var currentFilter: FuelStationsFilter? = null
+    private var currentFilter: FuelStationFilterWithLocation? = null
+    private var userLocation: UserLocation? = null
 
     fun getFirstPageOfFuelStations() {
         viewModelScope.launch {
             val result = initFilter()
 
             if (result) {
+                initSort()
                 getFirstPageOfFuelStationsIfFilterChanged()
             }
         }
@@ -46,7 +58,7 @@ class FuelStationListViewModel(
 
     private suspend fun initFilter(): Boolean {
         if (_filter == null) {
-            val pageRequest = PageRequest(1, 1, "Name", "ASC")
+            val pageRequest = PageRequest(1, 1, "Id", "ASC")
             val fuelTypes = fuelTypeRepository.getFuelTypes(pageRequest).body()
 
             if (fuelTypes == null || fuelTypes.data.isEmpty()) return false
@@ -56,27 +68,45 @@ class FuelStationListViewModel(
         return true
     }
 
-    private suspend fun getFirstPageOfFuelStationsIfFilterChanged() {
-        if (filter != currentFilter) {
-            currentFilter = filter.copy()
-            val pageRequest = PageRequest(1, 10, "id", "Desc")
+    private fun initSort() {
+        if (selectedSort == null) {
+            selectedSort = 0
+        }
+    }
 
-            fuelStations.value = fuelStationRepository.getSimpleListFuelStations(FuelStationPageRequest(filter, pageRequest))
+    private suspend fun getFirstPageOfFuelStationsIfFilterChanged() {
+        if (filter != currentFilter || currentSort != selectedSort) {
+            currentFilter = filter.copy()
+            currentSort = selectedSort
+
+            val currentSort = getSort()
+            val pageRequest = PageRequest(1, 10, currentSort.property, currentSort.direction)
+
+            fuelStations.value = fuelStationRepository.getSimpleListFuelStations(filter, pageRequest)
         }
     }
 
     fun getNextPageOfFuelStations() {
         viewModelScope.launch {
+            val currentSort = getSort()
             val nextPage = (if (fuelStations.value != null) fuelStations.value?.body()?.nextPage else 1) ?: return@launch
 
-            val pageRequest = PageRequest(nextPage, 10, "CreatedAt", "Desc")
-            fuelStations.value = fuelStationRepository.getSimpleListFuelStations(FuelStationPageRequest(currentFilter!!, pageRequest))
+            val pageRequest = PageRequest(nextPage, 10, currentSort.property, currentSort.direction)
+            fuelStations.value = fuelStationRepository.getSimpleListFuelStations(currentFilter!!, pageRequest)
         }
     }
 
+    private fun getSort() = sortOptions[currentSort ?: 0]
+
     fun initFilter(fuelTypeId: Long) {
         if (!isFuelStationInitialized) {
-            _filter = _filter ?: FuelStationsFilter(fuelTypeId, null, null, null, null)
+            _filter = _filter ?: FuelStationFilterWithLocation(fuelTypeId, null, null, null, null, null, null)
+
+            if (userLocation != null) {
+                filter.userLatitude = userLocation!!.latitude
+                filter.userLongitude = userLocation!!.longitude
+            }
+
             isFuelStationInitialized = true
         }
     }
@@ -104,6 +134,28 @@ class FuelStationListViewModel(
         return resources.getString(R.string.one_hour_ago)
     }
 
+    fun setUserLocation(lat: Double, lon: Double) {
+        userLocation = UserLocation(lat, lon)
+    }
+
+    fun sortOptions(): Array<String> {
+        if (userLocation != null) {
+            return arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane", "Odległość")
+        } else {
+            return arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane")
+        }
+    }
+
+    fun choiceSort(idx: Int) {
+        selectedSort = idx
+    }
+
+    fun cancelSort() {
+        selectedSort = currentSort
+    }
+
+    fun currentSort(): Int = currentSort!!
+
     fun clear() {
         fuelTypes = MutableLiveData()
         fuelStations = MutableLiveData()
@@ -113,3 +165,4 @@ class FuelStationListViewModel(
         currentFilter = null
     }
 }
+

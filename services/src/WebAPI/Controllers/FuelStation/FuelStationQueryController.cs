@@ -3,6 +3,7 @@ using Application.FuelStations.Queries.GetAllFuelStationForMap;
 using Application.FuelStations.Queries.GetFuelStationDetails;
 using Application.Models;
 using Application.Models.Filters;
+using Application.Models.Pagination;
 using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,9 @@ public sealed class FuelStationQueryController : ControllerBase
 
     [AuthorizeUser]
     [HttpPost("list")]
-    public async Task<ActionResult<Page<SimpleFuelStationDto>>> GetAllFuelStationForListView([FromBody] GetAllFuelStationForListQuery query)
+    public async Task<ActionResult<Page<SimpleFuelStationDto>>> GetAllFuelStationForListView([FromBody] FuelStationFilterWithLocalizationDto filterDto, [FromQuery] PageRequestDto pageRequestDto)
     {
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(new GetAllFuelStationForListQuery(filterDto, pageRequestDto));
         return Ok(result);
     }
 }

@@ -30,6 +30,8 @@ public sealed class SimpleFuelStationDtoColumnSelector : IColumnSelector<FuelSta
 {
     public Dictionary<string, Expression<Func<FuelStation, object>>> ColumnSelector { get; } = new()
     {
-        { nameof(FuelStation.Id), r => r.Id }
+        { nameof(FuelStation.Id), r => r.Id },
+        { nameof(SimpleFuelStationDto.StationChainName), r => r.StationChain!.Name! },
+        { nameof(SimpleFuelPriceDto.Price), r => r.FuelPrices.First().Price }
     };
 }

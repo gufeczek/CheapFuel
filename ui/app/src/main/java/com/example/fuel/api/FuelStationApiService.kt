@@ -1,7 +1,7 @@
 package com.example.fuel.api
 
 import com.example.fuel.model.FuelStationDetails
-import com.example.fuel.model.FuelStationPageRequest
+import com.example.fuel.model.FuelStationFilterWithLocation
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleFuelStation
 import com.example.fuel.model.page.Page
@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.QueryMap
 
 interface FuelStationApiService {
 
@@ -23,7 +24,8 @@ interface FuelStationApiService {
 
     @POST("api/v1/fuel-stations/list")
     suspend fun getSimpleListFuelStations(
-        @Body request: FuelStationPageRequest,
+        @Body filter: FuelStationFilterWithLocation,
+        @QueryMap pageRequest: Map<String, String>,
         @Header("Authorization") authHeader: String
     ): Response<Page<SimpleFuelStation>>
 

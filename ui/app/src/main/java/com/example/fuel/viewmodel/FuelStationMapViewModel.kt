@@ -92,7 +92,7 @@ class FuelStationMapViewModel(
 
     fun initDataForFilter() {
         viewModelScope.launch {
-            val pageRequest = PageRequest(1, 100, "Name", "ASC")
+            val pageRequest = PageRequest(1, 100, "Id", "ASC")
             fuelTypes.value = fuelTypeRepository.getFuelTypes(pageRequest)
             fuelStationServices.value = fuelStationServiceRepository.getFuelStationServices(pageRequest)
             stationChains.value = stationChainRepository.getStationChains(pageRequest)

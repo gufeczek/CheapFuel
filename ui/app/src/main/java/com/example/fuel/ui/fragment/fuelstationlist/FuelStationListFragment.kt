@@ -2,8 +2,10 @@ package com.example.fuel.ui.fragment.fuelstationlist
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationListBinding
+import com.example.fuel.utils.getUserLocation
+import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationListViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class FuelStationListFragment : Fragment(R.layout.fragment_map) {
     private lateinit var binding: FragmentFuelStationListBinding
@@ -24,6 +29,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationListViewModel::class.java]
         binding = FragmentFuelStationListBinding.inflate(inflater, container, false)
@@ -31,7 +37,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 //        binding.btnGoToMap.setOnClickListener {
 //            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
 //        }
-
+        initUserLocation()
         initFuelStationsSection()
         initFuelStationObserver()
 
@@ -65,7 +71,6 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
             val parent = binding.llcFuelStationsContainer
 
             val page = response.body()
-            Log.d("Test", page!!.nextPage.toString())
 
             for (fuelStation in page?.data!!) {
                 val fuelStationFragment = FuelStationListCardFragment(fuelStation)
@@ -85,10 +90,62 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
         binding.pbFuelStationsLoad.visibility = View.GONE
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.list_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.list_sort) {
+            openSortDialog()
+        }
+
+        if (item.itemId == R.id.list_filter) {
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun openSortDialog() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setTitle(getString(R.string.choose_sort))
+            .setSingleChoiceItems(viewModel.sortOptions(), viewModel.currentSort()) { _, which ->
+                viewModel.choiceSort(which)
+            }
+            .setPositiveButton(getString(R.string.ok)) { dialog, which ->
+                refreshFuelStations()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+                viewModel.cancelSort()
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun refreshFuelStations() {
+        val parent = binding.llcFuelStationsContainer
+        parent.removeAllViews()
+
+        showFuelStationProgressBar()
+
+        viewModel.getFirstPageOfFuelStations()
+    }
+
+    private fun initUserLocation() {
+        if (isGpsEnabled(requireContext())) {
+            val location = getUserLocation(requireContext()) ?: return
+            viewModel.setUserLocation(location.latitude, location.longitude)
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (activity as AppCompatActivity).supportActionBar?.show()
+        val appActivity = (activity as AppCompatActivity)
+        if (!appActivity.supportActionBar?.isShowing!!) {
+            appActivity.supportActionBar?.show()
+        }
     }
 
     override fun onDestroy() {

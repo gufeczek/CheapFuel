@@ -55,8 +55,8 @@
     <fragment
         android:id="@+id/fuelStationListFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
-        android:label="fragment_fuel_station_list"
-        tools:layout="@layout/fragment_fuel_station_list" >
+        android:label="Cheap Fuel"
+        tools:layout="@layout/fragment_fuel_station_list">
         <action
             android:id="@+id/action_fuelStationListFragment_to_mapFragment"
             app:destination="@id/mapFragment" />

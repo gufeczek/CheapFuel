@@ -5,4 +5,6 @@ public sealed record FuelStationFilterWithLocalizationDto(
     IEnumerable<long>? ServicesIds, 
     IEnumerable<long>? StationChainsIds, 
     decimal? MinPrice, 
-    decimal? MaxPrice);
+    decimal? MaxPrice,
+    decimal? UserLongitude,
+    decimal? UserLatitude);
