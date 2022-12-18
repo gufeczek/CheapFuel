@@ -16,6 +16,7 @@ import com.example.fuel.repository.FuelAtStationRepository
 import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.ServiceAtStationRepository
+import com.example.fuel.viewmodel.mediator.ListViewModelMediator
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -60,6 +61,7 @@ class FuelStationEditorViewModel(
 
         isChange = true
         MapViewModelMediator.fuelStationChanged()
+        ListViewModelMediator.fuelStationChanged()
     }
 
     private fun addFuelType(fuelTypeId: Long) {
@@ -88,6 +90,7 @@ class FuelStationEditorViewModel(
 
         isChange = true
         MapViewModelMediator.fuelStationChanged()
+        ListViewModelMediator.fuelStationChanged()
     }
 
     private fun addService(serviceId: Long) {

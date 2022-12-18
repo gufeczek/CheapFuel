@@ -12,6 +12,7 @@ object MapViewModelMediator {
 
     fun unsubscribe() {
         this.mapViewModel = null
+        changeDetected = false
     }
 
     fun fuelStationChanged() {
@@ -19,7 +20,7 @@ object MapViewModelMediator {
     }
 
     fun act() {
-        if (changeDetected) {
+        if (changeDetected && mapViewModel != null) {
             mapViewModel!!.hardReload()
             mapViewModel!!.getFuelStations()
             mapViewModel!!.clearHardReload()

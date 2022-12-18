@@ -15,6 +15,7 @@ import com.example.fuel.model.page.SortOption
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.utils.converters.Converter
+import com.example.fuel.viewmodel.mediator.ListViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.time.Duration
@@ -45,9 +46,17 @@ class FuelStationListViewModel(
     private var currentFilter: FuelStationFilterWithLocation? = null
     private var userLocation: UserLocation? = null
 
+    private var hardReload = false
+
     fun getFirstPageOfFuelStations() {
         viewModelScope.launch {
             val result = initFilter()
+
+            if (hardReload) {
+                hardReload = false
+                fetchFirstPageOfFuelStations()
+                return@launch
+            }
 
             if (result) {
                 initSort()
@@ -92,6 +101,15 @@ class FuelStationListViewModel(
             val nextPage = (if (fuelStations.value != null) fuelStations.value?.body()?.nextPage else 1) ?: return@launch
 
             val pageRequest = PageRequest(nextPage, 10, currentSort.property, currentSort.direction)
+            fuelStations.value = fuelStationRepository.getSimpleListFuelStations(currentFilter!!, pageRequest)
+        }
+    }
+
+    private fun fetchFirstPageOfFuelStations() {
+        viewModelScope.launch {
+            val currentSort = getSort()
+            val pageRequest = PageRequest(1, 10, currentSort.property, currentSort.direction)
+
             fuelStations.value = fuelStationRepository.getSimpleListFuelStations(currentFilter!!, pageRequest)
         }
     }
@@ -146,6 +164,8 @@ class FuelStationListViewModel(
         }
     }
 
+    fun isFirstPage(): Boolean = fuelStations.value?.body()?.pageNumber == 1
+
     fun choiceSort(idx: Int) {
         selectedSort = idx
     }
@@ -161,6 +181,14 @@ class FuelStationListViewModel(
         return _filter?.fuelTypeId ?: 1
     }
 
+    fun hardReload() {
+        hardReload = true
+    }
+
+    fun init() {
+        ListViewModelMediator.subscribe(this)
+    }
+
     fun clear() {
         fuelTypes = MutableLiveData()
         fuelStations = MutableLiveData()
@@ -168,6 +196,8 @@ class FuelStationListViewModel(
         isFuelStationInitialized = false
         _filter = null
         currentFilter = null
+
+        ListViewModelMediator.unsubscribe()
     }
 }
 

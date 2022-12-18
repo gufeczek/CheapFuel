@@ -8,11 +8,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationListBinding
 import com.example.fuel.utils.getUserLocation
@@ -33,6 +33,8 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
         setHasOptionsMenu(true)
 
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationListViewModel::class.java]
+        viewModel.init()
+
         binding = FragmentFuelStationListBinding.inflate(inflater, container, false)
 
 //        binding.btnGoToMap.setOnClickListener {
@@ -72,6 +74,11 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
             val fragmentTransaction = fragmentManager.beginTransaction()
             val parent = binding.llcFuelStationsContainer
 
+            if (viewModel.isFirstPage()) {
+                scrollToTop()
+                parent.removeAllViews()
+            }
+
             val page = response.body()
 
             for (fuelStation in page?.data!!) {
@@ -82,6 +89,10 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 
             if (!viewModel.hasMoreFuelStations()) hideFuelStationProgressBar()
         }
+    }
+
+    private fun scrollToTop() {
+        binding.nsvFuelStationsList.fullScroll(ScrollView.FOCUS_UP)
     }
 
     private fun showFuelStationProgressBar() {

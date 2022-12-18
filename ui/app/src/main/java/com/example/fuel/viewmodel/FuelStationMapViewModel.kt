@@ -51,7 +51,6 @@ class FuelStationMapViewModel(
     fun getFuelStations() {
         viewModelScope.launch {
             val result = initFilter()
-            Log.d("tutaj", SharedFuelStationFilter.fuelTypeId.toString())
 
             if (hardReload || SharedFuelStationFilter.isNotEmpty()) {
                 fetchFuelStations()
