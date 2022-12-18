@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationListBinding
 import com.example.fuel.utils.getUserLocation
@@ -79,6 +80,12 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
                 parent.removeAllViews()
             }
 
+            if (!viewModel.hasAnyFuelStations()) {
+                hideFuelStationProgressBar()
+                showPlaceholder()
+                return@observe
+            }
+
             val page = response.body()
 
             for (fuelStation in page?.data!!) {
@@ -113,7 +120,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
         }
 
         if (item.itemId == R.id.list_filter) {
-
+            Navigation.findNavController(binding.root).navigate(R.id.fuelStationListFilterFragment)
         }
 
         return super.onOptionsItemSelected(item)
@@ -150,6 +157,10 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
             val location = getUserLocation(requireContext()) ?: return
             viewModel.setUserLocation(location.latitude, location.longitude)
         }
+    }
+
+    private fun showPlaceholder() {
+        binding.clPlaceholder.visibility = View.VISIBLE
     }
 
     override fun onAttach(context: Context) {

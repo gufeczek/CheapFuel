@@ -34,12 +34,12 @@ class ViewModelFactory : ViewModelProvider.Factory {
             FuelAtStationRepository(),
             ServiceAtStationRepository(),
             FuelTypeRepository(),
-            FuelStationServiceRepository()
-        ) as T
+            FuelStationServiceRepository()) as T
         FuelStationListViewModel::class.java -> FuelStationListViewModel(
             FuelStationRepository(),
-            FuelTypeRepository()
-        ) as T
+            FuelTypeRepository(),
+            FuelStationServiceRepository(),
+            StationChainRepository()) as T
         TestViewModel::class.java -> TestViewModel(TestRepository()) as T
         else -> {
             throw NoSuchViewModelException(

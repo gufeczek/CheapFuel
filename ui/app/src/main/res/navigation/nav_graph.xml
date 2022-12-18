@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
-        android:label="MapFilter" />
+        android:label="Map Filter" />
     <fragment
         android:id="@+id/fuelStationListFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
@@ -60,6 +60,14 @@
         <action
             android:id="@+id/action_fuelStationListFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_fuelStationListFilterFragment"
+            app:destination="@id/fuelStationListFilterFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/fuelStationListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFilterFragment"
+        android:label="List Filter"
+        tools:layout="@layout/fragment_fuel_station_list_filter" />
 
 </navigation>
