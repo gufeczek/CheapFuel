@@ -1,6 +1,9 @@
-﻿using Application.FuelStations.Queries.GetAllFuelStationForMap;
+﻿using Application.FuelStations.Queries.GetAllFuelStationForList;
+using Application.FuelStations.Queries.GetAllFuelStationForMap;
 using Application.FuelStations.Queries.GetFuelStationDetails;
 using Application.Models;
+using Application.Models.Filters;
+using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Common.Authorization;
@@ -27,10 +30,18 @@ public sealed class FuelStationQueryController : ControllerBase
     }
 
     [AuthorizeUser]
-    [HttpPost("filter")]
-    public async Task<ActionResult<IEnumerable<SimpleMapFuelStationDto>>> GetAllFuelStationForMapView([FromBody] FuelStationFilterDto filterDto)
+    [HttpPost("map")]
+    public async Task<ActionResult<IEnumerable<SimpleFuelStationDto>>> GetAllFuelStationForMapView([FromBody] FuelStationFilterDto filterDto)
     {
         var result = await _mediator.Send(new GetAllFuelStationsForMapQuery(filterDto));
+        return Ok(result);
+    }
+
+    [AuthorizeUser]
+    [HttpPost("list")]
+    public async Task<ActionResult<Page<SimpleFuelStationDto>>> GetAllFuelStationForListView([FromBody] GetAllFuelStationForListQuery query)
+    {
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 }

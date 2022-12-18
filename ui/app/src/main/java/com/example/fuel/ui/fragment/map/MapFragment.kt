@@ -29,7 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentMapBinding
-import com.example.fuel.model.SimpleMapFuelStation
+import com.example.fuel.model.SimpleFuelStation
 import com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment
 import com.example.fuel.ui.utils.drawable.FuelStationMarker
 import com.example.fuel.ui.utils.permission.allPermissionsGranted
@@ -167,7 +167,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
     }
 
-    private fun buildMarker(fuelStation: SimpleMapFuelStation): Marker {
+    private fun buildMarker(fuelStation: SimpleFuelStation): Marker {
         val marker = Marker(binding.map)
         val fuelStationMarker = FuelStationMarker(
             binding.map.context.resources,

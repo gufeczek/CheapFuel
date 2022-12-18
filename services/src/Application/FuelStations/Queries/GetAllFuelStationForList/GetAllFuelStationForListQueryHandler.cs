@@ -1,15 +1,17 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common;
+using Application.Common.Exceptions;
 using Application.Models;
 using Application.Models.Filters;
 using AutoMapper;
+using Domain.Common.Pagination.Response;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace Application.FuelStations.Queries.GetAllFuelStationForMap;
+namespace Application.FuelStations.Queries.GetAllFuelStationForList;
 
-public sealed class GetAllFuelStationsForMapQueryHandler 
-    : IRequestHandler<GetAllFuelStationsForMapQuery, IEnumerable<SimpleFuelStationDto>>
+public class GetAllFuelStationForListQueryHandler 
+    : IRequestHandler<GetAllFuelStationForListQuery, Page<SimpleFuelStationDto>>
 {
     private readonly IFuelStationRepository _fuelStationRepository;
     private readonly IFuelTypeRepository _fuelTypeRepository;
@@ -17,7 +19,7 @@ public sealed class GetAllFuelStationsForMapQueryHandler
     private readonly IStationChainRepository _stationChainRepository;
     private readonly IMapper _mapper;
     
-    public GetAllFuelStationsForMapQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetAllFuelStationForListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _fuelStationRepository = unitOfWork.FuelStations;
         _fuelTypeRepository = unitOfWork.FuelTypes;
@@ -26,23 +28,25 @@ public sealed class GetAllFuelStationsForMapQueryHandler
         _mapper = mapper;
     }
     
-    public async Task<IEnumerable<SimpleFuelStationDto>> Handle(GetAllFuelStationsForMapQuery request, CancellationToken cancellationToken)
+    public async Task<Page<SimpleFuelStationDto>> Handle(GetAllFuelStationForListQuery request, CancellationToken cancellationToken)
     {
-        var filter = request.FilterDto;
+        var filter = request.Filter;
 
         await ValidateFilters(filter!);
 
-        var fuelStations = await _fuelStationRepository.GetFuelStationsWithFuelPrice(
+        var pageRequest = PaginationHelper.Eval(request.PageRequest, new SimpleFuelStationDtoColumnSelector());
+        var result = await _fuelStationRepository.GetFuelStationsWithPrices(
             filter!.FuelTypeId,
             filter.ServicesIds,
             filter.StationChainsIds,
             filter.MinPrice,
-            filter.MaxPrice);
+            filter.MaxPrice,
+            pageRequest);
 
-        return _mapper.Map<IEnumerable<SimpleFuelStationDto>>(fuelStations);
+        return Page<SimpleFuelStationDto>.From(result, _mapper.Map<IEnumerable<SimpleFuelStationDto>>(result.Data));
     }
-
-    private async Task ValidateFilters(FuelStationFilterDto filterDto)
+    
+    private async Task ValidateFilters(FuelStationFilterWithLocalizationDto filterDto)
     {
         var validationErrors = new List<string>();
         

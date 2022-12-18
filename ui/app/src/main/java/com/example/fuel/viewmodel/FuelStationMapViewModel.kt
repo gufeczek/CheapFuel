@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fuel.model.FuelStationService
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.FuelType
-import com.example.fuel.model.SimpleMapFuelStation
+import com.example.fuel.model.SimpleFuelStation
 import com.example.fuel.model.StationChain
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
@@ -34,7 +34,7 @@ class FuelStationMapViewModel(
     var fuelTypes: MutableLiveData<Response<Page<FuelType>>> = MutableLiveData()
     var fuelStationServices: MutableLiveData<Response<Page<FuelStationService>>> = MutableLiveData()
     var stationChains: MutableLiveData<Response<Page<StationChain>>> = MutableLiveData()
-    var fuelStations: MutableLiveData<Response<Array<SimpleMapFuelStation>>> = MutableLiveData()
+    var fuelStations: MutableLiveData<Response<Array<SimpleFuelStation>>> = MutableLiveData()
 
     private var isFuelStationInitialized = false
     private var fuelStatistics: FuelStatistics? = null
@@ -163,7 +163,7 @@ class FuelStationMapViewModel(
         return _filter?.servicesIds?.contains(serviceId) == true
     }
 
-    fun calculateStatistics(fuelStations: Array<SimpleMapFuelStation>?) {
+    fun calculateStatistics(fuelStations: Array<SimpleFuelStation>?) {
         if (fuelStations != null && fuelStations.size > 10) {
             fuelStations.sortedByDescending { it.price }
             val threshold = (fuelStations.size * 0.01).toInt()
@@ -179,7 +179,7 @@ class FuelStationMapViewModel(
         }
     }
 
-    fun getPriceColor(fuelStation: SimpleMapFuelStation): Int {
+    fun getPriceColor(fuelStation: SimpleFuelStation): Int {
         if (fuelStatistics == null) return PRICE_COLOR_GREY
 
         if (fuelStation.price > fuelStatistics!!.maxPriceThreshold) {
@@ -191,7 +191,7 @@ class FuelStationMapViewModel(
         return PRICE_COLOR_GREY
     }
 
-    fun shouldBeBold(fuelStation: SimpleMapFuelStation): Boolean {
+    fun shouldBeBold(fuelStation: SimpleFuelStation): Boolean {
         val color = getPriceColor(fuelStation)
         return color == PRICE_COLOR_RED || color == PRICE_COLOR_GREEN
     }

@@ -65,4 +65,5 @@
     <string name="fuel_station_services">Usługi</string>
     <string name="fuel_stations">Stacje paliw</string>
     <string name="price_range">Przedział ceny</string>
+    <string name="fuel_station_ask_if_delete">Czy na pewno chcesz usunąć tą stację paliw?</string>
 </resources>

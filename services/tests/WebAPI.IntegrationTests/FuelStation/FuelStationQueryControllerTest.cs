@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Application.Models;
+using Application.Models.Filters;
 using FluentAssertions;
 using WebAPI.IntegrationTests.PredefinedData;
 using WebAPI.IntegrationTests.TestConfiguration;
@@ -34,13 +35,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(FuelStationQueryControllerData.FuelStationsWithPriceOfFuelType1Count);
         fuelStations.Select(f => new { f.Id, f.Price }).Should().BeEquivalentTo(new[]
         {
@@ -62,13 +63,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(2);
         fuelStations.Select(f => f.Id).Should().BeEquivalentTo(new[]
         {
@@ -91,13 +92,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(3);
         fuelStations.Select(f => f.Id).Should().BeEquivalentTo(new[]
         {
@@ -120,13 +121,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(2);
         fuelStations.Select(f => f.Id).Should().BeEquivalentTo(new[]
         {
@@ -150,13 +151,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(4);
         fuelStations.Select(f => f.Id).Should().BeEquivalentTo(new[]
         {
@@ -185,13 +186,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(1);
         fuelStations.Select(f => f.Id).Should().BeEquivalentTo(new[]
         {
@@ -211,13 +212,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(1);
         fuelStations.Select(f => new { f.Id, f.Price }).Should().BeEquivalentTo(new[]
         {
@@ -237,13 +238,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(1);
         fuelStations.Select(f => new { f.Id, f.Price }).Should().BeEquivalentTo(new[]
         {
@@ -263,13 +264,13 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.Should().Be(MediaTypeNames.Application.Json);
 
-        var fuelStations = (await this.Deserialize<IEnumerable<SimpleMapFuelStationDto>>(response.Content))!.ToList();
+        var fuelStations = (await this.Deserialize<IEnumerable<SimpleFuelStationDto>>(response.Content))!.ToList();
         fuelStations.Count.Should().Be(2);
         fuelStations.Select(f => new { f.Id, f.Price }).Should().BeEquivalentTo(new[]
         {
@@ -288,7 +289,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -307,7 +308,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -328,7 +329,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -349,7 +350,7 @@ public class FuelStationQueryControllerTest : IntegrationTest
         var body = this.Serialize(filter);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-stations/filter", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-stations/map", body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

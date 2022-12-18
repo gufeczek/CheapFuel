@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Application.FuelStations.Queries.GetAllFuelStationForMap;
 using Application.Models;
+using Application.Models.Filters;
 using FluentValidation.TestHelper;
 using Xunit;
 
