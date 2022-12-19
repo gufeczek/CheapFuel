@@ -36,7 +36,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
             FuelTypeRepository(),
             FuelStationServiceRepository()
         ) as T
-        TestViewModel::class.java -> TestViewModel(TestRepository()) as T
         else -> {
             throw NoSuchViewModelException(
                 "Exception in 'ViewModelFactory' class, 'create' method: such ViewModel doesn't exist"
