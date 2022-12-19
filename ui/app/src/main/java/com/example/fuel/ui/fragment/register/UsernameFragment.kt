@@ -12,10 +12,9 @@ import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
-import com.example.fuel.databinding.FragmentSetUsernameBinding
+import com.example.fuel.databinding.FragmentUsernameBinding
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
@@ -24,9 +23,9 @@ import com.example.fuel.viewmodel.UserViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
 
-class UsernameFragment : Fragment(R.layout.fragment_set_username) {
+class UsernameFragment : Fragment(R.layout.fragment_username) {
 
-    private var _binding: FragmentSetUsernameBinding? = null
+    private var _binding: FragmentUsernameBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorUsername.Error? = null
     private lateinit var viewModel: UserViewModel
@@ -35,7 +34,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSetUsernameBinding.inflate(inflater, container, false)
+        _binding = FragmentUsernameBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
 
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -44,7 +43,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         binding.tvTermsOfUse.removeLinksUnderline()
 
         binding.btnNextPage.setOnClickListener(btnGoToNextPage)
-        binding.chkTermsOfUse.setOnCheckedChangeListener(chkValidationListener)
+        binding.chkTermsOfUse.setOnCheckedChangeListener(chkTermsOfUseValidation)
 
         binding.chkTermsOfUse.setOnClickListener{ view -> view.hideKeyboard() }
         binding.clMain.setOnClickListener{ view -> view.hideKeyboard() }
@@ -52,17 +51,15 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-
 
     private val btnGoToNextPage = View.OnClickListener { view ->
         val username = binding.etUsername.text.toString()
@@ -77,8 +74,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         }
     }
 
-
-    private val chkValidationListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+    private val chkTermsOfUseValidation= CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (isChecked) {
             hideTermsOfUseError()
         }

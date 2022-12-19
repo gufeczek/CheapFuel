@@ -1,15 +1,16 @@
 package com.example.fuel.ui.fragment.register
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
-import com.example.fuel.databinding.FragmentSetPasswordBinding
+import com.example.fuel.databinding.FragmentPasswordBinding
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidationPassword
@@ -18,9 +19,9 @@ import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCa
 import com.example.fuel.viewmodel.UserViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
-class PasswordFragment : Fragment(R.layout.fragment_set_password) {
+class PasswordFragment : Fragment(R.layout.fragment_password) {
 
-    private var _binding: FragmentSetPasswordBinding? = null
+    private var _binding: FragmentPasswordBinding? = null
     private val binding get() = _binding!!
     private var error: ValidationPassword.Error? = null
     private lateinit var viewModel: UserViewModel
@@ -30,7 +31,7 @@ class PasswordFragment : Fragment(R.layout.fragment_set_password) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSetPasswordBinding.inflate(inflater, container, false)
+        _binding = FragmentPasswordBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
 
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -43,6 +44,11 @@ class PasswordFragment : Fragment(R.layout.fragment_set_password) {
         binding.btnNextPage.setOnClickListener(btnGoToNextPage)
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     override fun onDestroyView() {
@@ -63,7 +69,6 @@ class PasswordFragment : Fragment(R.layout.fragment_set_password) {
             showError()
         }
     }
-
 
     private fun passwordCheckmarks(text: String) {
         val greenTick = R.drawable.ic_tick_green_32dp
