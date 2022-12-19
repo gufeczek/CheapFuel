@@ -19,7 +19,7 @@ public sealed class MsSqlDbContext : AppDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        var connectionString = _configuration.GetConnectionString("AZURE_SQL_CONNECTION")
+        var connectionString = _configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")
                                ?? throw new AppConfigurationException("Database connection string is missing");
         options.UseSqlServer(connectionString);
     }
