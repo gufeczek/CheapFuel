@@ -26,15 +26,21 @@ public class GetAllFuelStationForListQueryValidator : AbstractValidator<GetAllFu
 
             RuleFor(g => g.Filter!.MaxPrice)
                 .GreaterThanOrEqualTo(0);
+            
+            RuleFor(g => g.Filter!.UserLatitude)
+                .GreaterThanOrEqualTo(-90.0)
+                .LessThanOrEqualTo(90.0);
+            
+            RuleFor(g => g.Filter!.UserLongitude)
+                .GreaterThanOrEqualTo(-180.0)
+                .LessThanOrEqualTo(180.0);
+
+            RuleFor(g => g.Filter!.Distance)
+                .GreaterThanOrEqualTo(0);
         });
 
         RuleFor(g => g.PageRequest)
-            .NotNull();
-
-        When(x => x.Filter is not null, () =>
-        {
-            RuleFor(g => g.PageRequest)
-                .SetValidator(new PageRequestDtoValidator());
-        });
+            .NotNull()
+            .SetValidator(new PageRequestDtoValidator());
     }
 }

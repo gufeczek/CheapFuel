@@ -43,6 +43,11 @@ public class GetAllFuelStationForListQueryHandler
             filter.MinPrice,
             filter.MaxPrice);
 
+        if (request.Filter!.Distance is not null)
+        {
+            result = ApplyDistanceFilter(result, filter);
+        }
+        
         if (request.PageRequest.Sort is not null)
         {
             result = OrderBy(result, request.PageRequest.Sort, request.Filter!);
@@ -72,10 +77,26 @@ public class GetAllFuelStationForListQueryHandler
             validationErrors.Add("One or more of fuel station services ids is invalid");
         }
 
+        if (filterDto.Distance is not null && (filterDto.UserLatitude is null || filterDto.UserLongitude is null))
+        {
+            validationErrors.Add("User coordinates must be set to calculate the distance");
+        }
+
         if (validationErrors.Any())
         {
             throw new FilterValidationException(validationErrors);
         }
+    }
+
+    private IEnumerable<FuelStation> ApplyDistanceFilter(IEnumerable<FuelStation> fuelStations, FuelStationFilterWithLocalizationDto filter)
+    {
+        return fuelStations.Where(fs =>
+            GetDistance(
+                (double)fs.GeographicalCoordinates!.Longitude, 
+                (double)fs.GeographicalCoordinates.Latitude,
+                filter.UserLongitude!.Value, 
+                filter.UserLatitude!.Value) <= filter.Distance)
+            .ToList();
     }
 
     private IEnumerable<FuelStation> OrderBy(
@@ -103,9 +124,8 @@ public class GetAllFuelStationForListQueryHandler
         double Func(FuelStation fs) => GetDistance(
             (double)fs.GeographicalCoordinates!.Longitude, 
             (double)fs.GeographicalCoordinates.Latitude, 
-            (double)filter.UserLongitude, 
-            (double)filter.UserLatitude);
-
+            filter.UserLongitude.Value, 
+            filter.UserLatitude.Value);
         return OrderBy(fuelStations, Func, sortDto.SortDirection!.Value);
     }
     
