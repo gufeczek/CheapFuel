@@ -9,6 +9,7 @@ import com.example.fuel.R
 import com.example.fuel.model.User
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.validation.ValidatorEmail
+import com.example.fuel.utils.validation.ValidatorUsername
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -32,8 +33,18 @@ class UserViewModel(private val repository: UserRepository): ViewModel() {
         Navigation.findNavController(view).navigate(R.id.UsernameFragment)
     }
 
+    fun navigateToPasswordFragment(view: View) {
+        Navigation.findNavController(view).navigate(R.id.PasswordFragment)
+    }
+
     fun getEmailValidationError(email: String): ValidatorEmail.Error? {
         val validator = ValidatorEmail(email)
+        validator.validate()
+        return validator.error
+    }
+
+    fun getUsernameValidationError(username: String): ValidatorUsername.Error? {
+        val validator = ValidatorUsername(username)
         validator.validate()
         return validator.error
     }

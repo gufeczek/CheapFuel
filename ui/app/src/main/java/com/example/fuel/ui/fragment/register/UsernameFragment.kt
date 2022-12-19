@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
@@ -19,6 +20,8 @@ import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
 import com.example.fuel.utils.validation.ValidatorUsername
+import com.example.fuel.viewmodel.UserViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
 
 
 class UsernameFragment : Fragment(R.layout.fragment_set_username) {
@@ -26,18 +29,21 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
     private var _binding: FragmentSetUsernameBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorUsername.Error? = null
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSetUsernameBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
+
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }
         binding.tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         binding.tvTermsOfUse.removeLinksUnderline()
 
-        //binding.btnNextPage.setOnClickListener(btnValidationListener)
+        binding.btnNextPage.setOnClickListener(btnGoToNextPage)
         binding.chkTermsOfUse.setOnCheckedChangeListener(chkValidationListener)
 
         binding.chkTermsOfUse.setOnClickListener{ view -> view.hideKeyboard() }
@@ -57,40 +63,62 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
     }
 
 
-    /*
-    private val btnValidationListener = View.OnClickListener {
-        val etUsernameText = binding.etUsername.text.toString()
-        val validatorUsername = ValidatorUsername(etUsernameText)
-        val isValidated = validatorUsername.validate()
-        error = validatorUsername.error
-        if (isValidated && binding.chkTermsOfUse.isChecked) {
-            Navigation.findNavController(binding.root).navigate(R.id.PasswordFragment)
-        }
-        else if (!isValidated) {
-            binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded_error)
-            binding.tvUsernameValidationError.text = error.toString()
-            binding.tvUsernameValidationError.visibility = View.VISIBLE
-            if (error == ValidatorUsername.Error.ERROR_USERNAME_TOO_SHORT || error == ValidatorUsername.Error.ERROR_USERNAME_TOO_LONG) {
-                binding.etUsername.afterTextChanged {
-                    if (validatorUsername.validate()) {
-                        binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded)
-                        binding.tvUsernameValidationError.visibility = View.INVISIBLE
-                    }
-                }
-            }
-        }
-        else if (!binding.chkTermsOfUse.isChecked) {
-            binding.tvTermsOfUseError.visibility = View.VISIBLE
-            binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(Color.RED)
+
+    private val btnGoToNextPage = View.OnClickListener { view ->
+        val username = binding.etUsername.text.toString()
+        error = viewModel.getUsernameValidationError(username)
+        if (error == null && isTermsOfUseChecked()) {
+            viewModel.navigateToPasswordFragment(view)
+        } else if (error != null) {
+            showUsernameValidationError()
+            setUsernameErrorTracking()
+        } else if (!isTermsOfUseChecked()) {
+            showTermsOfUseError()
         }
     }
-    */
+
 
     private val chkValidationListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (isChecked) {
-            binding.tvTermsOfUseError.visibility = View.GONE
-            binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(resources.getColor(R.color.checkbox, activity?.theme))
-            binding.tvTermsOfUse.setLinkTextColor(resources.getColor(R.color.checkbox, activity?.theme))
+            hideTermsOfUseError()
         }
+    }
+
+    private fun isTermsOfUseChecked(): Boolean {
+        return binding.chkTermsOfUse.isChecked
+    }
+
+    private fun showUsernameValidationError() {
+        binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded_error)
+        binding.tvUsernameValidationError.text = error.toString()
+        binding.tvUsernameValidationError.visibility = View.VISIBLE
+    }
+
+    private fun hideUsernameValidationError() {
+        binding.tvUsernameValidationError.visibility = View.INVISIBLE
+        binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded)
+    }
+
+    private fun showTermsOfUseError() {
+        binding.tvTermsOfUseError.visibility = View.VISIBLE
+        binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(Color.RED)
+    }
+
+    private fun hideTermsOfUseError() {
+        binding.tvTermsOfUseError.visibility = View.GONE
+        binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(resources.getColor(R.color.checkbox, activity?.theme))
+    }
+
+    private fun setUsernameErrorTracking() {
+        binding.etUsername.afterTextChanged { username ->
+            if (viewModel.getUsernameValidationError(username) == null) {
+                hideUsernameValidationError()
+                stopUsernameErrorTracking()
+            }
+        }
+    }
+
+    private fun stopUsernameErrorTracking() {
+        binding.etUsername.afterTextChanged {}
     }
 }
