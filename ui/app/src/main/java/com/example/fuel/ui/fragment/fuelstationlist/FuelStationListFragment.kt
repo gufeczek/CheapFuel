@@ -84,6 +84,8 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
                 hideFuelStationProgressBar()
                 showPlaceholder()
                 return@observe
+            } else {
+                hidePlaceholder()
             }
 
             val page = response.body()
@@ -161,6 +163,10 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 
     private fun showPlaceholder() {
         binding.clPlaceholder.visibility = View.VISIBLE
+    }
+
+    private fun hidePlaceholder() {
+        binding.clPlaceholder.visibility = View.GONE
     }
 
     override fun onAttach(context: Context) {

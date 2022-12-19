@@ -7,7 +7,8 @@ data class FuelStationFilterWithLocation(
     var minPrice: Double?,
     var maxPrice: Double?,
     var userLongitude: Double?,
-    var userLatitude: Double?
+    var userLatitude: Double?,
+    var distance: Double?
 ) {
 
     fun copy(): FuelStationFilterWithLocation {
@@ -18,7 +19,8 @@ data class FuelStationFilterWithLocation(
             minPrice,
             maxPrice,
             userLongitude,
-            userLatitude
+            userLatitude,
+            distance
         )
     }
 
@@ -35,6 +37,7 @@ data class FuelStationFilterWithLocation(
         if (maxPrice != other.maxPrice) return false
         if (userLongitude != other.userLongitude) return false
         if (userLatitude != other.userLatitude) return false
+        if (distance != other.distance) return false
 
         return true
     }
@@ -47,6 +50,7 @@ data class FuelStationFilterWithLocation(
         result = 31 * result + (maxPrice?.hashCode() ?: 0)
         result = 31 * result + (userLongitude?.hashCode() ?: 0)
         result = 31 * result + (userLatitude?.hashCode() ?: 0)
+        result = 31 * result + (distance?.hashCode() ?: 0)
         return result
     }
 }

@@ -69,4 +69,5 @@
     <string name="fuel_station_ask_if_delete">Czy na pewno chcesz usunąć tą stację paliw?</string>
     <string name="sort">Sortuj</string>
     <string name="choose_sort">Wybierz sortowanie</string>
+    <string name="max_distance">Maksymalna odległość</string>
 </resources>

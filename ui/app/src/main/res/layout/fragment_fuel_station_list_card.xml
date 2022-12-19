@@ -14,7 +14,6 @@
         android:id="@+id/tv_fuelStationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Orlen"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +24,6 @@
         android:id="@+id/tv_distanceBetweenUserAndStation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0,7 km od ciebie"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:visibility="visible"
@@ -37,7 +35,6 @@
         android:id="@+id/tv_fuelPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2,75 zł"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="20sp"
@@ -51,7 +48,6 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:textColor="@color/gray"
-        android:text="12 dni temu"
         app:layout_constraintTop_toBottomOf="@id/tv_fuelPrice"
         app:layout_constraintRight_toLeftOf="@id/llc_actionButtonContainer" />
 

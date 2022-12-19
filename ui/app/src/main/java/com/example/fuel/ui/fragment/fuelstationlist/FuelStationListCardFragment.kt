@@ -52,7 +52,7 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
     private fun setDistance(latitude: Double, longitude: Double) {
         val textView = binding.tvDistanceBetweenUserAndStation
 
-        if (!isGpsEnabled(requireContext())) {
+        if (!isGpsEnabled(requireContext()) || getUserLocation(requireContext()) == null) {
             textView.visibility = View.GONE
             return
         }

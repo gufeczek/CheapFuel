@@ -15,11 +15,15 @@ import com.example.fuel.model.StationChain
 import com.example.fuel.ui.common.initChipAppearance
 import com.example.fuel.ui.common.toggleChipAppearance
 import com.example.fuel.utils.DataLoadedIndicator
+import com.example.fuel.utils.getUserLocation
+import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationListViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.slider.RangeSlider
+import com.google.android.material.slider.Slider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -59,6 +63,7 @@ class FuelStationListFilterFragment : Fragment(R.layout.fragment_fuel_station_li
         initStationChainChips()
         initFuelStationServiceChips()
         initFuelPriceRangeSlider()
+        initMaxDistanceSection()
     }
 
     private fun initFuelTypeChips() {
@@ -143,5 +148,61 @@ class FuelStationListFilterFragment : Fragment(R.layout.fragment_fuel_station_li
                 viewModel.onPriceRangeChanged(values[0], values[1])
             }
         })
+    }
+
+    private fun initMaxDistanceSection() {
+        if (!isGpsEnabled(requireContext())) {
+            hideDistanceSection()
+        } else {
+            setUserLocation()
+        }
+
+        initMaxDistanceCheckbox()
+        initMaxDistanceSlider()
+    }
+
+    private fun initMaxDistanceCheckbox() {
+        val checkbox: MaterialCheckBox = binding.mcbMaxDistance
+        checkbox.isChecked = viewModel.isDistanceSet()
+
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
+            val slider = binding.rgDistanceRange
+            slider.isEnabled = isChecked
+
+            if (isChecked) {
+                viewModel.onDistanceChange(slider.value)
+            } else {
+                viewModel.onDistanceChange(null)
+            }
+        }
+    }
+
+    private fun initMaxDistanceSlider() {
+        val slider: Slider = binding.rgDistanceRange
+        slider.value = viewModel.currentDistance()
+        slider.isEnabled = viewModel.isDistanceSet()
+
+        slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) { }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                viewModel.onDistanceChange(slider.value)
+            }
+        })
+    }
+
+    private fun hideDistanceSection() {
+        binding.llcDistance.visibility = View.GONE
+        viewModel.onDistanceChange(null)
+    }
+
+    private fun setUserLocation() {
+        val location = getUserLocation(requireContext())
+
+        if (location == null && !viewModel.isUserLocationSet()) {
+            hideDistanceSection()
+        } else {
+            viewModel.setUserLocation(location!!.latitude, location.longitude)
+        }
     }
 }

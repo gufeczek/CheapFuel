@@ -28,6 +28,7 @@ import java.util.*
 
 private const val INITIAL_MIN_PRICE = 0F
 private const val INITIAL_MAX_PRICE = 15F
+private const val INITIAL_DISTANCE = 500F
 
 class FuelStationListViewModel(
     private val fuelStationRepository: FuelStationRepository,
@@ -129,7 +130,7 @@ class FuelStationListViewModel(
 
     fun initFilter(fuelTypeId: Long) {
         if (!isFuelStationInitialized) {
-            _filter = _filter ?: FuelStationFilterWithLocation(fuelTypeId, null, null, null, null, null, null)
+            _filter = _filter ?: FuelStationFilterWithLocation(fuelTypeId, null, null, null, null, null, null, null)
 
             if (userLocation != null) {
                 filter.userLatitude = userLocation!!.latitude
@@ -158,6 +159,8 @@ class FuelStationListViewModel(
     fun hasAnyFuelStations(): Boolean = fuelStations.value?.body()?.totalElements != null
             && fuelStations.value!!.body()!!.totalElements > 0
 
+    fun isDistanceSet(): Boolean = _filter?.distance != null
+
     fun currentMinPrice(): Float {
         return _filter?.minPrice?.toFloat() ?: INITIAL_MIN_PRICE
     }
@@ -166,10 +169,14 @@ class FuelStationListViewModel(
         return _filter?.maxPrice?.toFloat() ?: INITIAL_MAX_PRICE
     }
 
+    fun currentDistance(): Float {
+        return _filter?.distance?.toFloat()?.div(1000) ?: INITIAL_DISTANCE
+    }
+
     fun onFuelTypeSelected(fuelTypeId: Long) {
         _filter = _filter ?: FuelStationFilterWithLocation(
             fuelTypeId, null, null, null, null,
-            userLocation?.longitude, userLocation?.latitude)
+            userLocation?.longitude, userLocation?.latitude, null)
 
         _filter?.let {
             filter.fuelTypeId = fuelTypeId
@@ -194,6 +201,12 @@ class FuelStationListViewModel(
         _filter?.let {
             filter.minPrice = minPrice.toDouble()
             filter.maxPrice = maxPrice.toDouble()
+        }
+    }
+
+    fun onDistanceChange(distance: Float?) {
+        _filter?.let {
+            filter.distance = distance?.toDouble()?.times(1000)
         }
     }
 
@@ -238,11 +251,13 @@ class FuelStationListViewModel(
         userLocation = UserLocation(lat, lon)
     }
 
+    fun isUserLocationSet(): Boolean = userLocation != null
+
     fun sortOptions(): Array<String> {
-        if (userLocation != null) {
-            return arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane", "Odległość")
+        return if (userLocation != null) {
+            arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane", "Odległość")
         } else {
-            return arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane")
+            arrayOf("Najtańsze paliwo", "Najdroższe paliwo", "Ostatnio zaktualizowane")
         }
     }
 
