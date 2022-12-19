@@ -1,9 +1,12 @@
 package com.example.fuel.model
 
-data class SimpleMapFuelStation(
+import java.util.*
+
+data class SimpleFuelStation(
     val id: Long,
     val stationChainName: String,
     val price: Double,
+    val lastFuelPriceUpdate: Date,
     val latitude: Double,
     val longitude: Double) {
 

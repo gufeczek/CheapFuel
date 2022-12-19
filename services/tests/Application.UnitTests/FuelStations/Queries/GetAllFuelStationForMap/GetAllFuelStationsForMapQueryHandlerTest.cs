@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.FuelStations.Queries.GetAllFuelStationForMap;
 using Application.Models;
+using Application.Models.Filters;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -92,7 +93,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
                 Times.Once);
         
         _mapper.Verify(x => 
-            x.Map<IEnumerable<SimpleMapFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
+            x.Map<IEnumerable<SimpleFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
             Times.Once);
     }
 
@@ -114,7 +115,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
             .ReturnsAsync(false);
         
         // Act
-        Func<Task<IEnumerable<SimpleMapFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
+        Func<Task<IEnumerable<SimpleFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
         
         // Assert
         await act
@@ -131,7 +132,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
                 Times.Never);
         
         _mapper.Verify(x => 
-                x.Map<IEnumerable<SimpleMapFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
+                x.Map<IEnumerable<SimpleFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
             Times.Never);
     }
     
@@ -157,7 +158,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
             .ReturnsAsync(false);
         
         // Act
-        Func<Task<IEnumerable<SimpleMapFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
+        Func<Task<IEnumerable<SimpleFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
         
         // Assert
         await act
@@ -174,7 +175,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
                 Times.Never);
         
         _mapper.Verify(x => 
-                x.Map<IEnumerable<SimpleMapFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
+                x.Map<IEnumerable<SimpleFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
             Times.Never);
     }
     
@@ -204,7 +205,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
             .ReturnsAsync(false);
         
         // Act
-        Func<Task<IEnumerable<SimpleMapFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
+        Func<Task<IEnumerable<SimpleFuelStationDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
         
         // Assert
         await act
@@ -221,7 +222,7 @@ public class GetAllFuelStationsForMapQueryHandlerTest
                 Times.Never);
         
         _mapper.Verify(x => 
-                x.Map<IEnumerable<SimpleMapFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
+                x.Map<IEnumerable<SimpleFuelStationDto>>(It.IsAny<IEnumerable<FuelStation>>()), 
             Times.Never);
     }
 }

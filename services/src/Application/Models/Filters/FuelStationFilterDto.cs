@@ -1,4 +1,4 @@
-﻿namespace Application.Models;
+﻿namespace Application.Models.Filters;
 
 public sealed record FuelStationFilterDto(
     long FuelTypeId, 

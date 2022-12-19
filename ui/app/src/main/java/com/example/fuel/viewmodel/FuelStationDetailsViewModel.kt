@@ -27,6 +27,7 @@ import com.example.fuel.utils.converters.Converter
 import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
 import com.example.fuel.utils.extension.DurationExtension.Companion.toMonths
 import com.example.fuel.utils.extension.DurationExtension.Companion.toYears
+import com.example.fuel.viewmodel.mediator.ListViewModelMediator
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -62,7 +63,9 @@ class FuelStationDetailsViewModel(
     fun deleteFuelStation(fuelStationId: Long) {
         viewModelScope.launch {
             deleteFuelStation.value = fuelStationRepository.deleteFuelStation(fuelStationId)
+
             MapViewModelMediator.fuelStationChanged()
+            ListViewModelMediator.fuelStationChanged()
         }
     }
 
@@ -207,12 +210,15 @@ class FuelStationDetailsViewModel(
 
         viewModelScope.launch {
             createNewFuelPrices.value = fuelPriceRepository.createNewFuelPrices(fuelPricesAtStation)
+
             MapViewModelMediator.fuelStationChanged()
+            ListViewModelMediator.fuelStationChanged()
         }
     }
 
     fun notifyAboutChanges() {
         MapViewModelMediator.act()
+        ListViewModelMediator.act()
     }
 
     fun clear() {

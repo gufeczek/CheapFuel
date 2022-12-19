@@ -14,8 +14,8 @@
             android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
             app:destination="@id/setUsernameFragment" />
         <action
-            android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            android:id="@+id/action_setRegisterMethodFragment_to_fuelStationListFragment"
+            app:destination="@id/fuelStationListFragment" />
     </fragment>
     <fragment
         android:id="@+id/setUsernameFragment"
@@ -47,10 +47,63 @@
         <action
             android:id="@+id/action_mapFragment_to_mapFilter3"
             app:destination="@id/mapFilter" />
+        <action
+            android:id="@+id/action_mapFragment_to_fuelStationDetails"
+            app:destination="@id/fuelStationDetails" />
     </fragment>
     <fragment
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
-        android:label="MapFilter" />
+        android:label="Map Filter" />
+    <fragment
+        android:id="@+id/fuelStationListFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
+        android:label="Cheap Fuel"
+        tools:layout="@layout/fragment_fuel_station_list">
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_fuelStationListFilterFragment"
+            app:destination="@id/fuelStationListFilterFragment" />
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_fuelStationDetails"
+            app:destination="@id/fuelStationDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fuelStationListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFilterFragment"
+        android:label="List Filter"
+        tools:layout="@layout/fragment_fuel_station_list_filter" />
+    <fragment
+        android:id="@+id/fuelStationDetails"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment"
+        android:label="Fuel station details"
+        tools:layout="@layout/fragment_fuel_station_details" >
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelPriceEditorFragment"
+            app:destination="@id/fuelPriceEditorFragment" />
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelStationEditorFragment"
+            app:destination="@id/fuelStationEditorFragment" />
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelStationReviewEditorFragment"
+            app:destination="@id/fuelStationReviewEditorFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/fuelPriceEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelPriceEditorFragment"
+        android:label="fragment_fuel_price_editor"
+        tools:layout="@layout/fragment_fuel_price_editor" />
+    <dialog
+        android:id="@+id/fuelStationEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationEditorFragment"
+        android:label="fragment_fuel_station_editor"
+        tools:layout="@layout/fragment_fuel_station_editor" />
+    <dialog
+        android:id="@+id/fuelStationReviewEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationReviewEditorFragment"
+        android:label="fragment_fuel_station_review_editor"
+        tools:layout="@layout/fragment_fuel_station_review_editor" />
 
 </navigation>
