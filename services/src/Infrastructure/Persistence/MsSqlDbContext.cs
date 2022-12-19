@@ -11,8 +11,7 @@ public sealed class MsSqlDbContext : AppDbContext
 
     public MsSqlDbContext(
         IConfiguration configuration,
-        DbContextOptions options,
-        IBeforeSaveChangesPipelineBuilder builder) : base(options, builder)
+        IBeforeSaveChangesPipelineBuilder builder) : base(builder)
     {
         _configuration = configuration;
     }

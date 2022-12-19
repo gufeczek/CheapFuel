@@ -12,8 +12,7 @@ public sealed class MySqlDbContext : AppDbContext
 
     public MySqlDbContext(
         IConfiguration configuration,
-        DbContextOptions options,
-        IBeforeSaveChangesPipelineBuilder builder) : base(options, builder)
+        IBeforeSaveChangesPipelineBuilder builder) : base(builder)
     {
         _configuration = configuration;
     }

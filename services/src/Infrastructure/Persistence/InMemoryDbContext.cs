@@ -5,8 +5,8 @@ namespace Infrastructure.Persistence;
 
 public sealed class InMemoryDbContext : AppDbContext
 {
-    public InMemoryDbContext(DbContextOptions options, IBeforeSaveChangesPipelineBuilder builder) 
-        : base(options, builder) { }
+    public InMemoryDbContext(IBeforeSaveChangesPipelineBuilder builder) 
+        : base(builder) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {

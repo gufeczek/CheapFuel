@@ -25,7 +25,7 @@ public abstract class AppDbContext : DbContext
     public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
-    public AppDbContext(DbContextOptions options, IBeforeSaveChangesPipelineBuilder builder) : base(options)
+    protected AppDbContext(IBeforeSaveChangesPipelineBuilder builder)
     {
         _beforeSaveChangesPipeline = builder.Build();
     }
