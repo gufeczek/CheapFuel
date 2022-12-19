@@ -1,4 +1,4 @@
-package com.example.fuel.ui.fragment
+package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
@@ -20,7 +20,7 @@ import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.viewmodel.UserViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
-class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method) {
+class RegisterFragment : Fragment(R.layout.fragment_set_register_method) {
 
     private var _binding: FragmentSetRegisterMethodBinding? = null
     private val binding get() = _binding!!

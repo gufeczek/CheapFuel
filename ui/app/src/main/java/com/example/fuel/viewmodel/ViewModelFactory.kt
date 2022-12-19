@@ -11,7 +11,6 @@ import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.repository.ServiceAtStationRepository
 import com.example.fuel.repository.StationChainRepository
-import com.example.fuel.repository.TestRepository
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.exception.NoSuchViewModelException
 

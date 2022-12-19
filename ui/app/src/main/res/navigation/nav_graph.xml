@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/setRegisterMethodFragment"
-        android:name="com.example.fuel.ui.fragment.SetRegisterMethodFragment"
+        android:name="com.example.fuel.ui.fragment.register.RegisterFragment"
         android:label="Register method"
         tools:layout="@layout/fragment_set_register_method" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/setUsernameFragment"
-        android:name="com.example.fuel.ui.fragment.SetUsernameFragment"
+        android:name="com.example.fuel.ui.fragment.register.UsernameFragment"
         android:label="Username"
         tools:layout="@layout/fragment_set_username" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/setPasswordFragment"
-        android:name="com.example.fuel.ui.fragment.SetPasswordFragment"
+        android:name="com.example.fuel.ui.fragment.register.PasswordFragment"
         android:label="Password"
         tools:layout="@layout/fragment_set_password" >
         <action

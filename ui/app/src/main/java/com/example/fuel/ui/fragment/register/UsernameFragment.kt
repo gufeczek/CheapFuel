@@ -1,4 +1,4 @@
-package com.example.fuel.ui.fragment
+package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -22,13 +22,12 @@ import com.example.fuel.utils.validation.ValidatorUsername
 import java.util.*
 
 
-class SetUsernameFragment : Fragment(R.layout.fragment_set_username) {
+class UsernameFragment : Fragment(R.layout.fragment_set_username) {
 
     private var _binding: FragmentSetUsernameBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorUsername.Error? = null
-
-
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

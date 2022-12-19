@@ -1,4 +1,4 @@
-package com.example.fuel.ui.fragment
+package com.example.fuel.ui.fragment.register
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.example.fuel.utils.validation.ValidationPassword
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
 
-class SetPasswordFragment : Fragment(R.layout.fragment_set_password) {
+class PasswordFragment : Fragment(R.layout.fragment_set_password) {
 
     private var _binding: FragmentSetPasswordBinding? = null
     private val binding get() = _binding!!
