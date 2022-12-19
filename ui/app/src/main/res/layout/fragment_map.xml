@@ -17,7 +17,8 @@
         android:layout_alignParentBottom="true"
         android:contentDescription="Center a map" />
 
-    <org.osmdroid.views.MapView android:id="@+id/map"
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 

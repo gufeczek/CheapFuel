@@ -11,8 +11,8 @@ data class PageRequest(
         return mapOf(
             "PageNumber" to (pageNumber?.toString() ?: ""),
             "PageSize" to (pageSize?.toString() ?: ""),
-            "SortBy" to (sortBy ?: ""),
-            "SortDirection" to (sortDirection ?: "")
+            "Sort.SortBy" to (sortBy ?: ""),
+            "Sort.SortDirection" to (sortDirection ?: "")
         )
     }
 }

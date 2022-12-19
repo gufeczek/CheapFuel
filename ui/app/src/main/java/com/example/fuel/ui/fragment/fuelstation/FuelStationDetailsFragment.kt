@@ -192,7 +192,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
     private fun askForDeleteConfirmationOfFuelStation() {
         MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
-            .setMessage("Czy na pewno chcesz usunąć tą stację paliw?")
+            .setMessage(getString(R.string.fuel_station_ask_if_delete))
             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                 viewModel.deleteFuelStation(fuelStationId!!)
             }

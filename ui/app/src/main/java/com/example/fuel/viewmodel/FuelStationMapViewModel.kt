@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fuel.model.FuelStationService
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.FuelType
-import com.example.fuel.model.SimpleMapFuelStation
+import com.example.fuel.model.SimpleFuelStation
 import com.example.fuel.model.StationChain
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
@@ -15,6 +15,7 @@ import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.StationChainRepository
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
+import com.example.fuel.viewmodel.mediator.SharedFuelStationFilter
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -34,7 +35,7 @@ class FuelStationMapViewModel(
     var fuelTypes: MutableLiveData<Response<Page<FuelType>>> = MutableLiveData()
     var fuelStationServices: MutableLiveData<Response<Page<FuelStationService>>> = MutableLiveData()
     var stationChains: MutableLiveData<Response<Page<StationChain>>> = MutableLiveData()
-    var fuelStations: MutableLiveData<Response<Array<SimpleMapFuelStation>>> = MutableLiveData()
+    var fuelStations: MutableLiveData<Response<Array<SimpleFuelStation>>> = MutableLiveData()
 
     private var isFuelStationInitialized = false
     private var fuelStatistics: FuelStatistics? = null
@@ -50,7 +51,7 @@ class FuelStationMapViewModel(
         viewModelScope.launch {
             val result = initFilter()
 
-            if (hardReload) {
+            if (hardReload || SharedFuelStationFilter.isNotEmpty()) {
                 fetchFuelStations()
                 return@launch
             }
@@ -82,17 +83,32 @@ class FuelStationMapViewModel(
 
     private fun fetchFuelStations() {
         viewModelScope.launch {
+            if (SharedFuelStationFilter.isNotEmpty()) {
+                refreshFilter()
+            }
+
             fuelStations.value = fuelStationRepository.getSimpleMapFuelStations(filter)
         }
     }
 
+    private fun refreshFilter() {
+        filter.fuelTypeId = SharedFuelStationFilter.fuelTypeId ?: filter.fuelTypeId
+        filter.stationChainsIds = null
+        filter.servicesIds = null
+        filter.minPrice = null
+        filter.maxPrice = null
+
+        currentFilter = filter.copy()
+        SharedFuelStationFilter.clear()
+    }
+
     fun willDataChange(): Boolean {
-        return _filter == null || _filter != currentFilter
+        return _filter == null || _filter != currentFilter || SharedFuelStationFilter.isNotEmpty()
     }
 
     fun initDataForFilter() {
         viewModelScope.launch {
-            val pageRequest = PageRequest(1, 100, "Name", "ASC")
+            val pageRequest = PageRequest(1, 100, "Id", "ASC")
             fuelTypes.value = fuelTypeRepository.getFuelTypes(pageRequest)
             fuelStationServices.value = fuelStationServiceRepository.getFuelStationServices(pageRequest)
             stationChains.value = stationChainRepository.getStationChains(pageRequest)
@@ -163,7 +179,7 @@ class FuelStationMapViewModel(
         return _filter?.servicesIds?.contains(serviceId) == true
     }
 
-    fun calculateStatistics(fuelStations: Array<SimpleMapFuelStation>?) {
+    fun calculateStatistics(fuelStations: Array<SimpleFuelStation>?) {
         if (fuelStations != null && fuelStations.size > 10) {
             fuelStations.sortedByDescending { it.price }
             val threshold = (fuelStations.size * 0.01).toInt()
@@ -179,7 +195,7 @@ class FuelStationMapViewModel(
         }
     }
 
-    fun getPriceColor(fuelStation: SimpleMapFuelStation): Int {
+    fun getPriceColor(fuelStation: SimpleFuelStation): Int {
         if (fuelStatistics == null) return PRICE_COLOR_GREY
 
         if (fuelStation.price > fuelStatistics!!.maxPriceThreshold) {
@@ -191,7 +207,7 @@ class FuelStationMapViewModel(
         return PRICE_COLOR_GREY
     }
 
-    fun shouldBeBold(fuelStation: SimpleMapFuelStation): Boolean {
+    fun shouldBeBold(fuelStation: SimpleFuelStation): Boolean {
         val color = getPriceColor(fuelStation)
         return color == PRICE_COLOR_RED || color == PRICE_COLOR_GREEN
     }

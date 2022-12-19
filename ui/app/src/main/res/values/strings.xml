@@ -22,6 +22,7 @@
     <string name="ask_to_enable_gps">Aby kontynuować włącz lokalilzację urządzenia.</string>
     <string name="no_thanks">Nie, dziękuję</string>
     <string name="ok">Ok</string>
+    <string name="cancel">Anuluj</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fuelStations">Stacje paliw</string>
@@ -65,4 +66,8 @@
     <string name="fuel_station_services">Usługi</string>
     <string name="fuel_stations">Stacje paliw</string>
     <string name="price_range">Przedział ceny</string>
+    <string name="fuel_station_ask_if_delete">Czy na pewno chcesz usunąć tą stację paliw?</string>
+    <string name="sort">Sortuj</string>
+    <string name="choose_sort">Wybierz sortowanie</string>
+    <string name="max_distance">Maksymalna odległość</string>
 </resources>

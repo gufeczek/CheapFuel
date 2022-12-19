@@ -39,7 +39,7 @@ class SetRegisterMethodFragment : Fragment(R.layout.fragment_set_register_method
         binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
         // TODO: Remove this, only for testing purposes
         binding.btnGoToMap.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.fuelStationListFragment)
         }
 
         return binding.root
