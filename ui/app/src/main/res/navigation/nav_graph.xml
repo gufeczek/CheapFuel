@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_login"
-    app:startDestination="@id/setRegisterMethodFragment">
+    app:startDestination="@id/EmailFragment">
 
     <fragment
-        android:id="@+id/setRegisterMethodFragment"
-        android:name="com.example.fuel.ui.fragment.register.RegisterFragment"
+        android:id="@+id/EmailFragment"
+        android:name="com.example.fuel.ui.fragment.register.EmailFragment"
         android:label="Register method"
         tools:layout="@layout/fragment_set_register_method" >
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
-            app:destination="@id/setUsernameFragment" />
+            app:destination="@id/UsernameFragment" />
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
-        android:id="@+id/setUsernameFragment"
+        android:id="@+id/UsernameFragment"
         android:name="com.example.fuel.ui.fragment.register.UsernameFragment"
         android:label="Username"
         tools:layout="@layout/fragment_set_username" >
         <action
             android:id="@+id/action_setUsernameFragment_to_setPasswordFragment"
-            app:destination="@id/setPasswordFragment" />
+            app:destination="@id/PasswordFragment" />
     </fragment>
     <fragment
-        android:id="@+id/setPasswordFragment"
+        android:id="@+id/PasswordFragment"
         android:name="com.example.fuel.ui.fragment.register.PasswordFragment"
         android:label="Password"
         tools:layout="@layout/fragment_set_password" >

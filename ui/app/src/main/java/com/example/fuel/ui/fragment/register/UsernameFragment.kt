@@ -19,7 +19,6 @@ import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
 import com.example.fuel.utils.validation.ValidatorUsername
-import java.util.*
 
 
 class UsernameFragment : Fragment(R.layout.fragment_set_username) {
@@ -27,7 +26,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
     private var _binding: FragmentSetUsernameBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorUsername.Error? = null
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +37,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         binding.tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         binding.tvTermsOfUse.removeLinksUnderline()
 
-        binding.btnNextPage.setOnClickListener(btnValidationListener)
+        //binding.btnNextPage.setOnClickListener(btnValidationListener)
         binding.chkTermsOfUse.setOnCheckedChangeListener(chkValidationListener)
 
         binding.chkTermsOfUse.setOnClickListener{ view -> view.hideKeyboard() }
@@ -57,13 +56,15 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
         (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
+
+    /*
     private val btnValidationListener = View.OnClickListener {
         val etUsernameText = binding.etUsername.text.toString()
         val validatorUsername = ValidatorUsername(etUsernameText)
         val isValidated = validatorUsername.validate()
         error = validatorUsername.error
         if (isValidated && binding.chkTermsOfUse.isChecked) {
-            Navigation.findNavController(binding.root).navigate(R.id.setPasswordFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.PasswordFragment)
         }
         else if (!isValidated) {
             binding.tilUsername.setBackgroundResource(R.drawable.bg_rounded_error)
@@ -83,6 +84,7 @@ class UsernameFragment : Fragment(R.layout.fragment_set_username) {
             binding.chkTermsOfUse.buttonTintList = ColorStateList.valueOf(Color.RED)
         }
     }
+    */
 
     private val chkValidationListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (isChecked) {

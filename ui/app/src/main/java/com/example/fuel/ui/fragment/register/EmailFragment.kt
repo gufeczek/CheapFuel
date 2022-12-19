@@ -17,10 +17,11 @@ import com.example.fuel.model.User
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
+import com.example.fuel.viewmodel.FuelStationMapViewModel
 import com.example.fuel.viewmodel.UserViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
-class RegisterFragment : Fragment(R.layout.fragment_set_register_method) {
+class EmailFragment : Fragment(R.layout.fragment_set_register_method) {
 
     private var _binding: FragmentSetRegisterMethodBinding? = null
     private val binding get() = _binding!!
@@ -32,11 +33,13 @@ class RegisterFragment : Fragment(R.layout.fragment_set_register_method) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        retrofitTest()
         _binding = FragmentSetRegisterMethodBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
 
-        binding.btnRegister.setOnClickListener(btnRegisterOnClickListener)
+        binding.btnRegister.setOnClickListener(btnGoToNextPage)
         binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
+
+
         // TODO: Remove this, only for testing purposes
         binding.btnGoToMap.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
@@ -50,6 +53,32 @@ class RegisterFragment : Fragment(R.layout.fragment_set_register_method) {
         _binding = null
     }
 
+
+
+
+    private val btnGoToNextPage = View.OnClickListener { view ->
+        val email = binding.etEmail.text.toString()
+        error = viewModel.getEmailValidationError(email)
+        if (error == null) {
+            viewModel.navigateToUsernameFragment(view)
+
+        } else {
+            showError()
+            setEmailErrorTracking()
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
 
     private fun retrofitTest() {
         val user = User("sfafsfs",
@@ -68,36 +97,26 @@ class RegisterFragment : Fragment(R.layout.fragment_set_register_method) {
         }
     }
 
-    private val btnRegisterOnClickListener = View.OnClickListener {
-        val validator = ValidatorEmail(binding.etEmail.text.toString())
-        if (!validator.validate()) {
-            error = validator.error
-            //TODO: Remove this if statement later, only for testing purposes
-            if(binding.etEmail.text.toString() == "") {
-                Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
+    private fun showError() {
+        binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
+        binding.tvEmailValidationError.text = ValidatorEmail.Error.ERROR_INCORRECT_EMAIL.toString()
+    }
+
+    private fun hideError() {
+        binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
+        binding.tvEmailValidationError.text = ""
+    }
+
+    private fun setEmailErrorTracking() {
+        binding.etEmail.afterTextChanged { email ->
+            if(viewModel.getEmailValidationError(email) == null) {
+                hideError()
+                stopEmailErrorTracking()
             }
-            binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
-            binding.tvEmailValidationError.text = ValidatorEmail.Error.ERROR_INCORRECT_EMAIL.toString()
-            binding.etEmail.afterTextChanged { editable ->
-                if (Patterns.EMAIL_ADDRESS.matcher(editable).matches()) {
-                    binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded)
-                    binding.tvEmailValidationError.text = ""
-                }
-            }
-        } else {
-            Navigation.findNavController(binding.root).navigate(R.id.setUsernameFragment)
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
+    private fun stopEmailErrorTracking() {
+        binding.etEmail.afterTextChanged {}
     }
 }

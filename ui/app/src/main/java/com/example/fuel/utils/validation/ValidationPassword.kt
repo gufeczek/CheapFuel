@@ -13,7 +13,7 @@ class ValidationPassword(private val password: String, private val repeatedPassw
     }
     var error: Error? = null
 
-    override fun validate(): Boolean {
+    override fun validate() {
         if (password.length < 8) {
             error = Error.PASSWORD_TOO_SHORT
         } else if (password.length > 32) {
@@ -29,10 +29,5 @@ class ValidationPassword(private val password: String, private val repeatedPassw
         } else if (isIllegalCharacter(password)) {
             error = Error.PASSWORD_ILLEGAL_CHARACTER
         }
-
-        if (error == null) {
-            return false
-        }
-        return true
     }
 }
