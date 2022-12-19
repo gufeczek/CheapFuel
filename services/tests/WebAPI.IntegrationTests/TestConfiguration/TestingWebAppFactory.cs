@@ -16,13 +16,13 @@ public class TestingWebApiFactory<TEntity> : WebApplicationFactory<Program> wher
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<MySqlDbContext>));
             if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
             
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<AppDbContext, MySqlDbContext>(options =>
             {
                 options.UseInMemoryDatabase("TestDatabase");
             });

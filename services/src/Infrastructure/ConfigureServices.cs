@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,8 +39,7 @@ public static class ConfigureServices
         switch (provider)
         {
             case InMemoryProvider:
-                services.AddDbContext<AppDbContext>(c =>
-                    c.UseInMemoryDatabase("CheapFuelDB"));
+                services.AddDbContext<AppDbContext, InMemoryDbContext>();
                 break;
             case SqlServerProvider:
                 services.AddDbContext<AppDbContext, MsSqlDbContext>();

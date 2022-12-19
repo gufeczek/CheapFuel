@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <Folder Include="Common\Services" />
+      <Folder Include="Persistence\Migrations\InMemory" />
       <Folder Include="Persistence\Migrations\MsSql" />
       <Folder Include="Persistence\Migrations\MySql" />
     </ItemGroup>
