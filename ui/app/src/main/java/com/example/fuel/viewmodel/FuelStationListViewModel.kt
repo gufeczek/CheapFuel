@@ -1,6 +1,7 @@
 package com.example.fuel.viewmodel
 
 import android.content.res.Resources
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -151,7 +152,7 @@ class FuelStationListViewModel(
     }
 
     fun willDataChange(): Boolean {
-        return _filter == null || _filter != currentFilter
+        return _filter == null || _filter != currentFilter || selectedSort != currentSort
     }
 
     fun hasMoreFuelStations(): Boolean = fuelStations.value?.body()?.nextPage != null
@@ -265,6 +266,7 @@ class FuelStationListViewModel(
 
     fun choiceSort(idx: Int) {
         selectedSort = idx
+        Log.d("sort", selectedSort.toString())
     }
 
     fun cancelSort() {

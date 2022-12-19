@@ -135,7 +135,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
                 viewModel.choiceSort(which)
             }
             .setPositiveButton(getString(R.string.ok)) { dialog, which ->
-                refreshFuelStations()
+                if (viewModel.willDataChange()) refreshFuelStations()
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
