@@ -19,35 +19,36 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure;
 
 public static class ConfigureServices
 {
+    private const string InMemoryProvider = "InMemory";
+    private const string SqlServerProvider = "SqlServer";
+    private const string MySqlProvider = "MySql";
+    
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-        {
-            services.AddDbContext<AppDbContext>(c =>
-                c.UseInMemoryDatabase("CheapFuelDB"));
-        }
-        else
-        {
-            var connectionString = configuration.GetConnectionString("DatabaseConnection")
-                                   ?? throw new AppConfigurationException("Database connection string is missing");
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
+        var provider = configuration.GetValue<string>("DbProvider");
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseMySql(connectionString, serverVersion)
-                    .LogTo(Console.WriteLine, LogLevel.Information)
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors());
+        switch (provider)
+        {
+            case InMemoryProvider:
+                services.AddDbContext<AppDbContext, InMemoryDbContext>();
+                break;
+            case SqlServerProvider:
+                services.AddDbContext<AppDbContext, MsSqlDbContext>();
+                break;
+            case MySqlProvider:
+                services.AddDbContext<AppDbContext, MySqlDbContext>();
+                break;
+            default:
+                throw new AppConfigurationException("Invalid database provider!");
         }
     }
 

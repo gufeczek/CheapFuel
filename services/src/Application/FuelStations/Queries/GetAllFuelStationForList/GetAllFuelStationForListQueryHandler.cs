@@ -43,6 +43,8 @@ public class GetAllFuelStationForListQueryHandler
             filter.MinPrice,
             filter.MaxPrice);
 
+        result = ApplyPriceFilter(result, filter);
+        
         if (request.Filter!.Distance is not null)
         {
             result = ApplyDistanceFilter(result, filter);
@@ -97,6 +99,17 @@ public class GetAllFuelStationForListQueryHandler
                 filter.UserLongitude!.Value, 
                 filter.UserLatitude!.Value) <= filter.Distance)
             .ToList();
+    }
+
+    private IEnumerable<FuelStation> ApplyPriceFilter(IEnumerable<FuelStation> fuelStations,
+        FuelStationFilterWithLocalizationDto filter)
+    {
+        var minPrice = filter.MinPrice;
+        var maxPrice = filter.MaxPrice;
+
+        return fuelStations.Where(fs =>
+            (minPrice == null || minPrice <= fs.FuelPrices.First().Price) &&
+            (maxPrice == null || maxPrice >= fs.FuelPrices.First().Price));
     }
 
     private IEnumerable<FuelStation> OrderBy(
