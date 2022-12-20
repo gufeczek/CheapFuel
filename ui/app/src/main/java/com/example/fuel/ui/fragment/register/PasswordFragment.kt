@@ -14,7 +14,7 @@ import com.example.fuel.R
 import com.example.fuel.databinding.FragmentPasswordBinding
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
-import com.example.fuel.utils.validation.ValidationPassword
+import com.example.fuel.utils.validation.ValidatorPassword
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
 import com.example.fuel.viewmodel.UserRegistrationViewModel
@@ -24,7 +24,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
 
     private var _binding: FragmentPasswordBinding? = null
     private val binding get() = _binding!!
-    private var error: ValidationPassword.Error? = null
+    private var error: ValidatorPassword.Error? = null
     private lateinit var viewModel: UserRegistrationViewModel
 
     override fun onCreateView(
@@ -66,7 +66,8 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
 
         if (error == null) {
             viewModel.user.value?.password = password
-            retrofitTest()
+            viewModel.user.value?.confirmPassword = password
+            registerUser()
             viewModel.navigateToTBAFragment(view)
         } else {
             showError()
@@ -98,7 +99,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
 
     private fun showError() {
         binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded_error)
-        if (error == ValidationPassword.Error.PASSWORD_REPEAT_NO_MATCH) {
+        if (error == ValidatorPassword.Error.PASSWORD_REPEAT_NO_MATCH) {
             binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded_error)
             binding.tvRepeatedPasswordValidationError.text = error.toString()
         } else {
@@ -113,7 +114,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
     }
 
-    private fun retrofitTest() {
+    private fun registerUser() {
         viewModel.postRegister()
         viewModel.response.observe(viewLifecycleOwner) { response ->
             if (response.isSuccessful) {

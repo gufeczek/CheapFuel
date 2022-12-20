@@ -2,6 +2,7 @@ package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,6 +62,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
         error = viewModel.getEmailValidationError(email)
         if (error == null) {
             viewModel.user.value?.email = email
+            
             viewModel.navigateToUsernameFragment(view)
 
         } else {
@@ -71,7 +73,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
 
     private fun showError() {
         binding.tilEmail.setBackgroundResource(R.drawable.bg_rounded_error)
-        binding.tvEmailValidationError.text = ValidatorEmail.Error.ERROR_INCORRECT_EMAIL.toString()
+        binding.tvEmailValidationError.text = error.toString()
     }
 
     private fun hideError() {

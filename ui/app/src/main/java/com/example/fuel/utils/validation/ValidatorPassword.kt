@@ -1,6 +1,6 @@
 package com.example.fuel.utils.validation
 
-class ValidationPassword(private val password: String, private val repeatedPassword: String) : Validator(password) {
+class ValidatorPassword(private val password: String, private val repeatedPassword: String) : Validator(password) {
 
     enum class Error {
         PASSWORD_TOO_SHORT,

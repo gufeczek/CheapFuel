@@ -1,5 +1,6 @@
 package com.example.fuel.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,7 @@ import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.model.account.UserRegistration
 import com.example.fuel.repository.UserRepository
-import com.example.fuel.utils.validation.ValidationPassword
+import com.example.fuel.utils.validation.ValidatorPassword
 import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.utils.validation.ValidatorUsername
 import kotlinx.coroutines.launch
@@ -19,13 +20,11 @@ class UserRegistrationViewModel(private val repository: UserRepository): ViewMod
     val response: MutableLiveData<Response<UserRegistration>> = MutableLiveData()
     val user: MutableLiveData<UserRegistration> = MutableLiveData()
 
-    fun postLogin(user: UserRegistration) {
-        viewModelScope.launch {
-            response.value = repository.postLogin(user)
-        }
-    }
-
     fun postRegister() {
+        Log.d("XD", "username: " + user.value?.username.toString())
+        Log.d("XD", "email: " + user.value?.email.toString())
+        Log.d("XD", "password: " + user.value?.password.toString())
+        Log.d("XD", "cpassword: " + user.value?.confirmPassword.toString())
         viewModelScope.launch {
             response.value = repository.postRegister(user.value)
         }
@@ -59,8 +58,8 @@ class UserRegistrationViewModel(private val repository: UserRepository): ViewMod
         return validator.error
     }
 
-    fun getPasswordValidationError(password: String, repeatedPassword: String): ValidationPassword.Error? {
-        val validator = ValidationPassword(password, repeatedPassword)
+    fun getPasswordValidationError(password: String, repeatedPassword: String): ValidatorPassword.Error? {
+        val validator = ValidatorPassword(password, repeatedPassword)
         validator.validate()
         return validator.error
     }
