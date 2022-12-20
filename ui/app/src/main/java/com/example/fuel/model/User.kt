@@ -1,8 +1,8 @@
 package com.example.fuel.model
 
 data class User (
-    val username: String,
-    val email: String,
-    val password: String,
-    val confirmPassword: String
+    var username: String,
+    var email: String,
+    var password: String,
+    var confirmPassword: String
 )

@@ -12,7 +12,7 @@ class UserRepository {
         return RetrofitInstance.accountApi.postLogin(user.username, user.password)
     }
 
-    suspend fun postRegister(user: User): Response<User> {
+    suspend fun postRegister(user: User?): Response<User> {
         return RetrofitInstance.accountApi.postRegister(user)
     }
 }

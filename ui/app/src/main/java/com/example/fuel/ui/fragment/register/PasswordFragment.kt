@@ -2,6 +2,7 @@ package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentPasswordBinding
+import com.example.fuel.model.User
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidationPassword
@@ -61,9 +63,11 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
 
         val password = binding.etPassword.text.toString()
         val repeatedPassword = binding.etRepeatPassword.text.toString()
-        error = viewModel.getPasswordValidationEror(password, repeatedPassword)
+        error = viewModel.getPasswordValidationError(password, repeatedPassword)
 
         if (error == null) {
+            viewModel.user.value?.password = password
+            retrofitTest()
             viewModel.navigateToTBAFragment(view)
         } else {
             showError()
@@ -108,5 +112,16 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         binding.tvRepeatedPasswordValidationError.text = ""
         binding.tilPassword.setBackgroundResource(R.drawable.bg_rounded)
         binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
+    }
+
+    private fun retrofitTest() {
+        viewModel.postRegister()
+        viewModel.response.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                Log.d("XD", response.message())
+            } else {
+                Log.d("XD", response.code().toString())
+            }
+        }
     }
 }

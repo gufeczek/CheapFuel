@@ -65,6 +65,7 @@ class UsernameFragment : Fragment(R.layout.fragment_username) {
         val username = binding.etUsername.text.toString()
         error = viewModel.getUsernameValidationError(username)
         if (error == null && isTermsOfUseChecked()) {
+            viewModel.user.value?.username = username
             viewModel.navigateToPasswordFragment(view)
         } else if (error != null) {
             showUsernameValidationError()

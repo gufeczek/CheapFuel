@@ -60,28 +60,12 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
         val email = binding.etEmail.text.toString()
         error = viewModel.getEmailValidationError(email)
         if (error == null) {
+            viewModel.user.value?.email = email
             viewModel.navigateToUsernameFragment(view)
 
         } else {
             showError()
             setEmailErrorTracking()
-        }
-    }
-
-    private fun retrofitTest() {
-        val user = User("sfafsfs",
-            "xddds@gmail.com",
-            "zaq1@WSX",
-            "zaq1@WSX")
-        val viewModelFactory = ViewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
-        viewModel.postRegister(user)
-        viewModel.response.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful) {
-                Log.d("XD", response.message())
-            } else {
-                Log.d("XD", response.code().toString())
-            }
         }
     }
 

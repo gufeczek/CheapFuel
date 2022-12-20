@@ -1,7 +1,6 @@
 package com.example.fuel.viewmodel
 
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +17,7 @@ import retrofit2.Response
 class UserViewModel(private val repository: UserRepository): ViewModel() {
 
     val response: MutableLiveData<Response<User>> = MutableLiveData()
+    val user: MutableLiveData<User> = MutableLiveData()
 
     fun postLogin(user: User) {
         viewModelScope.launch {
@@ -25,9 +25,9 @@ class UserViewModel(private val repository: UserRepository): ViewModel() {
         }
     }
 
-    fun postRegister(user: User) {
+    fun postRegister() {
         viewModelScope.launch {
-            response.value = repository.postRegister(user)
+            response.value = repository.postRegister(user.value)
         }
     }
 
@@ -55,7 +55,7 @@ class UserViewModel(private val repository: UserRepository): ViewModel() {
         return validator.error
     }
 
-    fun getPasswordValidationEror(password: String, repeatedPassword: String): ValidationPassword.Error? {
+    fun getPasswordValidationError(password: String, repeatedPassword: String): ValidationPassword.Error? {
         val validator = ValidationPassword(password, repeatedPassword)
         validator.validate()
         return validator.error
