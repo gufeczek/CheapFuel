@@ -19,6 +19,7 @@ import com.example.fuel.utils.getUserLocation
 import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FavouritesFuelStationsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class FavoriteFuelStationCardFragment(private val favourite: UserFavouriteDetails) : Fragment() {
@@ -119,6 +120,12 @@ class FavoriteFuelStationCardFragment(private val favourite: UserFavouriteDetail
     }
 
     private fun removeFromFavourite() {
-        viewModel.removeFuelStationFromFavourite(favourite.fuelStationId)
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(getString(R.string.favourite_ask_if_delete))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.removeFuelStationFromFavourite(favourite.fuelStationId)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
     }
 }
