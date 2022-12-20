@@ -2,6 +2,7 @@ package com.example.fuel.ui.fragment.fuelstationlist
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -44,6 +45,7 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 
         initUserLocation()
         initFuelStationsSection()
+        initFuelTypesObserver()
         initFuelStationObserver()
 
         return binding.root
@@ -67,6 +69,15 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 
     private fun loadFuelStations() {
         viewModel.getNextPageOfFuelStations()
+    }
+
+    private fun initFuelTypesObserver() {
+        viewModel.fuelTypes.observe(viewLifecycleOwner) { response ->
+            if (!response.isSuccessful || response?.body()?.totalElements == 0L) {
+                hideFuelStationProgressBar()
+                showPlaceholder()
+            }
+        }
     }
 
     private fun initFuelStationObserver() {

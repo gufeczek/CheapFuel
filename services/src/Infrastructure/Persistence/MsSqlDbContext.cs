@@ -20,6 +20,9 @@ public sealed class MsSqlDbContext : AppDbContext
     {
         var connectionString = _configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")
                                ?? throw new AppConfigurationException("Database connection string is missing");
-        options.UseSqlServer(connectionString);
+        options.UseSqlServer(connectionString, builder =>
+        {
+            builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        });
     }
 }

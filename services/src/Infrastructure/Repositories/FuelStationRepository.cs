@@ -80,17 +80,13 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
                 .Where(fp =>
                     fp.Status == FuelPriceStatus.Accepted &&
                     fp.FuelTypeId == fuelTypeId &&
-                    fp.Available == true &&
-                    (minPrice == null || minPrice <= fp.Price) &&
-                    (maxPrice == null || maxPrice >= fp.Price))
+                    fp.Available == true)
                 .OrderByDescending(fp => fp.CreatedAt)
                 .Take(1))
             .Where(fs => 
                 fs.FuelPrices.Any(fp => fp.Status == FuelPriceStatus.Accepted &&
                                         fp.FuelTypeId == fuelTypeId &&
-                                        fp.Available == true &&
-                                        (minPrice == null || minPrice <= fp.Price) &&
-                                        (maxPrice == null || maxPrice >= fp.Price) 
+                                        fp.Available == true
                 && fs.FuelTypes.Any(ft => ft.FuelTypeId == fuelTypeId)));
 
         if (stationChainsIds is null && servicesIds is null)
