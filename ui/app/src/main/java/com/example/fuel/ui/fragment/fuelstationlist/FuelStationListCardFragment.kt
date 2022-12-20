@@ -82,8 +82,8 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
     }
 
     private fun initPopupMenuWithCommonActions(popupMenu: PopupMenu) {
-        val detailsItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 0, "Szczegóły")
-        val showOnMapItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, "Pokaż na mapie")
+        val detailsItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 0, getString(R.string.details))
+        val showOnMapItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, getString(R.string.show_on_map))
 
         detailsItem.setOnMenuItemClickListener {
             showFuelStationDetails()
@@ -91,13 +91,7 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
         }
 
         showOnMapItem.setOnMenuItemClickListener {
-            val bundle = Bundle()
-            bundle.putDouble("lat", fuelStation.latitude)
-            bundle.putDouble("lon", fuelStation.longitude)
-
-            SharedFuelStationFilter.setFuelTypeId(viewModel.getFuelTypeId())
-
-            Navigation.findNavController(binding.root).navigate(R.id.mapFragment, bundle)
+            showOnMap()
             true
         }
     }
@@ -109,6 +103,15 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
         val fuelStationDetails = FuelStationDetailsFragment()
         fuelStationDetails.arguments = bundle
         fuelStationDetails.show(requireFragmentManager(), FuelStationDetailsFragment.TAG)
+    }
 
+    private fun showOnMap() {
+        val bundle = Bundle()
+        bundle.putDouble("lat", fuelStation.latitude)
+        bundle.putDouble("lon", fuelStation.longitude)
+
+        SharedFuelStationFilter.setFuelTypeId(viewModel.getFuelTypeId())
+
+        Navigation.findNavController(binding.root).navigate(R.id.mapFragment, bundle)
     }
 }

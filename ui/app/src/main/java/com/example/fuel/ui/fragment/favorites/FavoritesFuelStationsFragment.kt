@@ -1,60 +1,148 @@
 package com.example.fuel.ui.fragment.favorites
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
+import com.example.fuel.databinding.FragmentFavoritesFuelStationsBinding
+import com.example.fuel.utils.getUserLocation
+import com.example.fuel.utils.isGpsEnabled
+import com.example.fuel.viewmodel.FavouritesFuelStationsViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class FavoritesFuelStationsFragment : Fragment(R.layout.fragment_favorites_fuel_stations) {
+    private lateinit var binding: FragmentFavoritesFuelStationsBinding
+    private lateinit var viewModel: FavouritesFuelStationsViewModel
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FavoritesFuelStationsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FavoritesFuelStationsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FavouritesFuelStationsViewModel::class.java]
+        viewModel.init()
+
+        binding = FragmentFavoritesFuelStationsBinding.inflate(inflater, container, false)
+
+        initUserLocation()
+        initFavouritesSection()
+        initFavouriteObserver()
+        initRemoveFavouriteObserver()
+
+        return binding.root
+    }
+
+    private fun initFavouritesSection() {
+        viewModel.getFirstPageOfFavourites()
+
+        binding.nsvFuelStationsFavorites
+            .setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                val nsv = v as NestedScrollView
+
+                if (oldScrollY < scrollY
+                    && scrollY == (nsv.getChildAt(0).measuredHeight - nsv.measuredHeight)
+                    && viewModel.hasMoreFavourites()) {
+
+                    loadFavourites()
+                }
+            }
+    }
+
+    private fun loadFavourites() {
+        viewModel.getNextPageOfFavourites()
+    }
+
+    private fun initFavouriteObserver() {
+        viewModel.favourites.observe(viewLifecycleOwner) { response ->
+            val fragmentManager = childFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            val parent = binding.llcFavouriteContainer
+
+            if (viewModel.isFirstPage()) {
+                showFuelStationProgressBar()
+                scrollToTop()
+                parent.removeAllViews()
+            }
+
+            if (!viewModel.hasAnyFavourites()) {
+                hideFuelStationProgressBar()
+                showPlaceholder()
+                return@observe
+            } else {
+                hidePlaceholder()
+            }
+
+            val page = response.body()
+
+            for (favourite in page?.data!!) {
+                val favouriteFragment = FavoriteFuelStationCardFragment(favourite)
+                fragmentTransaction.add(parent.id, favouriteFragment)
+            }
+            fragmentTransaction.commitNow()
+
+            if (!viewModel.hasMoreFavourites()) hideFuelStationProgressBar()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites_fuel_stations, container, false)
+    private fun scrollToTop() {
+        binding.nsvFuelStationsFavorites.fullScroll(ScrollView.FOCUS_UP)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoritesFuelStationsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavoritesFuelStationsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun showFuelStationProgressBar() {
+        binding.pbFavouriteLoad.visibility = View.VISIBLE
+    }
+
+    private fun hideFuelStationProgressBar() {
+        binding.pbFavouriteLoad.visibility = View.GONE
+    }
+
+    private fun initRemoveFavouriteObserver() {
+        viewModel.deleteFavourite.observe(viewLifecycleOwner) { response ->
+            viewModel.getFirstPageOfFavourites()
+
+            val text = if (response.isSuccessful) resources.getString(R.string.removed_from_favourite)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initUserLocation() {
+        if (isGpsEnabled(requireContext())) {
+            val location = getUserLocation(requireContext()) ?: return
+            viewModel.setUserLocation(location.latitude, location.longitude)
+        }
+    }
+
+    private fun showPlaceholder() {
+        binding.clPlaceholder.visibility = View.VISIBLE
+    }
+
+    private fun hidePlaceholder() {
+        binding.clPlaceholder.visibility = View.GONE
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val appActivity = (activity as AppCompatActivity)
+        if (!appActivity.supportActionBar?.isShowing!!) {
+            appActivity.supportActionBar?.show()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        viewModel.clear()
     }
 }

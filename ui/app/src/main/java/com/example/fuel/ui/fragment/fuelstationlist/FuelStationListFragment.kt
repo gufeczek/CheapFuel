@@ -38,10 +38,6 @@ class FuelStationListFragment : Fragment(R.layout.fragment_map) {
 
         binding = FragmentFuelStationListBinding.inflate(inflater, container, false)
 
-//        binding.btnGoToMap.setOnClickListener {
-//            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
-//        }
-
         initUserLocation()
         initFuelStationsSection()
         initFuelStationObserver()

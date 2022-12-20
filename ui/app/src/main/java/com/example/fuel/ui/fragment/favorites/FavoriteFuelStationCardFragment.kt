@@ -3,58 +3,122 @@ package com.example.fuel.ui.fragment.favorites
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
+import com.example.fuel.databinding.FragmentFavoriteFuelStationCardBinding
+import com.example.fuel.model.favourite.UserFavouriteDetails
+import com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment
+import com.example.fuel.utils.calculateDistance
+import com.example.fuel.utils.converters.UnitConverter
+import com.example.fuel.utils.getUserLocation
+import com.example.fuel.utils.isGpsEnabled
+import com.example.fuel.viewmodel.FavouritesFuelStationsViewModel
+import com.example.fuel.viewmodel.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FavoriteFuelStationCardFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FavoriteFuelStationCardFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class FavoriteFuelStationCardFragment(private val favourite: UserFavouriteDetails) : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var viewModel: FavouritesFuelStationsViewModel
+    private lateinit var binding: FragmentFavoriteFuelStationCardBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FavouritesFuelStationsViewModel::class.java]
+        binding = FragmentFavoriteFuelStationCardBinding.inflate(inflater, container, false)
+
+        initWithData()
+        initPopupMenu()
+        initOnClickListener()
+
+        return binding.root
+    }
+
+    private fun initWithData() {
+        binding.tvFuelStationName.text = favourite.stationChain
+        binding.tvAddress.text = favourite.address()
+        setDistance(favourite.latitude, favourite.longitude)
+    }
+
+    private fun setDistance(latitude: Double, longitude: Double) {
+        val textView = binding.tvDistance
+
+        if (!isGpsEnabled(requireContext()) || getUserLocation(requireContext()) == null) {
+            textView.visibility = View.GONE
+            return
+        }
+
+        val location = getUserLocation(requireContext()) ?: return
+        val distance = calculateDistance(location.latitude, location.longitude, latitude, longitude)
+
+        textView.text =  resources.getString(R.string.from_you, UnitConverter.fromMetersToTarget(distance.toDouble()))
+        textView.visibility = View.VISIBLE
+    }
+
+    private fun initPopupMenu() {
+        val actionButton = binding.acibFavouriteActionButton
+
+        actionButton.setOnClickListener {
+            val popupMenu = PopupMenu(requireActivity(), actionButton)
+            initPopupMenuWithActions(popupMenu)
+
+            popupMenu.show()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_fuel_station_card, container, false)
+    private fun initOnClickListener() {
+        binding.clMainContainer.setOnClickListener {
+            showFuelStationDetails()
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoriteFuelStationCardFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavoriteFuelStationCardFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun initPopupMenuWithActions(popupMenu: PopupMenu) {
+        val detailsItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 0, getString(R.string.details))
+        val showOnMapItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, getString(R.string.show_on_map))
+        val removeFromFav = popupMenu.menu.add(Menu.NONE, Menu.NONE, 2, getString(R.string.delete))
+
+        detailsItem.setOnMenuItemClickListener {
+            showFuelStationDetails()
+            true
+        }
+
+        showOnMapItem.setOnMenuItemClickListener {
+            showOnMap()
+            true
+        }
+
+        removeFromFav.setOnMenuItemClickListener {
+            removeFromFavourite()
+            true
+        }
+    }
+
+    private fun showFuelStationDetails() {
+        val bundle = Bundle()
+        bundle.putLong("fuelStationId", favourite.fuelStationId)
+
+        val fuelStationDetails = FuelStationDetailsFragment()
+        fuelStationDetails.arguments = bundle
+        fuelStationDetails.show(requireFragmentManager(), FuelStationDetailsFragment.TAG)
+    }
+
+    private fun showOnMap() {
+        val bundle = Bundle()
+        bundle.putDouble("lat", favourite.latitude)
+        bundle.putDouble("lon", favourite.longitude)
+
+        Navigation.findNavController(binding.root).navigate(R.id.mapFragment, bundle)
+    }
+
+    private fun removeFromFavourite() {
+        viewModel.removeFuelStationFromFavourite(favourite.fuelStationId)
     }
 }

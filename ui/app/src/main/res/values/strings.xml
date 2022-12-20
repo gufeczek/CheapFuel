@@ -70,4 +70,8 @@
     <string name="sort">Sortuj</string>
     <string name="choose_sort">Wybierz sortowanie</string>
     <string name="max_distance">Maksymalna odległość</string>
+    <string name="could_not_fount_any_stations">Nie udało się znaleźć żadnych stacji</string>
+    <string name="none_fuel_station_has_been_added_to_favourite">Nie dodano żadnych stacji do ulubionych</string>
+    <string name="details">Szczegóły</string>
+    <string name="show_on_map">Pokaż na mapie</string>
 </resources>
