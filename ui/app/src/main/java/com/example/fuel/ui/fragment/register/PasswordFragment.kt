@@ -12,13 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentPasswordBinding
-import com.example.fuel.model.User
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidationPassword
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
-import com.example.fuel.viewmodel.UserViewModel
+import com.example.fuel.viewmodel.UserRegistrationViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
 class PasswordFragment : Fragment(R.layout.fragment_password) {
@@ -26,7 +25,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
     private var _binding: FragmentPasswordBinding? = null
     private val binding get() = _binding!!
     private var error: ValidationPassword.Error? = null
-    private lateinit var viewModel: UserViewModel
+    private lateinit var viewModel: UserRegistrationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +33,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPasswordBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserRegistrationViewModel::class.java]
 
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }

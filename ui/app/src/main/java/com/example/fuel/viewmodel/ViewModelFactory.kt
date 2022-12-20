@@ -18,7 +18,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T = when(modelClass) {
-        UserViewModel::class.java -> UserViewModel(UserRepository()) as T
+        UserRegistrationViewModel::class.java -> UserRegistrationViewModel(UserRepository()) as T
         FuelStationMapViewModel::class.java -> FuelStationMapViewModel(
             FuelStationRepository(),
             FuelTypeRepository(),

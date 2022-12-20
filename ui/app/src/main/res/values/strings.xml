@@ -18,6 +18,7 @@
     <string name="password_requirements_3">Jedną cyfrę</string>
     <string name="username_hint">Nazwa użytkownika</string>
     <string name="input_username">Podaj nazwę użytkownika: </string>
+    <string name="input_password">Podaj hasło:</string>
     <string name="accept_terms_of_use"><a href="https://google.com">Akceptuje warunki regulaminu</a></string>
     <string name="ask_to_enable_gps">Aby kontynuować włącz lokalilzację urządzenia.</string>
     <string name="no_thanks">Nie, dziękuję</string>
@@ -65,4 +66,6 @@
     <string name="fuel_station_services">Usługi</string>
     <string name="fuel_stations">Stacje paliw</string>
     <string name="price_range">Przedział ceny</string>
+    <string name="login">Zaloguj się</string>
+    <string name="please_input_username_and_password">Podaj nazwę użytkownika oraz hasło:</string>
 </resources>

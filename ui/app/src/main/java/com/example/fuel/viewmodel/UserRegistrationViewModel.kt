@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.fuel.R
-import com.example.fuel.model.User
+import com.example.fuel.model.account.UserRegistration
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.validation.ValidationPassword
 import com.example.fuel.utils.validation.ValidatorEmail
@@ -14,12 +14,12 @@ import com.example.fuel.utils.validation.ValidatorUsername
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class UserViewModel(private val repository: UserRepository): ViewModel() {
+class UserRegistrationViewModel(private val repository: UserRepository): ViewModel() {
 
-    val response: MutableLiveData<Response<User>> = MutableLiveData()
-    val user: MutableLiveData<User> = MutableLiveData()
+    val response: MutableLiveData<Response<UserRegistration>> = MutableLiveData()
+    val user: MutableLiveData<UserRegistration> = MutableLiveData()
 
-    fun postLogin(user: User) {
+    fun postLogin(user: UserRegistration) {
         viewModelScope.launch {
             response.value = repository.postLogin(user)
         }
@@ -29,6 +29,10 @@ class UserViewModel(private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             response.value = repository.postRegister(user.value)
         }
+    }
+
+    fun navigateToLoginFragment(view: View) {
+        Navigation.findNavController(view).navigate(R.id.LoginFragment)
     }
 
     fun navigateToUsernameFragment(view: View) {

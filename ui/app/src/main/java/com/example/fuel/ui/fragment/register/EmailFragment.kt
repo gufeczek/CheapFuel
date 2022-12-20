@@ -2,7 +2,6 @@ package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentEmailBinding
-import com.example.fuel.model.User
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
-import com.example.fuel.viewmodel.UserViewModel
+import com.example.fuel.viewmodel.UserRegistrationViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
 class EmailFragment : Fragment(R.layout.fragment_email) {
@@ -24,7 +22,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
     private var _binding: FragmentEmailBinding? = null
     private val binding get() = _binding!!
     private var error: ValidatorEmail.Error? = null
-    private lateinit var viewModel: UserViewModel
+    private lateinit var viewModel: UserRegistrationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +30,13 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEmailBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserRegistrationViewModel::class.java]
 
         binding.btnRegister.setOnClickListener(btnGoToNextPage)
         binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
-
+        binding.btnLogin.setOnClickListener { view ->
+            viewModel.navigateToLoginFragment(view)
+        }
 
         // TODO: Remove this, only for testing purposes
         binding.btnGoToMap.setOnClickListener {

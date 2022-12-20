@@ -1,6 +1,6 @@
-package com.example.fuel.model
+package com.example.fuel.model.account
 
-data class User (
+data class UserRegistration (
     var username: String,
     var email: String,
     var password: String,

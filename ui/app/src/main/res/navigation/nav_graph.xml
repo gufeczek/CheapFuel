@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/UsernameFragment"
@@ -52,5 +55,10 @@
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
         android:label="MapFilter" />
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.fuel.ui.fragment.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 
 </navigation>
