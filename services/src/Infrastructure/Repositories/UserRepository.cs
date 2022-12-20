@@ -40,6 +40,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         return await Context.Users
             .Where(u => u.Username == username)
             .Select(u => u.EmailConfirmed)
-            .FirstAsync();
+            .FirstOrDefaultAsync();
     }
 }

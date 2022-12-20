@@ -4,7 +4,6 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Pipeline.Operations.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WebAPI.IntegrationTests.TestConfiguration;
@@ -16,16 +15,13 @@ public class TestingWebApiFactory<TEntity> : WebApplicationFactory<Program> wher
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(AppDbContext));
             if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
-            
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("TestDatabase");
-            });
+
+            services.AddDbContext<AppDbContext, InMemoryDbContext>();
 
             services.AddScoped<IEmailSenderService, EmailSenderServiceTest>();
             services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperationTest>();

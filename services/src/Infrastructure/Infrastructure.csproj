@@ -18,6 +18,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
@@ -27,6 +28,8 @@
 
     <ItemGroup>
       <Folder Include="Common\Services" />
+      <Folder Include="Persistence\Migrations\MsSql" />
+      <Folder Include="Persistence\Migrations\MySql" />
     </ItemGroup>
 
     <ItemGroup>
