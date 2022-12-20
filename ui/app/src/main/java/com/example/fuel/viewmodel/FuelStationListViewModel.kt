@@ -266,7 +266,6 @@ class FuelStationListViewModel(
 
     fun choiceSort(idx: Int) {
         selectedSort = idx
-        Log.d("sort", selectedSort.toString())
     }
 
     fun cancelSort() {
