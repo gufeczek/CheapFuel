@@ -1,30 +1,31 @@
-package com.example.fuel.ui.fragment.fuelstationlist
+package com.example.fuel.ui.fragment.favorites
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.fuel.R
-import com.example.fuel.databinding.FragmentFuelStationListCardBinding
-import com.example.fuel.model.SimpleFuelStation
+import com.example.fuel.databinding.FragmentFavoriteFuelStationCardBinding
+import com.example.fuel.model.favourite.UserFavouriteDetails
 import com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment
 import com.example.fuel.utils.calculateDistance
 import com.example.fuel.utils.converters.UnitConverter
 import com.example.fuel.utils.getUserLocation
 import com.example.fuel.utils.isGpsEnabled
-import com.example.fuel.viewmodel.FuelStationListViewModel
+import com.example.fuel.viewmodel.FavouritesFuelStationsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
-import com.example.fuel.viewmodel.mediator.SharedFuelStationFilter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : Fragment() {
 
-    private lateinit var viewModel: FuelStationListViewModel
-    private lateinit var binding: FragmentFuelStationListCardBinding
+class FavoriteFuelStationCardFragment(private val favourite: UserFavouriteDetails) : Fragment() {
+
+    private lateinit var viewModel: FavouritesFuelStationsViewModel
+    private lateinit var binding: FragmentFavoriteFuelStationCardBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +33,8 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
         savedInstanceState: Bundle?
     ): View {
 
-        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FuelStationListViewModel::class.java]
-        binding = FragmentFuelStationListCardBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[FavouritesFuelStationsViewModel::class.java]
+        binding = FragmentFavoriteFuelStationCardBinding.inflate(inflater, container, false)
 
         initWithData()
         initPopupMenu()
@@ -43,14 +44,13 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
     }
 
     private fun initWithData() {
-        binding.tvFuelStationName.text = fuelStation.stationChainName
-        binding.tvFuelPrice.text = viewModel.parsePrice(fuelStation.price, resources)
-        binding.tvFuelPriceLastUpdateDate.text = viewModel.parseFuelPriceLastUpdate(fuelStation.lastFuelPriceUpdate, resources)
-        setDistance(fuelStation.latitude, fuelStation.longitude)
+        binding.tvFuelStationName.text = favourite.stationChain
+        binding.tvAddress.text = favourite.address()
+        setDistance(favourite.latitude, favourite.longitude)
     }
 
     private fun setDistance(latitude: Double, longitude: Double) {
-        val textView = binding.tvDistanceBetweenUserAndStation
+        val textView = binding.tvDistance
 
         if (!isGpsEnabled(requireContext()) || getUserLocation(requireContext()) == null) {
             textView.visibility = View.GONE
@@ -64,26 +64,27 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
         textView.visibility = View.VISIBLE
     }
 
+    private fun initPopupMenu() {
+        val actionButton = binding.acibFavouriteActionButton
+
+        actionButton.setOnClickListener {
+            val popupMenu = PopupMenu(requireActivity(), actionButton)
+            initPopupMenuWithActions(popupMenu)
+
+            popupMenu.show()
+        }
+    }
+
     private fun initOnClickListener() {
         binding.clMainContainer.setOnClickListener {
             showFuelStationDetails()
         }
     }
 
-    private fun initPopupMenu() {
-        val actionButton = binding.acibFuelStationActionButton
-
-        actionButton.setOnClickListener {
-            val popupMenu = PopupMenu(requireActivity(), actionButton)
-            initPopupMenuWithCommonActions(popupMenu)
-
-            popupMenu.show()
-        }
-    }
-
-    private fun initPopupMenuWithCommonActions(popupMenu: PopupMenu) {
+    private fun initPopupMenuWithActions(popupMenu: PopupMenu) {
         val detailsItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 0, getString(R.string.details))
         val showOnMapItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, getString(R.string.show_on_map))
+        val removeFromFav = popupMenu.menu.add(Menu.NONE, Menu.NONE, 2, getString(R.string.delete))
 
         detailsItem.setOnMenuItemClickListener {
             showFuelStationDetails()
@@ -94,11 +95,16 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
             showOnMap()
             true
         }
+
+        removeFromFav.setOnMenuItemClickListener {
+            removeFromFavourite()
+            true
+        }
     }
 
     private fun showFuelStationDetails() {
         val bundle = Bundle()
-        bundle.putLong("fuelStationId", fuelStation.id)
+        bundle.putLong("fuelStationId", favourite.fuelStationId)
 
         val fuelStationDetails = FuelStationDetailsFragment()
         fuelStationDetails.arguments = bundle
@@ -107,11 +113,19 @@ class FuelStationListCardFragment(private val fuelStation: SimpleFuelStation) : 
 
     private fun showOnMap() {
         val bundle = Bundle()
-        bundle.putDouble("lat", fuelStation.latitude)
-        bundle.putDouble("lon", fuelStation.longitude)
-
-        SharedFuelStationFilter.setFuelTypeId(viewModel.getFuelTypeId())
+        bundle.putDouble("lat", favourite.latitude)
+        bundle.putDouble("lon", favourite.longitude)
 
         Navigation.findNavController(binding.root).navigate(R.id.mapFragment, bundle)
+    }
+
+    private fun removeFromFavourite() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(getString(R.string.favourite_ask_if_delete))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.removeFuelStationFromFavourite(favourite.fuelStationId)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
     }
 }

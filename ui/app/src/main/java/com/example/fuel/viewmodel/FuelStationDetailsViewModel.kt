@@ -27,6 +27,7 @@ import com.example.fuel.utils.converters.Converter
 import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
 import com.example.fuel.utils.extension.DurationExtension.Companion.toMonths
 import com.example.fuel.utils.extension.DurationExtension.Companion.toYears
+import com.example.fuel.viewmodel.mediator.FavouriteViewModelMediator
 import com.example.fuel.viewmodel.mediator.ListViewModelMediator
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
@@ -66,6 +67,7 @@ class FuelStationDetailsViewModel(
 
             MapViewModelMediator.fuelStationChanged()
             ListViewModelMediator.fuelStationChanged()
+            FavouriteViewModelMediator.favouriteChanged()
         }
     }
 
@@ -194,12 +196,14 @@ class FuelStationDetailsViewModel(
     fun addFuelStationToFavourite(fuelStationId: Long) {
         viewModelScope.launch {
             addToFavourite.value = favouriteRepository.addToFavourite(fuelStationId)
+            FavouriteViewModelMediator.favouriteChanged()
         }
     }
 
     fun removeFuelStationFromFavourite(fuelStationId: Long) {
         viewModelScope.launch {
             deleteFavourite.value = favouriteRepository.deleteFromFavourite(fuelStationId)
+            FavouriteViewModelMediator.favouriteChanged()
         }
     }
 
@@ -219,6 +223,7 @@ class FuelStationDetailsViewModel(
     fun notifyAboutChanges() {
         MapViewModelMediator.act()
         ListViewModelMediator.act()
+        FavouriteViewModelMediator.act()
     }
 
     fun clear() {

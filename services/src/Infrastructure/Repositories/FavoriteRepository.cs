@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Domain.Common.Pagination.Request;
+using Domain.Common.Pagination.Response;
+using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,16 @@ public class FavoriteRepository : Repository<Favorite>, IFavoriteRepository
             .Include(f => f.User)
             .Where(f => f.User!.Username == username && f.FuelStationId == fuelStationId)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<Page<Favorite>> GetAllByUsernameAsync(string username, PageRequest<Favorite> pageRequest)
+    {
+        var query = Context.Favorites
+            .Include(f => f.User)
+            .Include(f => f.FuelStation)
+                .ThenInclude(fs => fs!.StationChain)
+            .Where(f => f.User!.Username == username);
+        return await Paginate(query, pageRequest);
     }
 
     public async Task<bool> ExistsByUsernameAndFuelStationIdAsync(string username, long fuelStationId)
