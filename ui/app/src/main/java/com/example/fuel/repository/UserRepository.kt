@@ -1,10 +1,13 @@
 package com.example.fuel.repository
 
 import com.example.fuel.api.RetrofitInstance
+import com.example.fuel.mock.Auth
 import com.example.fuel.model.User
-import com.example.fuel.viewmodel.UserViewModel
+import com.example.fuel.model.UserDetails
+import com.example.fuel.model.UserFilter
+import com.example.fuel.model.page.Page
+import com.example.fuel.model.page.PageRequest
 import retrofit2.Response
-import retrofit2.http.Body
 
 class UserRepository {
 
@@ -14,5 +17,9 @@ class UserRepository {
 
     suspend fun postRegister(user: User): Response<User> {
         return RetrofitInstance.accountApi.postRegister(user)
+    }
+
+    suspend fun getAllUsers(filter: UserFilter, pageRequest: PageRequest): Response<Page<UserDetails>> {
+        return RetrofitInstance.userApiService.getAllUsers(filter, pageRequest.toQueryMap(), Auth.token)
     }
 }

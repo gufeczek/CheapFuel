@@ -75,4 +75,6 @@
     <string name="none_fuel_station_has_been_added_to_favourite">Nie dodano żadnych stacji do ulubionych</string>
     <string name="details">Szczegóły</string>
     <string name="show_on_map">Pokaż na mapie</string>
+    <string name="not_found_any_users">Nie znaleziono żadnych użytkowników</string>
+    <string name="ban_user">Zablokuj</string>
 </resources>
