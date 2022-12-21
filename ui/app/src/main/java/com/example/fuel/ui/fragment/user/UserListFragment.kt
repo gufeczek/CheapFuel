@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUserListBinding
 import com.example.fuel.viewmodel.UserListViewModel
@@ -141,8 +142,8 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.user_search) {
-
+        if (item.itemId == R.id.user_filter) {
+            Navigation.findNavController(binding.root).navigate(R.id.userListFilterFragment)
         }
 
         return super.onOptionsItemSelected(item)
@@ -157,8 +158,8 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
 
         viewModel.clear()
     }

@@ -77,4 +77,6 @@
     <string name="show_on_map">Pokaż na mapie</string>
     <string name="not_found_any_users">Nie znaleziono żadnych użytkowników</string>
     <string name="ban_user">Zablokuj</string>
+    <string name="roles">Role</string>
+    <string name="status">Status</string>
 </resources>

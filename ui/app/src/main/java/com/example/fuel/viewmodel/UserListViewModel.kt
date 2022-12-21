@@ -3,6 +3,8 @@ package com.example.fuel.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fuel.enums.AccountStatus
+import com.example.fuel.enums.Role
 import com.example.fuel.model.UserDetails
 import com.example.fuel.model.UserFilter
 import com.example.fuel.model.page.Page
@@ -25,6 +27,12 @@ class UserListViewModel(
     val filter get() = _filter!!
 
     private var currentFilter: UserFilter? = null
+
+    private var _roles = arrayOf(Role.USER, Role.OWNER, Role.ADMIN)
+    val roles get() = _roles
+
+    private var _accountStatuses = arrayOf(AccountStatus.NEW, AccountStatus.ACTIVE, AccountStatus.BANNED)
+    val accountStatuses get() = _accountStatuses
 
     fun getFirstPageOfUsers() {
         viewModelScope.launch {
@@ -70,11 +78,27 @@ class UserListViewModel(
         }
     }
 
+    fun onRoleSelected(role: Role) {
+        _filter?.let {
+            filter.role = if (filter.role == role) null else role
+        }
+    }
+
+    fun onAccountStatusSelected(status: AccountStatus) {
+        _filter?.let {
+            filter.accountStatus = if (filter.accountStatus == status) null else status
+        }
+    }
+
+    fun isRoleSelected(role: Role): Boolean {
+        return _filter?.role == role
+    }
+
+    fun isAccountStatusSelected(status: AccountStatus): Boolean {
+        return _filter?.accountStatus == status
+    }
+
     fun clear() {
         users = MutableLiveData()
-
-        isUserInitialized = false
-        _filter = null
-        currentFilter = null
     }
 }

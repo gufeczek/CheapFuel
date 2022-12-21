@@ -4,8 +4,8 @@ import com.example.fuel.enums.AccountStatus
 import com.example.fuel.enums.Role
 
 data class UserFilter(
-    val role: Role?,
-    val accountStatus: AccountStatus?,
+    var role: Role?,
+    var accountStatus: AccountStatus?,
     var searchPhrase: String?) {
 
     fun copy(): UserFilter {
