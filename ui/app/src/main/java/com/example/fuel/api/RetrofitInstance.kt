@@ -71,6 +71,10 @@ object RetrofitInstance {
         retrofit.create(ServiceAtStationApiService::class.java)
     }
 
+    val userApiService: UserApiService by lazy {
+        retrofit.create(UserApiService::class.java)
+    }
+
     val testApi: TestApiService by lazy {
         retrofit.create(TestApiService::class.java)
     }

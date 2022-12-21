@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_favoritesFuelStationsFragment"
             app:destination="@id/favoritesFuelStationsFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_userListFragment"
+            app:destination="@id/userListFragment" />
     </fragment>
     <fragment
         android:id="@+id/setUsernameFragment"
@@ -110,5 +113,18 @@
         android:name="com.example.fuel.ui.fragment.favorites.FavoritesFuelStationsFragment"
         android:label="Ulubione"
         tools:layout="@layout/fragment_favorites_fuel_stations" />
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFragment"
+        android:label="Użytkownicy">
+        <action
+            android:id="@+id/action_userListFragment_to_userListFilterFragment"
+            app:destination="@id/userListFilterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
+        android:label="Filtry"
+        tools:layout="@layout/fragment_user_list_filter" />
 
 </navigation>

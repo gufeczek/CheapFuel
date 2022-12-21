@@ -23,7 +23,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class FavoriteFuelStationCardFragment(private val favourite: UserFavouriteDetails) : Fragment() {
-
     private lateinit var viewModel: FavouritesFuelStationsViewModel
     private lateinit var binding: FragmentFavoriteFuelStationCardBinding
 
