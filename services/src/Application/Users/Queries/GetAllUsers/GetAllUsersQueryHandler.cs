@@ -22,7 +22,8 @@ public sealed class GetAllUserQueryHandler : IRequestHandler<GetAllUsersQuery, P
     public async Task<Page<UserDetailsDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var pageRequest = PaginationHelper.Eval(request.PageRequestDto, new UserDetailColumnSelector());
-        var result = await _userRepository.GetAllAsync(pageRequest);
+        var filter = request.Filter;
+        var result = await _userRepository.GetAllAsync(filter.Role, filter.AccountStatus, filter.SearchPhrase, pageRequest);
         return Page<UserDetailsDto>.From(result, _mapper.Map<IEnumerable<UserDetailsDto>>(result.Data));
     }
 }
