@@ -15,9 +15,9 @@ class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
     val response: MutableLiveData<Response<UserLogin>> = MutableLiveData()
     val user: MutableLiveData<UserLogin> = MutableLiveData()
 
-    fun postLogin() {
+    fun postLogin(user: UserLogin) {
         viewModelScope.launch {
-            response.value = repository.postLogin(user.value)
+            response.value = repository.postLogin(user)
         }
     }
 

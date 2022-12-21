@@ -7,11 +7,11 @@ import retrofit2.Response
 
 class UserRepository {
 
-    suspend fun postLogin(user: UserLogin?): Response<UserLogin> {
-        return RetrofitInstance.accountApi.postLogin(user!!)
+    suspend fun postLogin(user: UserLogin): Response<UserLogin> {
+        return RetrofitInstance.accountApi.postLogin(user)
     }
 
-    suspend fun postRegister(user: UserRegistration?): Response<UserRegistration> {
-        return RetrofitInstance.accountApi.postRegister(user!!)
+    suspend fun postRegister(user: UserRegistration): Response<UserRegistration> {
+        return RetrofitInstance.accountApi.postRegister(user)
     }
 }

@@ -2,6 +2,7 @@ package com.example.fuel.viewmodel
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,15 +19,11 @@ import retrofit2.Response
 class UserRegistrationViewModel(private val repository: UserRepository): ViewModel() {
 
     val response: MutableLiveData<Response<UserRegistration>> = MutableLiveData()
-    val user: MutableLiveData<UserRegistration> = MutableLiveData()
+    var user: MutableLiveData<UserRegistration> = MutableLiveData()
 
-    fun postRegister() {
-        Log.d("XD", "username: " + user.value?.username.toString())
-        Log.d("XD", "email: " + user.value?.email.toString())
-        Log.d("XD", "password: " + user.value?.password.toString())
-        Log.d("XD", "cpassword: " + user.value?.confirmPassword.toString())
+    fun postRegister(user: UserRegistration) {
         viewModelScope.launch {
-            response.value = repository.postRegister(user.value)
+            response.value = repository.postRegister(user)
         }
     }
 

@@ -10,8 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentPasswordBinding
+import com.example.fuel.model.account.UserRegistration
+import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorPassword
@@ -26,6 +29,8 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
     private val binding get() = _binding!!
     private var error: ValidatorPassword.Error? = null
     private lateinit var viewModel: UserRegistrationViewModel
+    private val emailArgs: EmailFragmentArgs by navArgs()
+    private val usernameArgs: UsernameFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +72,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         if (error == null) {
             viewModel.user.value?.password = password
             viewModel.user.value?.confirmPassword = password
-            registerUser()
+            registerUser(password)
             viewModel.navigateToTBAFragment(view)
         } else {
             showError()
@@ -114,8 +119,9 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         binding.tilRepeatPassword.setBackgroundResource(R.drawable.bg_rounded)
     }
 
-    private fun registerUser() {
-        viewModel.postRegister()
+    private fun registerUser(password: String) {
+        val user = UserRegistration(usernameArgs.username, emailArgs.email, password, password)
+        viewModel.postRegister(user)
         viewModel.response.observe(viewLifecycleOwner) { response ->
             if (response.isSuccessful) {
                 Log.d("XD", response.message())

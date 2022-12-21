@@ -62,7 +62,6 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
         error = viewModel.getEmailValidationError(email)
         if (error == null) {
             viewModel.user.value?.email = email
-            
             viewModel.navigateToUsernameFragment(view)
 
         } else {

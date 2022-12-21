@@ -70,7 +70,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun loginUser() {
-        viewModel.postLogin()
+        viewModel.postLogin(viewModel.user.value!!)
         viewModel.response.observe(viewLifecycleOwner) { response ->
             if (response.isSuccessful) {
                 Log.d("XD", "User has been logged in")
