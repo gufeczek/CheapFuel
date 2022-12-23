@@ -2,7 +2,6 @@ package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +40,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
 
         // TODO: Remove this, only for testing purposes
         binding.btnGoToMap.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.mapFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.fuelStationListFragment)
         }
 
         return binding.root

@@ -47,7 +47,7 @@ public class UserQueryController : ControllerBase
     
     [AuthorizeUser]
     [HttpGet]
-    [Route("logged-user-info")]
+    [Route("logged-user")]
     public async Task<ActionResult<UserDetailsDto>> GetInfoAboutLoggedUser()
     {
         var userInfo = await _mediator.Send(new GetLoggedUserQuery());
