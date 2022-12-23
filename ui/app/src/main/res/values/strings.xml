@@ -84,4 +84,6 @@
     <string name="email">Email</string>
     <string name="email_address_confirmed">Potwierdzono adres email</string>
     <string name="role">Rola</string>
+    <string name="ask_if_delete_review">Czy na pewno chcesz usunąć tą recenzję?</string>
+    <string name="more">Więcej</string>
 </resources>

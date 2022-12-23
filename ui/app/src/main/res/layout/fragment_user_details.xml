@@ -98,6 +98,17 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/acib_userActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingEnd="12dp"
+                android:paddingTop="5dp"
+                app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llc_banInfoContainer"
                 android:layout_width="match_parent"
@@ -254,6 +265,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
+
+                <ProgressBar
+                    android:id="@+id/pb_reviewsLoad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/dark_blue"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:layout_marginBottom="20dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
