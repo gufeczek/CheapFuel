@@ -26,6 +26,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Returns_page_of_reviews()
     {
         // Arrange
+        await this.AuthorizeUser();
+        
         const int fuelStationId = ReviewQueryControllerData.FuelStation1Id;
         const int pageNumber = 1;
         const int pageSize = 10;
@@ -55,6 +57,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Returns_page_of_reviews_with_empty_list_of_reviews_for_fuel_station_without_reviews()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const int fuelStationId = ReviewQueryControllerData.FuelStation2Id;
         const int pageNumber = 1;
         const int pageSize = 10;
@@ -84,6 +88,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Fails_to_return_page_of_reviews_for_not_existing_fuel_station()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const int fuelStationId = ReviewQueryControllerData.InvalidFuelStationId;
         const int pageNumber = 1;
         const int pageSize = 10;
@@ -107,6 +113,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Returns_fuel_station_review()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const string username = ReviewQueryControllerData.User1Username;
         const long fuelStationId = ReviewQueryControllerData.FuelStation1Id;
         
@@ -127,6 +135,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Fails_to_return_fuel_station_review_for_not_existing_user()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const string username = AccountsData.InvalidUsername;
         const long fuelStationId = ReviewQueryControllerData.FuelStation1Id;
         
@@ -142,6 +152,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Fails_to_return_fuel_station_review_for_not_existing_fuel_station()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const string username = ReviewQueryControllerData.User1Username;
         const long fuelStationId = ReviewQueryControllerData.InvalidFuelStationId;
         
@@ -157,6 +169,8 @@ public class ReviewQueryControllerTest : IntegrationTest
     public async Task Fails_to_return_fuel_station_review_if_given_user_not_reviewed_this_fuel_station()
     {
         // Arrange
+        await this.AuthorizeUser();
+
         const string username = ReviewQueryControllerData.User3Username;
         const long fuelStationId = ReviewQueryControllerData.FuelStation1Id;
         
