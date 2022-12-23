@@ -20,6 +20,15 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
         return await Paginate(query, pageRequest);
     }
 
+    public async Task<Page<Review>> GetAllForUserAsync(string username, PageRequest<Review> pageRequest)
+    {
+        IQueryable<Review> query = Context.Reviews
+            .Include(r => r.User)
+            .Where(r => r.User!.Username == username);
+
+        return await Paginate(query, pageRequest);
+    }
+
     public async Task<bool> ExistsByFuelStationAndUsername(long fuelStationId, string username)
     {
         return await Context.Reviews

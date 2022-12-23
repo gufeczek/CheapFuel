@@ -9,16 +9,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
-import com.example.fuel.databinding.FragmentEmailBinding
 import com.example.fuel.databinding.FragmentLoginBinding
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
-import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.utils.validation.ValidatorPassword
 import com.example.fuel.utils.validation.ValidatorUsername
 import com.example.fuel.viewmodel.UserLoginViewModel
-import com.example.fuel.viewmodel.UserRegistrationViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
 

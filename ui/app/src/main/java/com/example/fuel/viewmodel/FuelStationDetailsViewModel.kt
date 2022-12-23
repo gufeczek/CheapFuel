@@ -23,17 +23,15 @@ import com.example.fuel.repository.FavouriteRepository
 import com.example.fuel.repository.FuelPriceRepository
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.ReviewRepository
+import com.example.fuel.ui.utils.DateParser
 import com.example.fuel.utils.converters.Converter
 import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
-import com.example.fuel.utils.extension.DurationExtension.Companion.toMonths
-import com.example.fuel.utils.extension.DurationExtension.Companion.toYears
 import com.example.fuel.viewmodel.mediator.FavouriteViewModelMediator
 import com.example.fuel.viewmodel.mediator.ListViewModelMediator
 import com.example.fuel.viewmodel.mediator.MapViewModelMediator
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.time.Duration
-import java.time.LocalDateTime
 import java.util.Date
 
 class FuelStationDetailsViewModel(
@@ -114,33 +112,11 @@ class FuelStationDetailsViewModel(
         return resources.getString(R.string.zloty, Converter.toCurrency(fuelPrice.price))
     }
 
-    fun parseFuelPriceCreatedAt(fuelPrice: Price?, resources: Resources): String {
-        if (fuelPrice == null) return resources.getString(R.string.never)
+    fun parseFuelPriceCreatedAt(fuelPrice: Price?, resources: Resources): String =
+        DateParser.parseFuelPriceCreatedAt(fuelPrice, resources)
 
-        val createdAt = Converter.toLocalDateTime(fuelPrice.createdAt)
-        val diff = Duration.between(createdAt, LocalDateTime.now())
-
-        if (diff.toDays() == 1L) return resources.getString(R.string.one_day_ago)
-        if (diff.toDays() > 1) return resources.getString(R.string.days_ago, diff.toDays().toString())
-        if (diff.toHours() > 1) return resources.getString(R.string.hours_ago, diff.toHours().toString())
-
-        return resources.getString(R.string.one_hour_ago)
-    }
-
-    fun parseReviewDate(date: Date, resources: Resources): String {
-        val parsedDate = Converter.toLocalDateTime(date)
-        val diff = Duration.between(parsedDate, LocalDateTime.now())
-
-        if (diff.toYears() == 1L) return resources.getString(R.string.one_year_ago)
-        if (diff.toYears() > 1) return resources.getString(R.string.years_ago, diff.toYears().toString())
-        if (diff.toMonths() == 1L) return resources.getString(R.string.one_month_ago)
-        if (diff.toMonths() > 1) return resources.getString(R.string.months_ago, diff.toMonths().toString())
-        if (diff.toDays() == 1L) return resources.getString(R.string.one_day_ago)
-        if (diff.toDays() > 1) return resources.getString(R.string.days_ago, diff.toDays().toString())
-        if (diff.toHours() > 1) return resources.getString(R.string.hours_ago, diff.toHours().toString())
-
-        return resources.getString(R.string.less_then_hour_ago)
-    }
+    fun parseReviewDate(date: Date, resources: Resources): String =
+        DateParser.parseReviewDate(date, resources)
 
     fun hasReviewContent(review: Review): Boolean = review.content != null
 

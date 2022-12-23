@@ -23,4 +23,8 @@ class UserRepository {
     suspend fun getAllUsers(filter: UserFilter, pageRequest: PageRequest): Response<Page<UserDetails>> {
         return RetrofitInstance.userApiService.getAllUsers(filter, pageRequest.toQueryMap(), Auth.token)
     }
+
+    suspend fun getUserDetails(username: String): Response<UserDetails> {
+        return RetrofitInstance.userApiService.getUserDetails(username, Auth.token)
+    }
 }

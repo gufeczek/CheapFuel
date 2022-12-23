@@ -12,6 +12,7 @@ using WebAPI.Common.Authorization;
 namespace WebAPI.Controllers.FuelStation;
 
 [ApiController]
+[AuthorizeUser]
 [Route("api/v1/fuel-stations")]
 public sealed class FuelStationQueryController : ControllerBase
 {
@@ -22,7 +23,6 @@ public sealed class FuelStationQueryController : ControllerBase
         _mediator = mediator;
     }
     
-    [AuthorizeUser]
     [HttpGet("{id}")]
     public async Task<ActionResult<FuelStationDetailsDto>> GetFuelStationDetailsById([FromRoute] long id)
     {
@@ -30,7 +30,6 @@ public sealed class FuelStationQueryController : ControllerBase
         return Ok(result);
     }
 
-    [AuthorizeUser]
     [HttpPost("map")]
     public async Task<ActionResult<IEnumerable<SimpleFuelStationDto>>> GetAllFuelStationForMapView([FromBody] FuelStationFilterDto filterDto)
     {
@@ -38,7 +37,6 @@ public sealed class FuelStationQueryController : ControllerBase
         return Ok(result);
     }
 
-    [AuthorizeUser]
     [HttpPost("list")]
     public async Task<ActionResult<Page<SimpleFuelStationDto>>> GetAllFuelStationForListView([FromBody] FuelStationFilterWithLocalizationDto filterDto, [FromQuery] PageRequestDto pageRequestDto)
     {

@@ -46,6 +46,10 @@ class ViewModelFactory : ViewModelProvider.Factory {
         UserListViewModel::class.java -> UserListViewModel(
             UserRepository()
         ) as T
+        UserDetailsViewModel::class.java -> UserDetailsViewModel(
+            UserRepository(),
+            ReviewRepository()
+        ) as T
         else -> {
             throw NoSuchViewModelException(
                 "Exception in 'ViewModelFactory' class, 'create' method: such ViewModel doesn't exist"

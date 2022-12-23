@@ -5,9 +5,9 @@ import java.util.Date
 data class UserDetails(
     val username: String,
     val email: String,
-    val emailConfirmed: String,
-    val multiFactorAuthEnabled: String,
+    val emailConfirmed: Boolean,
+    val multiFactorAuthEnabled: Boolean,
     val role: String,
-    val accountStatus: String,
+    val status: String,
     val createdAt: Date
 )
