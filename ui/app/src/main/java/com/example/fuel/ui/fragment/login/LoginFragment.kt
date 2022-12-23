@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentEmailBinding
 import com.example.fuel.databinding.FragmentLoginBinding
+import com.example.fuel.model.account.UserLogin
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
@@ -52,9 +53,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         errorPassword = viewModel.getPasswordValidationError(password)
 
         if (errorUsername == null && errorPassword == null) {
-            viewModel.user.value?.username = username
-            viewModel.user.value?.password = password
-            viewModel.navigateToTBAFragment(view)
+            loginUser(username, password)
+            viewModel.response.observe(viewLifecycleOwner) { response ->
+                if (response.isSuccessful) {
+                    viewModel.navigateToTBAFragment(view)
+                    Log.d("XD", "XD")
+                } else {
+                    Log.d("XD", response.errorBody()!!.string())
+                }
+            }
+
         } else if (errorUsername != null) {
             showUsernameError()
             setUsernameErrorTracking()
@@ -69,15 +77,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = null
     }
 
-    private fun loginUser() {
-        viewModel.postLogin(viewModel.user.value!!)
-        viewModel.response.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful) {
-                Log.d("XD", "User has been logged in")
-            } else {
-                Log.d("XD", response.code().toString())
-            }
-        }
+    private fun loginUser(username: String, password: String) {
+        val user = UserLogin(username, password)
+        viewModel.postLogin(user)
+
     }
 
     private fun showUsernameError() {

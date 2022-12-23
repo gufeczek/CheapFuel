@@ -7,7 +7,6 @@ import retrofit2.http.*
 
 interface AccountApiService {
 
-    @FormUrlEncoded
     @Headers("Content-Type:application/json")
     @POST("api/v1/accounts/login")
     suspend fun postLogin(
