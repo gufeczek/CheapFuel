@@ -11,7 +11,6 @@ import com.example.fuel.repository.FuelTypeRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.repository.ServiceAtStationRepository
 import com.example.fuel.repository.StationChainRepository
-import com.example.fuel.repository.TestRepository
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.exception.NoSuchViewModelException
 
@@ -19,7 +18,8 @@ class ViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T = when(modelClass) {
-        UserViewModel::class.java -> UserViewModel(UserRepository()) as T
+        UserRegistrationViewModel::class.java -> UserRegistrationViewModel(UserRepository()) as T
+        UserLoginViewModel::class.java -> UserLoginViewModel(UserRepository()) as T
         FuelStationMapViewModel::class.java -> FuelStationMapViewModel(
             FuelStationRepository(),
             FuelTypeRepository(),
@@ -46,7 +46,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
         UserListViewModel::class.java -> UserListViewModel(
             UserRepository()
         ) as T
-        TestViewModel::class.java -> TestViewModel(TestRepository()) as T
         else -> {
             throw NoSuchViewModelException(
                 "Exception in 'ViewModelFactory' class, 'create' method: such ViewModel doesn't exist"
