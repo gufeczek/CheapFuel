@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Models;
+using Application.Models.Filters;
 using Application.Models.Pagination;
 using Application.Users.Queries.GetAllUsers;
 using AutoMapper;
@@ -48,14 +49,14 @@ public class GetAllUsersQueryHandlerTest
             PageSize = (int)pageRequestDto.PageSize,
             Sort = null
         };
-        var query = new GetAllUsersQuery(pageRequestDto);
+        var query = new GetAllUsersQuery(CreateEmptyFilter(), pageRequestDto);
 
         List<User> data = CreateData();
         List<UserDetailsDto> dataDtos = CreateDto(data);
         Page<User> services = CreatePage(pageRequest, data);
 
         _userRepository
-            .Setup(x => x.GetAllAsync(It.IsAny<PageRequest<User>>()))
+            .Setup(x => x.GetAllAsync(null, null, null, It.IsAny<PageRequest<User>>()))
             .ReturnsAsync(services);
 
         _mapper
@@ -65,7 +66,7 @@ public class GetAllUsersQueryHandlerTest
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
         
-        // Asssert
+        // Assert
         result.Should().NotBeNull();
         result.Data.Should().NotBeNull();
         result.Data.Should().HaveCount(2);
@@ -83,7 +84,7 @@ public class GetAllUsersQueryHandlerTest
             PageNumber = 10,
             Sort = new SortDto { SortBy = column, SortDirection = SortDirection.Asc}
         };
-        var query = new GetAllUsersQuery(pageRequestDto);
+        var query = new GetAllUsersQuery(CreateEmptyFilter(), pageRequestDto);
         
         // Act
         Func<Task<Page<UserDetailsDto>>> act = _handler.Awaiting(x => x.Handle(query, CancellationToken.None));
@@ -136,4 +137,9 @@ public class GetAllUsersQueryHandlerTest
         Sort = null,
         Data = data
     };
+
+    private UserFilterDto CreateEmptyFilter()
+    {
+        return new UserFilterDto(null, null, null);
+    }
 }

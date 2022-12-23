@@ -1,6 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.Models;
+using Application.Models.Filters;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -8,7 +10,7 @@ using MediatR;
 namespace Application.FuelStations.Queries.GetAllFuelStationForMap;
 
 public sealed class GetAllFuelStationsForMapQueryHandler 
-    : IRequestHandler<GetAllFuelStationsForMapQuery, IEnumerable<SimpleMapFuelStationDto>>
+    : IRequestHandler<GetAllFuelStationsForMapQuery, IEnumerable<SimpleFuelStationDto>>
 {
     private readonly IFuelStationRepository _fuelStationRepository;
     private readonly IFuelTypeRepository _fuelTypeRepository;
@@ -25,7 +27,7 @@ public sealed class GetAllFuelStationsForMapQueryHandler
         _mapper = mapper;
     }
     
-    public async Task<IEnumerable<SimpleMapFuelStationDto>> Handle(GetAllFuelStationsForMapQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SimpleFuelStationDto>> Handle(GetAllFuelStationsForMapQuery request, CancellationToken cancellationToken)
     {
         var filter = request.FilterDto;
 
@@ -38,12 +40,8 @@ public sealed class GetAllFuelStationsForMapQueryHandler
             filter.MinPrice,
             filter.MaxPrice);
 
-        fuelStations = fuelStations.Where(
-            f => f.FuelPrices.Any()
-            && f.FuelTypes.Any(ft => ft.FuelTypeId == filter.FuelTypeId))
-            .ToList();
-        
-        return _mapper.Map<IEnumerable<SimpleMapFuelStationDto>>(fuelStations);
+        fuelStations = ApplyPriceFilter(fuelStations, filter);
+        return _mapper.Map<IEnumerable<SimpleFuelStationDto>>(fuelStations);
     }
 
     private async Task ValidateFilters(FuelStationFilterDto filterDto)
@@ -71,5 +69,15 @@ public sealed class GetAllFuelStationsForMapQueryHandler
         {
             throw new FilterValidationException(validationErrors);
         }
+    }
+    
+    private IEnumerable<FuelStation> ApplyPriceFilter(IEnumerable<FuelStation> fuelStations, FuelStationFilterDto filter)
+    {
+        var minPrice = filter.MinPrice;
+        var maxPrice = filter.MaxPrice;
+
+        return fuelStations.Where(fs =>
+            (minPrice == null || minPrice <= fs.FuelPrices.First().Price) &&
+            (maxPrice == null || maxPrice >= fs.FuelPrices.First().Price));
     }
 }

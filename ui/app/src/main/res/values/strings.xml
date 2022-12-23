@@ -68,4 +68,18 @@
     <string name="price_range">Przedział ceny</string>
     <string name="login">Zaloguj się</string>
     <string name="please_input_username_and_password">Podaj nazwę użytkownika oraz hasło:</string>
+    <string name="fuel_station_ask_if_delete">Czy na pewno chcesz usunąć tą stację paliw?</string>
+    <string name="favourite_ask_if_delete">Czy na pewno chcesz usunąć tą stację paliw ze swoich ulubionych?</string>
+    <string name="sort">Sortuj</string>
+    <string name="choose_sort">Wybierz sortowanie</string>
+    <string name="max_distance">Maksymalna odległość</string>
+    <string name="could_not_fount_any_stations">Nie udało się znaleźć żadnych stacji</string>
+    <string name="none_fuel_station_has_been_added_to_favourite">Nie dodano żadnych stacji do ulubionych</string>
+    <string name="details">Szczegóły</string>
+    <string name="show_on_map">Pokaż na mapie</string>
+    <string name="not_found_any_users">Nie znaleziono żadnych użytkowników</string>
+    <string name="ban_user">Zablokuj</string>
+    <string name="roles">Role</string>
+    <string name="status">Status</string>
+    <string name="cancel">Anuluj</string>
 </resources>

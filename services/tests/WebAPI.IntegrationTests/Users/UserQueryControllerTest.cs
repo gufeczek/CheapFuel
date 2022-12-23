@@ -2,7 +2,7 @@
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Application.Models;
-using Application.Users.Queries.GetUser;
+using Application.Models.Filters;
 using Domain.Common.Pagination.Request;
 using Domain.Common.Pagination.Response;
 using Domain.Entities;
@@ -29,19 +29,24 @@ public class UserQueryControllerTest : IntegrationTest
     {
         // Arrange
         await this.AuthorizeAdmin();
+
+        var filter = new UserFilterDto(null, null, null);
+        var body = this.Serialize(filter);
         
         const int pageNumber = 1;
         const int pageSize = 10;
         const string sortBy = nameof(User.Username);
         const SortDirection direction = SortDirection.Asc;
         
+        
         // Act
-        var response = await HttpClient.GetAsync(
-            "api/v1/users/all-users?" +
+        var response = await HttpClient.PostAsync(
+            "api/v1/users?" +
             $"PageNumber={pageNumber}&" +
             $"PageSize={pageSize}&" +
             $"Sort.SortBy={sortBy}&" +
-            $"Sort.SortDirection={direction}");
+            $"Sort.SortDirection={direction}",
+            body);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -58,10 +63,10 @@ public class UserQueryControllerTest : IntegrationTest
     public async Task Show_info_fail_for_invalid_username()
     {
         // Arrange
-        var command = new GetUserQuery("michalek");
+        const string username = "michalek";
         
         // Act 
-        var response = await HttpClient.GetAsync($"api/v1/users?username={command}");
+        var response = await HttpClient.GetAsync($"api/v1/users/{username}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

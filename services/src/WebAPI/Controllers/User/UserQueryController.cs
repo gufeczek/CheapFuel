@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Filters;
 using Application.Models.Pagination;
 using Application.Users.Queries.GetAllUsers;
 using Application.Users.Queries.GetLoggedUser;
@@ -21,19 +22,18 @@ public class UserQueryController : ControllerBase
         _mediator = mediator;
     }
     
-    [HttpGet]
-    public async Task<ActionResult<UserDto>> GetInfoAboutUser([FromQuery] string username)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<UserDto>> GetInfoAboutUser([FromRoute] string username)
     {
         var userInfo = await _mediator.Send(new GetUserQuery(username));
         return Ok(userInfo);
     }
     
-    [HttpGet]
+    [HttpPost]
     [AuthorizeAdmin]
-    [Route("all-users")]
-    public async Task<ActionResult<Page<UserDetailsDto>>> GetAllAsync([FromQuery] PageRequestDto pageRequestDto)
+    public async Task<ActionResult<Page<UserDetailsDto>>> GetAllAsync([FromBody] UserFilterDto filter, [FromQuery] PageRequestDto pageRequestDto)
     {
-        var result = await _mediator.Send(new GetAllUsersQuery(pageRequestDto));
+        var result = await _mediator.Send(new GetAllUsersQuery(filter, pageRequestDto));
         return Ok(result);
     }
     

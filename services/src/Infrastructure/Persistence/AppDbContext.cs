@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public sealed class AppDbContext : DbContext
+public abstract class AppDbContext : DbContext
 {
     private readonly BeforeSaveChangesPipeline _beforeSaveChangesPipeline;
     
@@ -25,8 +25,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
-    public AppDbContext(DbContextOptions<AppDbContext> options, IBeforeSaveChangesPipelineBuilder builder) 
-        : base(options)
+    protected AppDbContext(IBeforeSaveChangesPipelineBuilder builder)
     {
         _beforeSaveChangesPipeline = builder.Build();
     }
