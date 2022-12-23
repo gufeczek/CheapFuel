@@ -22,6 +22,7 @@ import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
 import com.example.fuel.viewmodel.UserRegistrationViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import okhttp3.OkHttp
 
 class PasswordFragment : Fragment(R.layout.fragment_password) {
 
@@ -29,8 +30,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
     private val binding get() = _binding!!
     private var error: ValidatorPassword.Error? = null
     private lateinit var viewModel: UserRegistrationViewModel
-    private val emailArgs: EmailFragmentArgs by navArgs()
-    private val usernameArgs: UsernameFragmentArgs by navArgs()
+    private val args: PasswordFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +73,11 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
             viewModel.user.value?.password = password
             viewModel.user.value?.confirmPassword = password
             registerUser(password)
-            viewModel.navigateToTBAFragment(view)
+            viewModel.response.observe(viewLifecycleOwner) { response ->
+                if (response.isSuccessful) {
+                    viewModel.navigateToLoginFragment(view)
+                }
+            }
         } else {
             showError()
         }
@@ -120,14 +124,9 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
     }
 
     private fun registerUser(password: String) {
-        val user = UserRegistration(usernameArgs.username, emailArgs.email, password, password)
+        val username = args.username
+        val email = args.email
+        val user = UserRegistration(username, email, password, password)
         viewModel.postRegister(user)
-        viewModel.response.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful) {
-                Log.d("XD", response.message())
-            } else {
-                Log.d("XD", response.code().toString())
-            }
-        }
     }
 }

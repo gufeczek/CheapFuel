@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUsernameBinding
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
@@ -30,6 +31,7 @@ class UsernameFragment : Fragment(R.layout.fragment_username) {
     private val binding get() = _binding!!
     private var error: ValidatorUsername.Error? = null
     private lateinit var viewModel: UserRegistrationViewModel
+    private val args: UsernameFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,10 +66,11 @@ class UsernameFragment : Fragment(R.layout.fragment_username) {
 
     private val btnGoToNextPage = View.OnClickListener { view ->
         val username = binding.etUsername.text.toString()
+        val email = args.email
         error = viewModel.getUsernameValidationError(username)
         if (error == null && isTermsOfUseChecked()) {
-            viewModel.user.value?.username = username
-            viewModel.navigateToPasswordFragment(view)
+            val action = UsernameFragmentDirections.navigateToPasswordFragment(username, email)
+            viewModel.navigateToPasswordFragment(view, action)
         } else if (error != null) {
             showUsernameValidationError()
             setUsernameErrorTracking()

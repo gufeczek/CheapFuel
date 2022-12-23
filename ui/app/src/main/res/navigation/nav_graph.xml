@@ -11,7 +11,7 @@
         android:label="Register method"
         tools:layout="@layout/fragment_email" >
         <action
-            android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
+            android:id="@+id/navigate_to_username_fragment"
             app:destination="@id/UsernameFragment" />
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
@@ -19,9 +19,6 @@
         <action
             android:id="@+id/action_EmailFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
-        <argument
-            android:name="email"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/UsernameFragment"
@@ -29,10 +26,10 @@
         android:label="Username"
         tools:layout="@layout/fragment_username" >
         <action
-            android:id="@+id/action_setUsernameFragment_to_setPasswordFragment"
+            android:id="@+id/navigate_to_password_fragment"
             app:destination="@id/PasswordFragment" />
         <argument
-            android:name="username"
+            android:name="email"
             app:argType="string" />
     </fragment>
     <fragment
@@ -44,7 +41,10 @@
             android:id="@+id/action_setPasswordFragment_to_blankFragment"
             app:destination="@id/blankFragment" />
         <argument
-            android:name="password"
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="email"
             app:argType="string" />
     </fragment>
     <fragment

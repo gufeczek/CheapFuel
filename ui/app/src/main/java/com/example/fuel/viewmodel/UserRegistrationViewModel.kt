@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.model.account.UserRegistration
@@ -31,12 +32,12 @@ class UserRegistrationViewModel(private val repository: UserRepository): ViewMod
         Navigation.findNavController(view).navigate(R.id.LoginFragment)
     }
 
-    fun navigateToUsernameFragment(view: View) {
-        Navigation.findNavController(view).navigate(R.id.UsernameFragment)
+    fun navigateToUsernameFragment(view: View, action: NavDirections) {
+        Navigation.findNavController(view).navigate(action)
     }
 
-    fun navigateToPasswordFragment(view: View) {
-        Navigation.findNavController(view).navigate(R.id.PasswordFragment)
+    fun navigateToPasswordFragment(view: View, action: NavDirections) {
+        Navigation.findNavController(view).navigate(action)
     }
 
     fun navigateToTBAFragment(view: View) {

@@ -61,8 +61,8 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
         val email = binding.etEmail.text.toString()
         error = viewModel.getEmailValidationError(email)
         if (error == null) {
-            viewModel.user.value?.email = email
-            viewModel.navigateToUsernameFragment(view)
+            val action = EmailFragmentDirections.navigateToUsernameFragment(email)
+            viewModel.navigateToUsernameFragment(view, action)
 
         } else {
             showError()
