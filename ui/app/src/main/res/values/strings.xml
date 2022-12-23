@@ -79,4 +79,9 @@
     <string name="ban_user">Zablokuj</string>
     <string name="roles">Role</string>
     <string name="status">Status</string>
+    <string name="account_status">Status:</string>
+    <string name="account_created_at">Data utworzenia:</string>
+    <string name="email">Email</string>
+    <string name="email_address_confirmed">Potwierdzono adres email</string>
+    <string name="role">Rola</string>
 </resources>

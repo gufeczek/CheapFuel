@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUserCardBinding
 import com.example.fuel.model.UserDetails
@@ -72,7 +73,10 @@ class UserCardFragment(private val user: UserDetails) : Fragment() {
     }
 
     private fun showUserDetails() {
+        val bundle = Bundle()
+        bundle.putString("username", user.username)
 
+        Navigation.findNavController(binding.root).navigate(R.id.userDetailsFragment, bundle)
     }
 
     private fun askIfBlockUser() {

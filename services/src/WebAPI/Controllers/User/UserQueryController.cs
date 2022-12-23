@@ -4,6 +4,7 @@ using Application.Models.Pagination;
 using Application.Users.Queries.GetAllUsers;
 using Application.Users.Queries.GetLoggedUser;
 using Application.Users.Queries.GetUser;
+using Application.Users.Queries.GetUserForAdministration;
 using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,24 @@ public class UserQueryController : ControllerBase
         var userInfo = await _mediator.Send(new GetUserQuery(username));
         return Ok(userInfo);
     }
-    
-    [HttpPost]
+
+    [HttpGet("admin/{username}")]
+    public async Task<ActionResult<UserDetailsDto>> GetUserForAdmin([FromRoute] string username)
+    {
+        var result = await _mediator.Send(new GetUserForAdministrationQuery(username));
+        return Ok(result);
+    }
+
     [AuthorizeAdmin]
+    [HttpPost]
     public async Task<ActionResult<Page<UserDetailsDto>>> GetAllAsync([FromBody] UserFilterDto filter, [FromQuery] PageRequestDto pageRequestDto)
     {
         var result = await _mediator.Send(new GetAllUsersQuery(filter, pageRequestDto));
         return Ok(result);
     }
     
+    [AuthorizeUser]
     [HttpGet]
-    [AuthorizeOwner]
     [Route("logged-user-info")]
     public async Task<ActionResult<UserDetailsDto>> GetInfoAboutLoggedUser()
     {

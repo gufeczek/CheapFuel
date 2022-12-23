@@ -10,8 +10,8 @@ public sealed record UserDetailsDto
 {
     public string? Username { get; init; }
     public string? Email { get; init; }
-    public string? EmailConfirmed { get; init; }
-    public string? MultiFactorAuthEnabled { get; init; }
+    public bool? EmailConfirmed { get; init; }
+    public bool? MultiFactorAuthEnabled { get; init; }
     public Role Role { get; init; }
     public AccountStatus Status { get; init; }
     public DateTime CreatedAt { get; init; }
