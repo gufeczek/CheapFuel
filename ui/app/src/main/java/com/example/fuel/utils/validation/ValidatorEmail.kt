@@ -10,7 +10,9 @@ class ValidatorEmail(private val email: String) : Validator(email) {
 
     var error: Error? = null
 
-    override fun validate(): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    override fun validate() {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = Error.ERROR_INCORRECT_EMAIL
+        }
     }
 }

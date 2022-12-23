@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentBlankBinding
-import com.example.fuel.databinding.FragmentSetPasswordBinding
 import org.w3c.dom.Text
 
 class BlankFragment : Fragment(R.layout.fragment_blank) {
