@@ -71,6 +71,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             showLayout()
             addFuelPriceCards(fuelStationData.fuelTypes)
             addFuelStationServices(fuelStationData.services)
+            initEditFuelPriceButton()
         }
     }
 
@@ -152,23 +153,12 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
 
     private fun initUserSpecificLayout() {
         if (viewModel.isAdmin()) {
-            initLayoutForAdmin()
+            initDeleteFuelStationButton()
         }
 
-        if (viewModel.isFuelStationOwner()) {
-            initLayoutForOwner()
+        if (viewModel.isFuelStationOwner() || viewModel.isAdmin()) {
+            initEditFuelStationButton()
         }
-    }
-
-    private fun initLayoutForAdmin() {
-        initDeleteFuelStationButton()
-
-        initLayoutForOwner()
-    }
-
-    private fun initLayoutForOwner() {
-        initEditFuelStationButton()
-        initEditFuelPriceButton()
     }
 
     private fun initEditFuelStationButton() {
@@ -201,6 +191,8 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun initEditFuelPriceButton() {
+        if (!shouldAllowToEditFuelPrice()) return
+
         val editFuelPriceButton = binding.acibEditFuelPrice
         editFuelPriceButton.visibility = View.VISIBLE
 
@@ -208,6 +200,12 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             val fuelPriceEditorFragment = FuelPriceEditorFragment()
             fuelPriceEditorFragment.show(requireFragmentManager(), FuelPriceEditorFragment.TAG)
         }
+    }
+
+    private fun shouldAllowToEditFuelPrice(): Boolean {
+        return viewModel.isAdmin() ||
+                viewModel.isFuelStationOwner() ||
+                (isGpsEnabled(requireContext()) && viewModel.isCloseToFuelStation(getUserLocation(requireContext())))
     }
 
     private fun initReviewSection() {

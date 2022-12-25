@@ -32,7 +32,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -55,7 +55,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -76,7 +76,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -96,7 +96,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
@@ -118,7 +118,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -140,7 +140,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -162,7 +162,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -184,7 +184,7 @@ public class FuelPriceCommandControllerTest : IntegrationTest
         var body = this.Serialize(dto);
         
         // Act
-        var response = await HttpClient.PostAsync("api/v1/fuel-prices", body);
+        var response = await HttpClient.PostAsync("api/v1/fuel-prices/owner", body);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

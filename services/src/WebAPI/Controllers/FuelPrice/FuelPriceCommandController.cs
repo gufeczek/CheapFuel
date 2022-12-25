@@ -1,4 +1,5 @@
 ﻿using Application.FuelPrices.Commands.UpdateFuelPriceByOwner;
+using Application.FuelPrices.Commands.UpdateFuelPriceByUser;
 using Application.Models.FuelPriceDtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,18 @@ public sealed class FuelPriceCommandController : ControllerBase
     }
 
     [AuthorizeOwner]
-    [HttpPost]
-    public async Task<ActionResult<IEnumerable<FuelPriceDto>>> UpdateFuelPrices([FromBody] NewFuelPricesAtStationDto dto)
+    [HttpPost("owner")]
+    public async Task<ActionResult<IEnumerable<FuelPriceDto>>> UpdateFuelPricesByOwner([FromBody] NewFuelPricesAtStationDto dto)
     {
         var result = await _mediator.Send(new UpdateFuelPriceByOwnerCommand(dto));
-        return Ok(result); // Should be updated after creating endpoint ot get fuel prices
+        return Ok(result);
+    }
+    
+    [AuthorizeUser]
+    [HttpPost("user")]
+    public async Task<ActionResult<IEnumerable<FuelPriceDto>>> UpdateFuelPricesByUser([FromBody] NewFuelPricesAtStationWithLocation dto)
+    {
+        var result = await _mediator.Send(new UpdateFuelPriceByUserCommand(dto));
+        return Ok(result);
     }
 }
