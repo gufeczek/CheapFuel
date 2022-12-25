@@ -4,6 +4,8 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
+import com.example.fuel.R
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.validation.ValidatorPassword
@@ -31,6 +33,10 @@ class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
         val validator = ValidatorPassword(password, password)
         validator.validate()
         return validator.error
+    }
+
+    fun navigateToResetPasswordFragment(view: View) {
+        Navigation.findNavController(view).navigate(R.id.resetPassword)
     }
 
     fun navigateToTBAFragment(view: View) {

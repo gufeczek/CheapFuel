@@ -82,4 +82,6 @@
     <string name="roles">Role</string>
     <string name="status">Status</string>
     <string name="cancel">Anuluj</string>
+    <string name="forgot_password">Zapomniałeś hasła?</string>
+    <string name="reset_password">\u00A0Zresetuj je</string>
 </resources>

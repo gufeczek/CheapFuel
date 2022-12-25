@@ -19,6 +19,7 @@
         <action
             android:id="@+id/action_EmailFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
+        <action
             android:id="@+id/action_setRegisterMethodFragment_to_favoritesFuelStationsFragment"
             app:destination="@id/favoritesFuelStationsFragment" />
         <action
@@ -74,8 +75,11 @@
         android:name="com.example.fuel.ui.fragment.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/navigate_to_reset_password_fragment"
+            app:destination="@+id/resetPassword" />
+
     </fragment>
-        android:label="Map Filter" />
     <fragment
         android:id="@+id/fuelStationListFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
@@ -144,5 +148,10 @@
         android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
         android:label="Filtry"
         tools:layout="@layout/fragment_user_list_filter" />
+    <fragment
+        android:id="@+id/resetPassword"
+        android:name="com.example.fuel.ui.fragment.login.ResetPassword"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
 
 </navigation>
