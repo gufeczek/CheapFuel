@@ -8,7 +8,7 @@ public interface IFuelStationRepository : IBaseRepository<FuelStation>
 {
     Task<FuelStation?> GetFuelStationWithAllDetailsAsync(long id);
     Task<FuelStation?> GetFuelStationWithFuelTypesAsync(long id);
-
+    Task<IEnumerable<FuelStation>> GetFuelStationWithPricesAsync(long fuelTypeId);
     public Task<Page<FuelStation>> GetFuelStationsWithPrices(
         long fuelTypeId,
         IEnumerable<long>? servicesIds,

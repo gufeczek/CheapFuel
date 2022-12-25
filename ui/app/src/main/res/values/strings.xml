@@ -89,4 +89,16 @@
     <string name="role">Rola</string>
     <string name="ask_if_delete_review">Czy na pewno chcesz usunąć tą recenzję?</string>
     <string name="more">Więcej</string>
+    <string name="search">Wyszukaj</string>
+    <string name="latitude_error">Wartość musi być w przedziale -90 i 90</string>
+    <string name="longitude_error">Wartość musi być w przedziale -180 i 180</string>
+    <string name="value_must_be_greater_or_equal_to_0_eror">Wartość musi być większa albo równa 0</string>
+    <string name="amount_of_fuel_to_buy">Ilość paliwa do kupienia</string>
+    <string name="combustion">Spalanie</string>
+    <string name="additional_data">DODATKOWE DANE</string>
+    <string name="choose_location">Wybierz lokalizację</string>
+    <string name="your_location">Twoja lokalizacja</string>
+    <string name="longitude">Długość geograficzna</string>
+    <string name="latitude">Szrokość geograficzna</string>
+    <string name="your_location_uppercase">TWOJA LOKALIZACJA</string>
 </resources>
