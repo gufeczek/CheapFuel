@@ -50,6 +50,10 @@ class ViewModelFactory : ViewModelProvider.Factory {
             UserRepository(),
             ReviewRepository()
         ) as T
+        CalculatorViewModel::class.java -> CalculatorViewModel(
+            FuelStationRepository(),
+            FuelTypeRepository()
+        ) as T
         else -> {
             throw NoSuchViewModelException(
                 "Exception in 'ViewModelFactory' class, 'create' method: such ViewModel doesn't exist"
