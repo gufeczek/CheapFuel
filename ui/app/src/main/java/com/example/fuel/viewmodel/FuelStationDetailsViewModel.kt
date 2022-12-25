@@ -1,6 +1,7 @@
 package com.example.fuel.viewmodel
 
 import android.content.res.Resources
+import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
 import com.example.fuel.model.price.NewFuelPrice
 import com.example.fuel.model.price.NewFuelPriceResponse
+import com.example.fuel.model.price.NewPriceAtFuelStationWithLocation
 import com.example.fuel.model.price.NewPricesAtFuelStation
 import com.example.fuel.model.review.NewReview
 import com.example.fuel.model.review.UpdateReview
@@ -24,6 +26,7 @@ import com.example.fuel.repository.FuelPriceRepository
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.ui.utils.DateParser
+import com.example.fuel.utils.calculateDistance
 import com.example.fuel.utils.converters.Converter
 import com.example.fuel.utils.extension.DurationExtension.Companion.areClose
 import com.example.fuel.viewmodel.mediator.FavouriteViewModelMediator
@@ -40,6 +43,8 @@ class FuelStationDetailsViewModel(
     private val favouriteRepository: FavouriteRepository,
     private val fuelPriceRepository: FuelPriceRepository): ViewModel() {
 
+    private val allowedDistance = 200
+
     var fuelStationDetails: MutableLiveData<Response<FuelStationDetails>> = MutableLiveData()
     var fuelStationReviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
     var deleteFuelStation: MutableLiveData<Response<Void>> = MutableLiveData()
@@ -52,6 +57,7 @@ class FuelStationDetailsViewModel(
     var addToFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var deleteFavourite: MutableLiveData<Response<Void>> = MutableLiveData()
     var createNewFuelPrices: MutableLiveData<Response<Array<NewFuelPriceResponse>>> = MutableLiveData()
+
 
     fun getFuelStationDetails(fuelStationId: Long) {
         viewModelScope.launch {
@@ -105,6 +111,18 @@ class FuelStationDetailsViewModel(
 
     fun isFuelStationOwner(): Boolean = Auth.role == Role.OWNER
             && fuelStationDetails.value?.body()?.owners?.contains(Auth.username) == true
+
+    fun isCloseToFuelStation(userLocation: Location?): Boolean {
+        if (userLocation == null || getFuelStation() == null) return false
+
+        val fuelStationLocation = getFuelStation()!!.location
+
+        return calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            fuelStationLocation.latitude,
+            fuelStationLocation.longitude) <= allowedDistance
+    }
 
     fun parsePrice(fuelPrice: Price?, resources: Resources): String {
         if (fuelPrice == null) return "-"
@@ -183,13 +201,40 @@ class FuelStationDetailsViewModel(
         }
     }
 
-    fun createNewFuelPrices(fuelPrices: Array<NewFuelPrice>) {
+    fun createNewFuelPrices(fuelPrices: Array<NewFuelPrice>, userLocation: Location?) {
         if (getFuelStationId() == null) return
 
+        if (Auth.role == Role.OWNER || Auth.role == Role.ADMIN) {
+            createNewFuelPricesByOwner(fuelPrices)
+        } else {
+            createNewFuelPricesByUser(fuelPrices, userLocation)
+        }
+    }
+
+    private fun createNewFuelPricesByOwner(fuelPrices: Array<NewFuelPrice>) {
         val fuelPricesAtStation = NewPricesAtFuelStation(getFuelStationId()!!, fuelPrices)
 
         viewModelScope.launch {
-            createNewFuelPrices.value = fuelPriceRepository.createNewFuelPrices(fuelPricesAtStation)
+            createNewFuelPrices.value =
+                fuelPriceRepository.createNewFuelPricesByOwner(fuelPricesAtStation)
+
+            MapViewModelMediator.fuelStationChanged()
+            ListViewModelMediator.fuelStationChanged()
+        }
+    }
+
+    private fun createNewFuelPricesByUser(fuelPrices: Array<NewFuelPrice>, userLocation: Location?) {
+        if (userLocation == null) return
+
+        val fuelPricesAtStation = NewPriceAtFuelStationWithLocation(
+            getFuelStationId()!!,
+            userLocation.longitude,
+            userLocation.latitude,
+            fuelPrices)
+
+        viewModelScope.launch {
+            createNewFuelPrices.value =
+                fuelPriceRepository.createNewFuelPricesByUser(fuelPricesAtStation)
 
             MapViewModelMediator.fuelStationChanged()
             ListViewModelMediator.fuelStationChanged()

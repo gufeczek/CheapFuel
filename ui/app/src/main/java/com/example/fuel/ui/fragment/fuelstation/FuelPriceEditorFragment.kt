@@ -9,6 +9,8 @@ import com.example.fuel.databinding.FragmentFuelPriceEditorBinding
 import com.example.fuel.model.price.NewFuelPrice
 import com.example.fuel.ui.fragment.common.FullHeightBottomSheetDialogFragment
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
+import com.example.fuel.utils.getUserLocation
+import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 
@@ -59,7 +61,9 @@ class FuelPriceEditorFragment : FullHeightBottomSheetDialogFragment() {
 
     private fun initPublishButton() {
         binding.mbPublishPrices.setOnClickListener {
-            viewModel.createNewFuelPrices(newFuelPrices)
+            val userLocation = if (isGpsEnabled(requireContext())) getUserLocation(requireContext())
+                               else null
+            viewModel.createNewFuelPrices(newFuelPrices, userLocation)
             dismiss()
         }
     }
