@@ -19,5 +19,11 @@ interface AccountApiService {
         @Body user: UserRegistration
     ): Response<UserRegistration>
 
+    @Headers("Content-Type:application/json")
+    @POST("api/v1/accounts/generate-password-reset-token")
+    suspend fun postPasswordResetToken(
+        @Body email: String,
+    ): Response<String>
+
 
 }

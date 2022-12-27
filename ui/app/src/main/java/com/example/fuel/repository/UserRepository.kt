@@ -1,5 +1,6 @@
 package com.example.fuel.repository
 
+import android.util.Log
 import com.example.fuel.api.RetrofitInstance
 import com.example.fuel.mock.Auth
 import com.example.fuel.model.UserDetails
@@ -22,5 +23,9 @@ class UserRepository {
 
     suspend fun getAllUsers(filter: UserFilter, pageRequest: PageRequest): Response<Page<UserDetails>> {
         return RetrofitInstance.userApiService.getAllUsers(filter, pageRequest.toQueryMap(), Auth.token)
+    }
+
+    suspend fun postPasswordResetToken(email: String): Response<String> {
+        return RetrofitInstance.accountApi.postPasswordResetToken(email)
     }
 }

@@ -150,8 +150,17 @@
         tools:layout="@layout/fragment_user_list_filter" />
     <fragment
         android:id="@+id/resetPassword"
-        android:name="com.example.fuel.ui.fragment.login.ResetPassword"
+        android:name="com.example.fuel.ui.fragment.login.ResetPasswordFragment"
         android:label="fragment_reset_password"
-        tools:layout="@layout/fragment_reset_password" />
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPassword_to_resetPasswordCodeFragment"
+            app:destination="@id/resetPasswordCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordCodeFragment"
+        android:name="com.example.fuel.ui.fragment.login.ResetPasswordCodeFragment"
+        android:label="fragment_reset_password_code"
+        tools:layout="@layout/fragment_reset_password_code" />
 
 </navigation>

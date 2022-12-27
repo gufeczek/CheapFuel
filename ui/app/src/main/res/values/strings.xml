@@ -84,4 +84,8 @@
     <string name="cancel">Anuluj</string>
     <string name="forgot_password">Zapomniałeś hasła?</string>
     <string name="reset_password">\u00A0Zresetuj je</string>
+    <string name="reset_password_2">Zresetuj hasło</string>
+    <string name="input_email">Podaj adres e-mail:</string>
+    <string name="input_code">Podaj kod</string>
+    <string name="input_reset_code">Wprowadź kod wysłany w wiadomości na Twój adres e-mail</string>
 </resources>

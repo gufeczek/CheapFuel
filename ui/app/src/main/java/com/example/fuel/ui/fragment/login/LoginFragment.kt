@@ -43,7 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }
         binding.tvPasswordResetLink.setOnClickListener {
-                view -> viewModel.navigateToResetPasswordFragment(view)
+            view -> viewModel.navigateToResetPasswordFragment(view)
         }
 
         binding.btnNextPage.setOnClickListener(btnGoToNextPage)

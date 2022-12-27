@@ -67,7 +67,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
         _userRepository.Add(newUser);
         await _unitOfWork.SaveAsync();
 
-        //await SendVerificationTokenToUser(newUser);
+        await SendVerificationTokenToUser(newUser);
         
         return _mapper.Map<UserDetailsDto>(newUser);
     }
