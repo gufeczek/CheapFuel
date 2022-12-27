@@ -275,6 +275,37 @@ namespace Infrastructure.Persistence.Migrations.MySql
                     b.ToTable("OwnedStations");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ReportedReview", b =>
+                {
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ReviewId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReportStatus")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("ReportedReviews");
+                });
+
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Property<long>("Id")
@@ -672,6 +703,25 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .IsRequired();
 
                     b.Navigation("FuelStation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReportedReview", b =>
+                {
+                    b.HasOne("Domain.Entities.Review", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
 
                     b.Navigation("User");
                 });

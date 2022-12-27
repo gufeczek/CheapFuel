@@ -24,6 +24,7 @@ public abstract class AppDbContext : DbContext
     public DbSet<FuelPrice> FuelPrices => Set<FuelPrice>();
     public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
+    public DbSet<ReportedReview> ReportedReviews => Set<ReportedReview>();
 
     protected AppDbContext(IBeforeSaveChangesPipelineBuilder builder)
     {
