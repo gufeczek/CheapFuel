@@ -1,10 +1,8 @@
-﻿using Application.Models;
-using Application.Models.Filters;
+using Application.Models;
 using Application.Models.Pagination;
 using Application.Users.Queries.GetAllUsers;
 using Application.Users.Queries.GetLoggedUser;
 using Application.Users.Queries.GetUser;
-using Application.Users.Queries.GetUserForAdministration;
 using Domain.Common.Pagination.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +21,7 @@ public class UserQueryController : ControllerBase
         _mediator = mediator;
     }
     
-   [HttpGet]
+    [HttpGet]
     public async Task<ActionResult<UserDto>> GetInfoAboutUser([FromQuery] string username)
     {
         var userInfo = await _mediator.Send(new GetUserQuery(username));
