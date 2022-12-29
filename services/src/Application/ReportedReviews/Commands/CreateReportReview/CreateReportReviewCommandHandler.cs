@@ -35,8 +35,7 @@ public sealed class CreateReportReviewCommandHandler : IRequestHandler<CreateRep
                     ?? throw new NotFoundException($"User not found for id = {userId}");
         if (await _reportedReviewRepository.ExistsByReviewAndUserId((long)request.ReviewId!, userId))
         {
-            throw new ConflictException(
-                $"User with username = {user.Username} has already report a review with id = {request.ReviewId}");
+            throw new ConflictException($"User with username = {user.Username} has already report a review with id = {request.ReviewId}");
         }
 
         var reportedReview = new ReportedReview

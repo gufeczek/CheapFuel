@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Domain.Entities.Tokens;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.ReportedReviews.Commands.UpdateReportedReview;
 
@@ -8,7 +6,11 @@ public class UpdateReportedReviewCommandValidator : AbstractValidator<UpdateRepo
 {
     public UpdateReportedReviewCommandValidator()
     {
-        RuleFor(r => r.ReportedReviewId)
+        RuleFor(r => r.ReviewId)
+            .NotNull()
+            .GreaterThanOrEqualTo(1);
+        
+        RuleFor(r => r.UserId)
             .NotNull()
             .GreaterThanOrEqualTo(1);
 

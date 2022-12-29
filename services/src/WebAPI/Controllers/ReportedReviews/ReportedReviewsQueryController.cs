@@ -17,9 +17,10 @@ public class ReportedReviewsQueryController : ControllerBase
 
     public ReportedReviewsQueryController(IMediator mediator)
     {
-        _mediator = _mediator;
+        _mediator = mediator;
     }
 
+    [AuthorizeAdmin]
     [HttpGet]
     public async Task<ActionResult<Page<FuelStationReportedReviewDto>>> GetAllAsync([FromQuery] PageRequestDto pageRequestDto)
     {

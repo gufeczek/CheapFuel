@@ -4,7 +4,6 @@ using Application.ReportedReviews.Commands.DeleteReportedReview;
 using Application.ReportedReviews.Commands.UpdateReportedReview;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using WebAPI.Common.Authorization;
 
 namespace WebAPI.Controllers.ReportedReviews;
@@ -22,19 +21,21 @@ public sealed class ReportedReviewsCommandController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<FuelStationReportedReviewDto>> CreateFuelStationReportedReview([FromBody] CreateReportReviewCommand command)
+    public async Task<ActionResult<CreateFuelStationReportedReviewDto>> CreateFuelStationReportedReview([FromBody] CreateReportReviewCommand command)
     {
         var result = await _mediator.Send(command);
-        return Created($"api/v1/reports/{result.ReviewId}", result);
+        return Created($"api/v1/reports/{result}", result);
     }
 
-    [HttpPut]
-    public async Task<ActionResult<UpdateReportedReviewDto>> UpdateFuelStationReportedReview([FromRoute] long id, [FromBody] UpdateReportedReviewDto dto)
+    [AuthorizeAdmin]
+    [HttpPut("{userId}/{reviewId}")]
+    public async Task<ActionResult<UpdateReportedReviewDto>> UpdateFuelStationReportedReview([FromRoute] long reviewId,[FromRoute] long userId,  [FromBody] UpdateReportedReviewDto dto)
     {
-        var result = await _mediator.Send(new UpdateReportedReviewCommand(id, dto));
+        var result = await _mediator.Send(new UpdateReportedReviewCommand(reviewId, userId, dto));
         return Ok(result);
     }
 
+    [AuthorizeAdmin]
     [HttpDelete("{userId}/{reviewId}")]
     public async Task<ActionResult> DeleteFuelStationReportedReview([FromRoute] long reviewId, [FromRoute] long userId)
     {

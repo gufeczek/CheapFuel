@@ -1,6 +1,13 @@
-﻿namespace Application.ReportedReviews.Queries.GetAllReportedReviews;
+﻿using Application.Models.Pagination;
+using FluentValidation;
 
-public class GetAllReportedReviewsQueryValidator
+namespace Application.ReportedReviews.Queries.GetAllReportedReviews;
+
+public class GetAllReportedReviewsQueryValidator : AbstractValidator<GetAllReportedReviewsQuery>
 {
-    
+    public GetAllReportedReviewsQueryValidator()
+    {
+        RuleFor(g => g.PageRequestDto)
+            .SetValidator(new PageRequestDtoValidator());
+    }
 }

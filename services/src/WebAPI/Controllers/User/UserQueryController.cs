@@ -38,7 +38,6 @@ public class UserQueryController : ControllerBase
     }
     
     [HttpGet]
-    [AuthorizeOwner]
     [Route("logged-user-info")]
     public async Task<ActionResult<UserDetailsDto>> GetInfoAboutLoggedUser()
     {

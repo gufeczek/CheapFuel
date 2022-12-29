@@ -1,6 +1,5 @@
 ﻿using Application.Common;
 using Application.Models;
-using Application.Models.Pagination;
 using AutoMapper;
 using Domain.Common.Pagination.Response;
 using Domain.Interfaces;

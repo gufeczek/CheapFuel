@@ -9,3 +9,10 @@ public class UpdateReportedReviewDto
     public ReportStatus ReportStatus { get; set; }
 }
 
+public sealed class UpdateReportedReviewDtoProfile : Profile
+{
+    public UpdateReportedReviewDtoProfile()
+    {
+        CreateMap<ReportedReview, UpdateReportedReviewDto>();
+    }
+}

@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using Domain.Enums;
 using MediatR;
 
 namespace Application.ReportedReviews.Commands.CreateReportReview;

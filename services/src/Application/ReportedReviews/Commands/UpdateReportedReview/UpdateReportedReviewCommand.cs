@@ -4,5 +4,6 @@ using MediatR;
 namespace Application.ReportedReviews.Commands.UpdateReportedReview;
 
 public sealed record UpdateReportedReviewCommand(
-    long? ReportedReviewId,
+    long? ReviewId,
+    long? UserId,
     UpdateReportedReviewDto? ReportedReviewDto) : IRequest<UpdateReportedReviewDto>;
