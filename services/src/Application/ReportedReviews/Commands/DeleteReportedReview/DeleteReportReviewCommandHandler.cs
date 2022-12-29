@@ -1,5 +1,4 @@
-﻿using Application.Common.Authentication;
-using Application.Common.Exceptions;
+﻿using Application.Common.Exceptions;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
