@@ -4,6 +4,8 @@ import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationFilterWithLocation
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleFuelStation
+import com.example.fuel.model.calculator.MostEconomicalFuelStationRequest
+import com.example.fuel.model.calculator.MostEconomicalFuelStationResponse
 import com.example.fuel.model.page.Page
 import retrofit2.Response
 import retrofit2.http.Body
@@ -28,6 +30,12 @@ interface FuelStationApiService {
         @QueryMap pageRequest: Map<String, String>,
         @Header("Authorization") authHeader: String
     ): Response<Page<SimpleFuelStation>>
+
+    @POST("api/v1/fuel-stations/most-economical")
+    suspend fun getMostEconomicalFuelStation(
+        @Body data: MostEconomicalFuelStationRequest,
+        @Header("Authorization") authHeader: String
+    ): Response<MostEconomicalFuelStationResponse>
 
     @GET("api/v1/fuel-stations/{id}")
     suspend fun getFuelStationDetails(

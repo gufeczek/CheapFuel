@@ -12,7 +12,11 @@ import retrofit2.Response
 class ReviewRepository {
 
     suspend fun getFuelStationReviews(fuelStationId: Long, pageRequest: PageRequest): Response<Page<Review>> {
-        return RetrofitInstance.reviewApiService.getFuelStationReviews(fuelStationId, pageRequest.toQueryMap())
+        return RetrofitInstance.reviewApiService.getFuelStationReviews(fuelStationId, pageRequest.toQueryMap(), Auth.token)
+    }
+
+    suspend fun getUserReviews(username: String, pageRequest: PageRequest): Response<Page<Review>> {
+        return RetrofitInstance.reviewApiService.getUserReviews(username, pageRequest.toQueryMap(), Auth.token)
     }
 
     suspend fun getUserReviewOfFuelStation(fuelStationId: Long): Response<Review> {

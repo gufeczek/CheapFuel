@@ -9,14 +9,11 @@ class ValidatorUsername(private val username: String) : Validator(username) {
 
     var error: Error? = null
 
-    override fun validate(): Boolean {
+    override fun validate() {
         if (username.length < 3) {
             error = Error.ERROR_USERNAME_TOO_SHORT
-            return false
         } else if (username.length > 32) {
             error = Error.ERROR_USERNAME_TOO_LONG
-            return false
         }
-        return true
     }
 }

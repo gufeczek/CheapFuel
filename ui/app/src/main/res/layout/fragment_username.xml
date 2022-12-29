@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.SetUsernameFragment"
+    tools:context=".ui.fragment.register.UsernameFragment"
     android:id="@+id/cl_main"
     android:soundEffectsEnabled="false">
 

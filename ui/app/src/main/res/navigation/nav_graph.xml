@@ -3,37 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_login"
-    app:startDestination="@id/setRegisterMethodFragment">
+    app:startDestination="@id/EmailFragment">
 
     <fragment
-        android:id="@+id/setRegisterMethodFragment"
-        android:name="com.example.fuel.ui.fragment.SetRegisterMethodFragment"
+        android:id="@+id/EmailFragment"
+        android:name="com.example.fuel.ui.fragment.register.EmailFragment"
         android:label="Register method"
-        tools:layout="@layout/fragment_set_register_method" >
+        tools:layout="@layout/fragment_email" >
         <action
-            android:id="@+id/action_setRegisterMethodFragment_to_setUsernameFragment"
-            app:destination="@id/setUsernameFragment" />
+            android:id="@+id/navigate_to_username_fragment"
+            app:destination="@id/UsernameFragment" />
         <action
-            android:id="@+id/action_setRegisterMethodFragment_to_favoritesFuelStationsFragment"
-            app:destination="@id/favoritesFuelStationsFragment" />
+            android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_userListFragment"
+            app:destination="@id/userListFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_fuelStationCalculatorFragment"
+            app:destination="@id/fuelStationCalculatorFragment" />
     </fragment>
     <fragment
-        android:id="@+id/setUsernameFragment"
-        android:name="com.example.fuel.ui.fragment.SetUsernameFragment"
+        android:id="@+id/UsernameFragment"
+        android:name="com.example.fuel.ui.fragment.register.UsernameFragment"
         android:label="Username"
-        tools:layout="@layout/fragment_set_username" >
+        tools:layout="@layout/fragment_username" >
         <action
-            android:id="@+id/action_setUsernameFragment_to_setPasswordFragment"
-            app:destination="@id/setPasswordFragment" />
+            android:id="@+id/navigate_to_password_fragment"
+            app:destination="@id/PasswordFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/setPasswordFragment"
-        android:name="com.example.fuel.ui.fragment.SetPasswordFragment"
+        android:id="@+id/PasswordFragment"
+        android:name="com.example.fuel.ui.fragment.register.PasswordFragment"
         android:label="Password"
-        tools:layout="@layout/fragment_set_password" >
+        tools:layout="@layout/fragment_password" >
         <action
             android:id="@+id/action_setPasswordFragment_to_blankFragment"
             app:destination="@id/blankFragment" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/blankFragment"
@@ -54,7 +72,13 @@
     <fragment
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
-        android:label="Map Filter" />
+        android:label="MapFilter" />
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.fuel.ui.fragment.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+    </fragment>
     <fragment
         android:id="@+id/fuelStationListFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
@@ -110,5 +134,31 @@
         android:name="com.example.fuel.ui.fragment.favorites.FavoritesFuelStationsFragment"
         android:label="Ulubione"
         tools:layout="@layout/fragment_favorites_fuel_stations" />
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFragment"
+        android:label="Użytkownicy">
+        <action
+            android:id="@+id/action_userListFragment_to_userListFilterFragment"
+            app:destination="@id/userListFilterFragment" />
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
+        android:label="Filtry"
+        tools:layout="@layout/fragment_user_list_filter" />
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" />
+    <fragment
+        android:id="@+id/fuelStationCalculatorFragment"
+        android:name="com.example.fuel.ui.fragment.calculator.FuelStationCalculatorFragment"
+        android:label="fragment_fuel_station_calculator"
+        tools:layout="@layout/fragment_fuel_station_calculator" />
 
 </navigation>
