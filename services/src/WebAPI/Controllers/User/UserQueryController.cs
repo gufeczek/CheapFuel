@@ -1,4 +1,4 @@
-﻿using Application.Models;
+using Application.Models;
 using Application.Models.Filters;
 using Application.Models.Pagination;
 using Application.Users.Queries.GetAllUsers;
@@ -7,7 +7,7 @@ using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUserForAdministration;
 using Domain.Common.Pagination.Response;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;  
 using WebAPI.Common.Authorization;
 
 namespace WebAPI.Controllers.User;
@@ -17,12 +17,11 @@ namespace WebAPI.Controllers.User;
 public class UserQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
-
     public UserQueryController(IMediator mediator)
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet("{username}")]
     public async Task<ActionResult<UserDto>> GetInfoAboutUser([FromRoute] string username)
     {
@@ -44,7 +43,7 @@ public class UserQueryController : ControllerBase
         var result = await _mediator.Send(new GetAllUsersQuery(filter, pageRequestDto));
         return Ok(result);
     }
-    
+
     [AuthorizeUser]
     [HttpGet]
     [Route("logged-user")]
@@ -54,5 +53,3 @@ public class UserQueryController : ControllerBase
         return Ok(userInfo);
     }
 }
-
-
