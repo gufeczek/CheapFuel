@@ -1,8 +1,10 @@
 ﻿using Application.FuelStations.Queries.GetAllFuelStationForList;
 using Application.FuelStations.Queries.GetAllFuelStationForMap;
 using Application.FuelStations.Queries.GetFuelStationDetails;
+using Application.FuelStations.Queries.GetMostEconomicalFuelStation;
 using Application.Models;
 using Application.Models.Filters;
+using Application.Models.FuelStationDtos;
 using Application.Models.Pagination;
 using Domain.Common.Pagination.Response;
 using MediatR;
@@ -12,6 +14,7 @@ using WebAPI.Common.Authorization;
 namespace WebAPI.Controllers.FuelStation;
 
 [ApiController]
+[AuthorizeUser]
 [Route("api/v1/fuel-stations")]
 public sealed class FuelStationQueryController : ControllerBase
 {
@@ -22,7 +25,6 @@ public sealed class FuelStationQueryController : ControllerBase
         _mediator = mediator;
     }
     
-    [AuthorizeUser]
     [HttpGet("{id}")]
     public async Task<ActionResult<FuelStationDetailsDto>> GetFuelStationDetailsById([FromRoute] long id)
     {
@@ -30,7 +32,6 @@ public sealed class FuelStationQueryController : ControllerBase
         return Ok(result);
     }
 
-    [AuthorizeUser]
     [HttpPost("map")]
     public async Task<ActionResult<IEnumerable<SimpleFuelStationDto>>> GetAllFuelStationForMapView([FromBody] FuelStationFilterDto filterDto)
     {
@@ -38,11 +39,17 @@ public sealed class FuelStationQueryController : ControllerBase
         return Ok(result);
     }
 
-    [AuthorizeUser]
     [HttpPost("list")]
     public async Task<ActionResult<Page<SimpleFuelStationDto>>> GetAllFuelStationForListView([FromBody] FuelStationFilterWithLocalizationDto filterDto, [FromQuery] PageRequestDto pageRequestDto)
     {
         var result = await _mediator.Send(new GetAllFuelStationForListQuery(filterDto, pageRequestDto));
+        return Ok(result);
+    }
+
+    [HttpPost("most-economical")]
+    public async Task<ActionResult<MostEconomicalFuelStationDto>> GetMostEconomicalFuelStation([FromBody] GetMostEconomicalFuelStationQuery query)
+    {
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 }

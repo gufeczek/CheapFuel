@@ -20,7 +20,15 @@ interface ReviewApiService {
     @GET("api/v1/reviews/fuel-station/{id}")
     suspend fun getFuelStationReviews(
         @Path("id") fuelStationId: Long,
-        @QueryMap pageRequest: Map<String, String>
+        @QueryMap pageRequest: Map<String, String>,
+        @Header("Authorization") authHeader: String
+    ): Response<Page<Review>>
+
+    @GET("api/v1/reviews/user/{username}")
+    suspend fun getUserReviews(
+        @Path("username") username: String,
+        @QueryMap pageRequest: Map<String, String>,
+        @Header("Authorization") authHeader: String
     ): Response<Page<Review>>
 
     @GET("api/v1/reviews/{fuelStationId}/{username}")

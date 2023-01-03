@@ -6,6 +6,8 @@ import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationFilterWithLocation
 import com.example.fuel.model.FuelStationsFilter
 import com.example.fuel.model.SimpleFuelStation
+import com.example.fuel.model.calculator.MostEconomicalFuelStationRequest
+import com.example.fuel.model.calculator.MostEconomicalFuelStationResponse
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
 import retrofit2.Response
@@ -18,6 +20,10 @@ class FuelStationRepository {
 
     suspend fun getSimpleListFuelStations(filter: FuelStationFilterWithLocation, pageRequest: PageRequest): Response<Page<SimpleFuelStation>> {
         return RetrofitInstance.fuelStationApi.getSimpleListFuelStations(filter, pageRequest.toQueryMap(), Auth.token)
+    }
+
+    suspend fun getMostEconomicalFuelStation(data: MostEconomicalFuelStationRequest): Response<MostEconomicalFuelStationResponse> {
+        return RetrofitInstance.fuelStationApi.getMostEconomicalFuelStation(data, Auth.token)
     }
 
     suspend fun getFuelStationDetails(fuelStationId: Long): Response<FuelStationDetails> {

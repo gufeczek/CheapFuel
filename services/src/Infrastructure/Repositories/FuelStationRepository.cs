@@ -26,6 +26,26 @@ public class FuelStationRepository : BaseRepository<FuelStation>, IFuelStationRe
             .Where(fs => fs.Id == id)
             .FirstOrDefaultAsync();
     }
+    
+    public async Task<IEnumerable<FuelStation>> GetFuelStationWithPricesAsync(long fuelTypeId)
+    {
+        var query = Context.FuelStations
+            .Include(fs => fs.StationChain)
+            .Include(fs => fs.FuelPrices
+                .Where(fp =>
+                    fp.Status == FuelPriceStatus.Accepted &&
+                    fp.FuelTypeId == fuelTypeId &&
+                    fp.Available == true)
+                .OrderByDescending(fp => fp.CreatedAt)
+                .Take(1))
+            .Where(fs => 
+                fs.FuelPrices.Any(fp => fp.Status == FuelPriceStatus.Accepted &&
+                                        fp.FuelTypeId == fuelTypeId &&
+                                        fp.Available == true
+                                        && fs.FuelTypes.Any(ft => ft.FuelTypeId == fuelTypeId)));
+
+        return await query.ToListAsync();
+    }
 
     public async Task<Page<FuelStation>> GetFuelStationsWithPrices(
         long fuelTypeId,

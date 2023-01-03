@@ -2,7 +2,6 @@ package com.example.fuel.ui.fragment.register
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentPasswordBinding
 import com.example.fuel.model.account.UserRegistration
-import com.example.fuel.repository.UserRepository
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorPassword
@@ -22,7 +20,6 @@ import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneDigit
 import com.example.fuel.utils.validation.Validator.Companion.isAtLeastOneUpperCase
 import com.example.fuel.viewmodel.UserRegistrationViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
-import okhttp3.OkHttp
 
 class PasswordFragment : Fragment(R.layout.fragment_password) {
 

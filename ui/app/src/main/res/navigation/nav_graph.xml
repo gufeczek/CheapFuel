@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_setRegisterMethodFragment_to_userListFragment"
             app:destination="@id/userListFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_fuelStationCalculatorFragment"
+            app:destination="@id/fuelStationCalculatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/UsernameFragment"
@@ -142,6 +145,9 @@
         <action
             android:id="@+id/action_userListFragment_to_userListFilterFragment"
             app:destination="@id/userListFilterFragment" />
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userListFilterFragment"
@@ -184,5 +190,15 @@
             android:id="@+id/action_newPasswordFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" />
+    <fragment
+        android:id="@+id/fuelStationCalculatorFragment"
+        android:name="com.example.fuel.ui.fragment.calculator.FuelStationCalculatorFragment"
+        android:label="fragment_fuel_station_calculator"
+        tools:layout="@layout/fragment_fuel_station_calculator" />
 
 </navigation>

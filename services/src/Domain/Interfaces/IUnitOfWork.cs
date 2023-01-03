@@ -19,6 +19,7 @@ public interface IUnitOfWork : IDisposable
     IUserRepository Users { get; }
     IEmailVerificationTokenRepository EmailVerificationTokens { get; }
     IPasswordResetTokenRepository PasswordResetTokenRepository { get; }
+    IReportedReviewRepository ReportedReviews { get;}
 
     Task SaveAsync();
 }
