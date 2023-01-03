@@ -1,6 +1,8 @@
 package com.example.fuel.api
 
+import com.example.fuel.model.Email
 import com.example.fuel.model.account.UserLogin
+import com.example.fuel.model.account.UserPasswordReset
 import com.example.fuel.model.account.UserRegistration
 import retrofit2.Response
 import retrofit2.http.*
@@ -22,8 +24,14 @@ interface AccountApiService {
     @Headers("Content-Type:application/json")
     @POST("api/v1/accounts/generate-password-reset-token")
     suspend fun postPasswordResetToken(
-        @Body email: String,
-    ): Response<String>
+        @Body email: Email,
+    ): Response<Void>
+
+    @Headers("Content-Type:application/json")
+    @POST("api/v1/accounts/reset-password")
+    suspend fun postResetPassword(
+        @Body userPasswordReset: UserPasswordReset
+    ): Response<Void>
 
 
 }

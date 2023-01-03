@@ -87,5 +87,6 @@
     <string name="reset_password_2">Zresetuj hasło</string>
     <string name="input_email">Podaj adres e-mail:</string>
     <string name="input_code">Podaj kod</string>
-    <string name="input_reset_code">Wprowadź kod wysłany w wiadomości na Twój adres e-mail</string>
+    <string name="input_reset_code">Wprowadź kod wysłany w wiadomości na Twój adres e-mail:</string>
+    <string name="input_new_password">Wprowadź oraz potwierdź nowe hasło:</string>
 </resources>

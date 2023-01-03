@@ -161,6 +161,28 @@
         android:id="@+id/resetPasswordCodeFragment"
         android:name="com.example.fuel.ui.fragment.login.ResetPasswordCodeFragment"
         android:label="fragment_reset_password_code"
-        tools:layout="@layout/fragment_reset_password_code" />
+        tools:layout="@layout/fragment_reset_password_code" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_resetPasswordCodeFragment_to_newPasswordFragment"
+            app:destination="@id/newPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPasswordFragment"
+        android:name="com.example.fuel.ui.fragment.login.NewPasswordFragment"
+        android:label="fragment_new_password"
+        tools:layout="@layout/fragment_new_password" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_newPasswordFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+    </fragment>
 
 </navigation>

@@ -1,6 +1,6 @@
 package com.example.fuel.utils.validation
 
-abstract class Validator(protected val text: String) {
+abstract class Validator(protected val text: Any ?= null) {
     abstract fun validate()
     companion object {
         fun isIllegalCharacter(text: String): Boolean {
