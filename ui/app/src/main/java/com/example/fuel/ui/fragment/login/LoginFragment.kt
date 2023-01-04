@@ -13,6 +13,8 @@ import com.example.fuel.databinding.FragmentLoginBinding
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
+import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
+import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.utils.validation.ValidatorPassword
 import com.example.fuel.utils.validation.ValidatorUsername
 import com.example.fuel.viewmodel.UserLoginViewModel
@@ -37,6 +39,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.clMain.setOnClickListener { view -> view.hideKeyboard() }
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
         binding.toolbar.setOnClickListener { findNavController().popBackStack() }
+        binding.tvPasswordResetLink.setOnClickListener {
+            view -> viewModel.navigateToResetPasswordFragment(view)
+        }
+
         binding.btnNextPage.setOnClickListener(btnGoToNextPage)
 
         return binding.root
