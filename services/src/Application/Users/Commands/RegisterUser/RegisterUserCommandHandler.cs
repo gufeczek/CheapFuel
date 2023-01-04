@@ -82,7 +82,7 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
             User = user
         };
         _emailVerificationTokenRepository.Add(token);
-        await _unitOfWork.SaveAsync();
+        //await _unitOfWork.SaveAsync();
         
         await _emailSenderService.SendEmailAddressVerificationToken(user.Email!, tokenCode);
     }

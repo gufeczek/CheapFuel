@@ -8,6 +8,7 @@ using Application.Models;
 using Application.Users.Commands.RegisterUser;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
@@ -86,7 +87,7 @@ public class RegisterUserCommandHandlerTest
         result.Should().NotBeNull();
         
         _userRepository.Verify(x => x.Add(It.IsAny<User>()), Times.Once);
-        //_emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
+        _emailVerificationTokenRepository.Verify(x => x.Add(It.IsAny<EmailVerificationToken>()), Times.Once);
         _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
     }
 
