@@ -20,14 +20,17 @@ public class CheckUserEndBanDate : BackgroundService
         
         while (!stoppingToken.IsCancellationRequested)
         {
+            /*
             var blockedUser = await unitOfWork.BlockedUsers.DeleteExpiredBans();
             while (blockedUser != null)
             {
                 unitOfWork.BlockedUsers.Remove(blockedUser);
                 await unitOfWork.SaveAsync();
                 blockedUser = await unitOfWork.BlockedUsers.DeleteExpiredBans();
-            }
-            await Task.Delay(3600000 , stoppingToken);
+            }*/
+            await unitOfWork.BlockedUsers.RemoveAllExpiredBanned();
+            await unitOfWork.SaveAsync();
+            await Task.Delay(3600 , stoppingToken);
 
         }
     }

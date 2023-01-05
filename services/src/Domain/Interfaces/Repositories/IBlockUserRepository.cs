@@ -8,5 +8,5 @@ public interface IBlockUserRepository : IRepository<BlockedUser>
 
     Task<BlockedUser?> GetByBlockedUserId(long userId);
 
-    Task<BlockedUser?> DeleteExpiredBans();
+    Task RemoveAllExpiredBanned();
 }

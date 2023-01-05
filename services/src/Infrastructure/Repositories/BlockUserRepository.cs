@@ -23,10 +23,13 @@ public class BlockUserRepository : Repository<BlockedUser>, IBlockUserRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<BlockedUser?> DeleteExpiredBans()
+    public async Task RemoveAllExpiredBanned()
     {
-        return await Context.BlockedUsers
+        var expiredBlockes = await Context.BlockedUsers
             .Where(r => r.EndBanDate < DateTime.Now)
-            .FirstOrDefaultAsync();
+            .ToListAsync();
+
+        Context.BlockedUsers
+            .RemoveRange(expiredBlockes);
     }
 }
