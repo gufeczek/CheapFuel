@@ -24,6 +24,7 @@ public class UnitOfWork : IUnitOfWork
     public IEmailVerificationTokenRepository EmailVerificationTokens { get; }
     public IPasswordResetTokenRepository PasswordResetTokenRepository { get; }
     public IReportedReviewRepository ReportedReviews { get; }
+    public IBlockUserRepository BlockedUsers { get; }
 
     public UnitOfWork(AppDbContext context, 
         IFavoriteRepository favorites, 
@@ -40,7 +41,8 @@ public class UnitOfWork : IUnitOfWork
         IUserRepository users,
         IEmailVerificationTokenRepository emailVerificationTokens,
         IPasswordResetTokenRepository passwordResetTokenRepository,
-        IReportedReviewRepository reportedReviewRepository)
+        IReportedReviewRepository reportedReviewRepository,
+        IBlockUserRepository blockUserRepository)
     {
         _context = context;
         Favorites = favorites;
@@ -58,6 +60,7 @@ public class UnitOfWork : IUnitOfWork
         EmailVerificationTokens = emailVerificationTokens;
         PasswordResetTokenRepository = passwordResetTokenRepository;
         ReportedReviews = reportedReviewRepository;
+        BlockedUsers = blockUserRepository;
     }
 
     public async Task SaveAsync()

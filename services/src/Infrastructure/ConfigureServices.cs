@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Application.BlockUser;
 using Application.Common.Authentication;
 using Application.Common.Interfaces;
 using Domain.Entities;
@@ -57,7 +58,9 @@ public static class ConfigureServices
         services.AddScoped<IAddCreationInfoOperation, AddCreationInfoOperation>();
         services.AddScoped<IAddUpdateInfoOperation, AddUpdateInfoOperation>();
         services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperation>();
-
+        services.AddHostedService<CheckUserEndBanDate>();
+        
+        
         services.AddScoped<IBeforeSaveChangesPipelineBuilder, BeforeSaveChangesPipelineBuilder>();
     }
 
@@ -78,6 +81,7 @@ public static class ConfigureServices
         services.AddScoped<IEmailVerificationTokenRepository, EmailVerificationTokenRepository>();
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<IReportedReviewRepository, ReportedReviewRepository>();
+        services.AddScoped<IBlockUserRepository, BlockUserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
