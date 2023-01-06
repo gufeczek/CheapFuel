@@ -3,6 +3,4 @@ using MediatR;
 
 namespace Application.Users.Queries.GetLoggedUser;
 
-public sealed record GetLoggedUserQuery() : IRequest<UserDetailsDto>
-{
-}
+public sealed record GetLoggedUserQuery() : IRequest<UserDetailsDto> { }

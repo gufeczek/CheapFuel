@@ -1,4 +1,5 @@
-﻿using Application.BlockUser.Queries.GetAllBlockedUsers;
+﻿using Application.BlockUser.Queries.CheckLoggedUserBan;
+using Application.BlockUser.Queries.GetAllBlockedUsers;
 using Application.Models;
 using Application.Models.Pagination;
 using Domain.Common.Pagination.Response;
@@ -11,7 +12,7 @@ namespace WebAPI.Controllers.BlockUser;
 [ApiController]
 [AuthorizeUser]
 [Route("api/v1/blocked-users")]
-public class BlockUserQueryController : ControllerBase
+public sealed class BlockUserQueryController : ControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -26,5 +27,13 @@ public class BlockUserQueryController : ControllerBase
     {
         var result = await _mediator.Send(new GetAllBlockedUsersQuery(pageRequestDto));
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("logged-user-ban")]
+    public async Task<ActionResult<string>> GetInfoAboutUserBan()
+    {
+        var userInfo = await _mediator.Send(new CheckLoggedUserBanQuery());
+        return Ok(userInfo);
     }
 }

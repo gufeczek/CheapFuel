@@ -58,9 +58,6 @@ public static class ConfigureServices
         services.AddScoped<IAddCreationInfoOperation, AddCreationInfoOperation>();
         services.AddScoped<IAddUpdateInfoOperation, AddUpdateInfoOperation>();
         services.AddScoped<IRemovalHandlingOperation, RemovalHandlingOperation>();
-        services.AddHostedService<CheckUserEndBanDate>();
-        
-        
         services.AddScoped<IBeforeSaveChangesPipelineBuilder, BeforeSaveChangesPipelineBuilder>();
     }
 

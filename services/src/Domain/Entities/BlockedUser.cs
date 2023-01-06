@@ -9,6 +9,6 @@ public class BlockedUser : BaseEntity
     
     public DateTime StartBanDate { get; set; }
     public DateTime EndBanDate { get; set; }
-    public string Reason { get; set; }
+    public string? Reason { get; set; }
     
 }

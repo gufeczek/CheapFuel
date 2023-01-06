@@ -10,7 +10,7 @@ public sealed class AllBlockedUsersDto
     public long? UserId { get; set; }
     public DateTime StartBanDate { get; set; }
     public DateTime EndBanDate { get; set; }
-    public string Reason { get; set; }
+    public string? Reason { get; set; }
 }
 
 public sealed class AllBlockedUsersDtoProfile : Profile

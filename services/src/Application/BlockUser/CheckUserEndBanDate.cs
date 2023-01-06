@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Application.BlockUser;
 
-public class CheckUserEndBanDate : BackgroundService
+public sealed class CheckUserEndBanDate : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
@@ -20,18 +20,9 @@ public class CheckUserEndBanDate : BackgroundService
         
         while (!stoppingToken.IsCancellationRequested)
         {
-            /*
-            var blockedUser = await unitOfWork.BlockedUsers.DeleteExpiredBans();
-            while (blockedUser != null)
-            {
-                unitOfWork.BlockedUsers.Remove(blockedUser);
-                await unitOfWork.SaveAsync();
-                blockedUser = await unitOfWork.BlockedUsers.DeleteExpiredBans();
-            }*/
             await unitOfWork.BlockedUsers.RemoveAllExpiredBanned();
             await unitOfWork.SaveAsync();
-            await Task.Delay(3600 , stoppingToken);
-
+            await Task.Delay(3600000 , stoppingToken);
         }
     }
 }

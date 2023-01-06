@@ -10,10 +10,8 @@ public sealed class BlockUserCommandValidator : AbstractValidator<BlockUserComma
             .NotNull()
             .GreaterThanOrEqualTo(1);
 
-        RuleFor(c => c.Reason)
-            .NotNull()
-            .Must(c => c is not { Length: > 1000 })
-            .WithMessage("Reason content can't have more than 1000 characters");
-
+        RuleFor(c => c.Reason) 
+            .NotNull() 
+            .MaximumLength(100);
     }
 }
