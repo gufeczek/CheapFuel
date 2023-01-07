@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.BlockUser.Queries.CheckLoggedUserBan;
 
-public sealed record CheckLoggedUserBanQuery() : IRequest<string>{}
+public sealed record CheckLoggedUserBanQuery() : IRequest<LoggedUserBanDto>{}

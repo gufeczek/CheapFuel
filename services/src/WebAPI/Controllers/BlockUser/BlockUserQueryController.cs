@@ -31,7 +31,7 @@ public sealed class BlockUserQueryController : ControllerBase
 
     [HttpGet]
     [Route("logged-user-ban")]
-    public async Task<ActionResult<string>> GetInfoAboutUserBan()
+    public async Task<ActionResult<LoggedUserBanDto>> GetInfoAboutUserBan()
     {
         var userInfo = await _mediator.Send(new CheckLoggedUserBanQuery());
         return Ok(userInfo);

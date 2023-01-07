@@ -2,14 +2,13 @@
 using Application.Common.Exceptions;
 using Application.Models;
 using AutoMapper;
-using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Application.BlockUser.Queries.CheckLoggedUserBan;
 
-public sealed class CheckLoggedUserBanQueryHandler : IRequestHandler<CheckLoggedUserBanQuery, string>
+public sealed class CheckLoggedUserBanQueryHandler : IRequestHandler<CheckLoggedUserBanQuery, LoggedUserBanDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserPrincipalService _userPrincipalService;
@@ -24,18 +23,15 @@ public sealed class CheckLoggedUserBanQueryHandler : IRequestHandler<CheckLogged
         _mapper = mapper;
     }
     
-    public async Task<string> Handle(CheckLoggedUserBanQuery checkLoggedUserBanQuery, CancellationToken cancellationToken)
+    public async Task<LoggedUserBanDto> Handle(CheckLoggedUserBanQuery checkLoggedUserBanQuery, CancellationToken cancellationToken)
     {
         var userId = _userPrincipalService.GetUserPrincipalId() ?? 
                      throw new UnauthorizedException("User not logged");
-        var user = await _userRepository.GetAsync(userId) ??
-                     throw new NotFoundException(nameof(User), nameof(User.Username), userId.ToString());
         if (await _blockUserRepository.ExistsByBlockedUserId(userId))
         {
-            return "Your account is not banned :)";
+            throw new NotFoundException("Your account is not banned");
         }
         var blockedUser = await _blockUserRepository.GetByBlockedUserId(userId);
-        return $"Your account is blocked since = {blockedUser.StartBanDate} to {blockedUser.EndBanDate}";
-
+        return _mapper.Map<LoggedUserBanDto>(blockedUser);
     }
 }
