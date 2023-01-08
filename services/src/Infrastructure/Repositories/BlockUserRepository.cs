@@ -11,7 +11,7 @@ public class BlockUserRepository : Repository<BlockedUser>, IBlockUserRepository
     
     public async Task<bool> ExistsByBlockedUserId(long userId)
     {
-        return await Context.ReportedReviews
+        return await Context.BlockedUsers
             .Where(r => r.UserId == userId)
             .AnyAsync();
     }
