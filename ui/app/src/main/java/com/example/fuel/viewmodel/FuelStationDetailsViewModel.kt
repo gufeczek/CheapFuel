@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fuel.R
 import com.example.fuel.enums.Role
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.model.review.Review
 import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelTypeWithPrice

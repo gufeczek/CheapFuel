@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -17,7 +16,7 @@ import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUserDetailsBinding
 import com.example.fuel.enums.AccountStatus
 import com.example.fuel.enums.Role
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.viewmodel.UserDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 

@@ -28,6 +28,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/cl_setRegisterMethod"
         app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
         <ImageView
@@ -36,27 +37,12 @@
             android:layout_height="0dp"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="0.9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background" />
-
-        <TextView
-            android:id="@+id/tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="@string/app_welcome"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:typeface="sans"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_logo"
-            app:layout_constraintVertical_bias="0.0" />
+            app:srcCompat="@drawable/png_logo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -64,15 +50,11 @@
         android:id="@+id/cl_setRegisterMethod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:gravity="center"
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_emailValidationError"
@@ -131,61 +113,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_email" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLoginWithGoogle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/til_email"
-            android:layout_alignEnd="@+id/til_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-2dp"
-            android:backgroundTint="@color/google"
-            android:padding="10dp"
-            android:text="@string/loginWithGoogle"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.612"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_loginWithFacebook"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/til_email"
-            android:layout_alignEnd="@+id/til_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-7dp"
-            android:backgroundTint="@color/facebook"
-            android:padding="10dp"
-            android:text="@string/loginWithFacebook"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLoginWithGoogle" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_goToMap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/til_email"
-            android:layout_alignEnd="@+id/til_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-7dp"
-            android:backgroundTint="@color/facebook"
-            android:padding="10dp"
-            android:text="Mapa Test - tymczasowo"
-            android:textAllCaps="false"
-            android:textColor="@color/light_gray"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_loginWithFacebook" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,7 +17,7 @@ import retrofit2.Response
 
 class UserRegistrationViewModel(private val repository: UserRepository): ViewModel() {
 
-    val response: MutableLiveData<Response<UserRegistration>> = MutableLiveData()
+    var response: MutableLiveData<Response<UserRegistration>> = MutableLiveData()
     var user: MutableLiveData<UserRegistration> = MutableLiveData()
 
     fun postRegister(user: UserRegistration) {
