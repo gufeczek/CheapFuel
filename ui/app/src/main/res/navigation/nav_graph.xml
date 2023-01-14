@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_EmailFragment_to_fuelStationCalculatorFragment"
             app:destination="@id/fuelStationCalculatorFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_newFuelStationFragment"
+            app:destination="@id/newFuelStationFragment" />
     </fragment>
     <fragment
         android:id="@+id/UsernameFragment"
@@ -209,5 +212,9 @@
         android:name="com.example.fuel.ui.fragment.user.BlockUserEditorFragment"
         android:label="Zablokuj"
         tools:layout="@layout/fragment_block_user_editor" />
+    <fragment
+        android:id="@+id/newFuelStationFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.NewFuelStationFragment"
+        android:label="Nowa stacja" />
 
 </navigation>

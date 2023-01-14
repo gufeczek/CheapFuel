@@ -112,4 +112,10 @@
     <string name="ban_reason">Podaj powód</string>
     <string name="block">Zablokuj</string>
     <string name="blocked">Zablokowano</string>
+    <string name="name">Nazwa</string>
+    <string name="city">Miasto</string>
+    <string name="street">Ulica</string>
+    <string name="street_number">Numer</string>
+    <string name="postal_code">Kod pocztowy</string>
+    <string name="add">Dodaj</string>
 </resources>
