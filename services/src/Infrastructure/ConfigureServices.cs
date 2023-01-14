@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Application.BlockUser;
 using Application.Common.Authentication;
 using Application.Common.Interfaces;
 using Domain.Entities;
@@ -10,6 +9,7 @@ using Infrastructure.Common.Services.Email;
 using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Policies.EmailVerifiedRequirement;
+using Infrastructure.Identity.Policies.UserNotBannedRequirement;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Pipeline;
 using Infrastructure.Persistence.Pipeline.Operations;
@@ -123,10 +123,15 @@ public static class ConfigureServices
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("EmailVerified", builder => builder.AddRequirements(new EmailVerifiedRequirement()));
+            options.AddPolicy("AccountActive", builder =>
+            {
+                builder.AddRequirements(new EmailVerifiedRequirement());
+                builder.AddRequirements(new UserNotBannedRequirement());
+            });
         });
         
         services.AddScoped<IAuthorizationHandler, EmailVerifiedRequirementHandler>();
+        services.AddScoped<IAuthorizationHandler, UserNotBannedRequirementHandler>();
     }
 
     public static void AddSmtpService(this IServiceCollection services, IConfiguration configuration)

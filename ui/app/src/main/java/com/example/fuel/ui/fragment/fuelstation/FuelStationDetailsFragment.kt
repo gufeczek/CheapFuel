@@ -57,6 +57,7 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
         initAddToFavouriteObserver()
         initRemoveFavouriteObserver()
         initNewFuelPriceObserver()
+        initReportReviewObserver()
 
         return binding.root
     }
@@ -385,6 +386,15 @@ class FuelStationDetailsFragment : BottomSheetDialogFragment() {
             }
 
             val text = if (response.isSuccessful) resources.getString(R.string.published)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initReportReviewObserver() {
+        viewModel.reportReview.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.reported)
             else resources.getString(R.string.an_error_occurred)
             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
             toast.show()

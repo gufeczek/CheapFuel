@@ -5,6 +5,7 @@ import com.example.fuel.mock.Auth
 import com.example.fuel.model.Email
 import com.example.fuel.model.UserDetails
 import com.example.fuel.model.UserFilter
+import com.example.fuel.model.account.ChangePassword
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.model.account.UserPasswordReset
 import com.example.fuel.model.account.UserRegistration
@@ -32,6 +33,14 @@ class UserRepository {
 
     suspend fun postResetPassword(user: UserPasswordReset): Response<Void> {
         return RetrofitInstance.accountApi.postResetPassword(user)
+    }
+
+    suspend fun deactivateUser(username: String): Response<Void> {
+        return RetrofitInstance.accountApi.deactivateAccount(username, Auth.token)
+    }
+
+    suspend fun changePassword(changePassword: ChangePassword): Response<Void> {
+        return RetrofitInstance.accountApi.postChangePassword(changePassword, Auth.token)
     }
 
     suspend fun getUserDetails(username: String): Response<UserDetails> {

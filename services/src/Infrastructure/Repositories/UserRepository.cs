@@ -55,4 +55,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             .Select(u => u.EmailConfirmed)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> IsUserBanned(string username)
+    {
+        return await Context.Users
+            .Where(u => u.Username == username)
+            .AnyAsync(u => u.Status == AccountStatus.Banned);
+    }
 }

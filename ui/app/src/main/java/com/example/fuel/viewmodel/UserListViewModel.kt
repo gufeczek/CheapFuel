@@ -100,5 +100,7 @@ class UserListViewModel(
 
     fun clear() {
         users = MutableLiveData()
+        _filter = null
+        currentFilter = null
     }
 }

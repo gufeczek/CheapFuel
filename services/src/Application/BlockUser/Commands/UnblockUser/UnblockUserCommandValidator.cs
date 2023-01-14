@@ -1,5 +1,4 @@
-﻿using Application.BlockUser.Commands.BlockUser;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.BlockUser.Commands.UnblockUser;
 
@@ -7,8 +6,7 @@ public sealed class UnblockUserCommandValidator : AbstractValidator<UnblockUserC
 {
     public UnblockUserCommandValidator()
     {
-        RuleFor(c => c.UserId)
-            .NotNull()
-            .GreaterThanOrEqualTo(1);
+        RuleFor(c => c.Username)
+            .NotEmpty();
     }
 }

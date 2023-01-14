@@ -67,7 +67,7 @@ class UserCardFragment(private val user: UserDetails) : Fragment() {
         }
 
         blockItem.setOnMenuItemClickListener {
-            askIfBlockUser()
+            openBanView()
             true
         }
     }
@@ -79,7 +79,10 @@ class UserCardFragment(private val user: UserDetails) : Fragment() {
         Navigation.findNavController(binding.root).navigate(R.id.userDetailsFragment, bundle)
     }
 
-    private fun askIfBlockUser() {
-        // TODO: Implement after adding endpoint to block users
+    private fun openBanView() {
+        val bundle = Bundle()
+        bundle.putString("username", user.username)
+
+        Navigation.findNavController(binding.root).navigate(R.id.blockUserEditorFragment, bundle)
     }
 }

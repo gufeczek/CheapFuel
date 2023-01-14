@@ -24,14 +24,14 @@ public sealed class BlockUserCommandController : ControllerBase
     public async Task<ActionResult<BlockUserDto>> BlockUser([FromBody] BlockUserCommand command)
     {
         var result = await _mediator.Send(command);
-        return Created($"api/v1/blocked-users/{result}", result);
+        return Ok(result);
     }
 
     [AuthorizeAdmin]
     [HttpDelete("{userId}")]
-    public async Task<ActionResult> UnBlockUser([FromRoute] long userId)
+    public async Task<ActionResult> UnBlockUser([FromRoute] string username)
     {
-        await _mediator.Send(new UnblockUserCommand(userId));
+        await _mediator.Send(new UnblockUserCommand(username));
         return NoContent();
     }
 }

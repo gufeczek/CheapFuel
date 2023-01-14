@@ -2,6 +2,7 @@
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
@@ -25,24 +26,23 @@ public class BlockUserCommandHandler : IRequestHandler<BlockUserCommand, BlockUs
 
     public async Task<BlockUserDto> Handle(BlockUserCommand request, CancellationToken cancellationToken)
     {
-        if(!await _userRepository.ExistsById(request.UserId!.Value))
-        {
-            throw new NotFoundException($"User not found for id = {request.UserId}");
-        }
+        var user = await _userRepository.GetByUsernameAsync(request.Username!) 
+                   ?? throw new NotFoundException($"User not found for username = {request.Username}");
         
-        if (await _blockUserRepository.ExistsByBlockedUserId((long)request.UserId!))
+        if (await _blockUserRepository.ExistsByBlockedUserId(user.Id))
         {
-            throw new ConflictException($"User with id = {request.UserId} has already banned");
+            throw new ConflictException($"User with id = {user.Id} has already banned");
         }
 
         var block = new BlockedUser
         {
-            UserId = request.UserId,
+            UserId = user.Id,
             StartBanDate = DateTime.Now,
             EndBanDate = DateTime.Now.AddDays(5),
             Reason = request.Reason
         };
-        
+        user.Status = AccountStatus.Banned;
+
         _blockUserRepository.Add(block);
         await _unitOfWork.SaveAsync();
 

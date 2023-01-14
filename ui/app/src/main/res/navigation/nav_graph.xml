@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_EmailFragment_to_fuelStationCalculatorFragment"
             app:destination="@id/fuelStationCalculatorFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_newFuelStationFragment"
+            app:destination="@id/newFuelStationFragment" />
     </fragment>
     <fragment
         android:id="@+id/UsernameFragment"
@@ -63,8 +66,8 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.fuel.ui.fragment.map.MapFragment"
-        android:label="Fuel stations"
-        tools:layout="@layout/fragment_map" >
+        android:label="Stacje paliw"
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_mapFilter3"
             app:destination="@id/mapFilter" />
@@ -72,7 +75,7 @@
     <fragment
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
-        android:label="MapFilter" />
+        android:label="Ustawienia filtra" />
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.fuel.ui.fragment.login.LoginFragment"
@@ -101,7 +104,7 @@
     <fragment
         android:id="@+id/fuelStationListFilterFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFilterFragment"
-        android:label="List Filter"
+        android:label="Ustawienia filtra"
         tools:layout="@layout/fragment_fuel_station_list_filter" />
     <fragment
         android:id="@+id/fuelStationDetails"
@@ -152,7 +155,7 @@
     <fragment
         android:id="@+id/userListFilterFragment"
         android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
-        android:label="Filtry"
+        android:label="Ustawienia filtra"
         tools:layout="@layout/fragment_user_list_filter" />
     <fragment
         android:id="@+id/resetPassword"
@@ -194,11 +197,32 @@
         android:id="@+id/userDetailsFragment"
         android:name="com.example.fuel.ui.fragment.user.UserDetailsFragment"
         android:label="fragment_user_details"
-        tools:layout="@layout/fragment_user_details" />
+        tools:layout="@layout/fragment_user_details" >
+        <action
+            android:id="@+id/action_userDetailsFragment_to_blockUserEditorFragment"
+            app:destination="@id/blockUserEditorFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fuelStationCalculatorFragment"
         android:name="com.example.fuel.ui.fragment.calculator.FuelStationCalculatorFragment"
-        android:label="fragment_fuel_station_calculator"
+        android:label="Kalkulator"
         tools:layout="@layout/fragment_fuel_station_calculator" />
+    <fragment
+        android:id="@+id/blockUserEditorFragment"
+        android:name="com.example.fuel.ui.fragment.user.BlockUserEditorFragment"
+        android:label="Zablokuj"
+        tools:layout="@layout/fragment_block_user_editor" />
+    <fragment
+        android:id="@+id/newFuelStationFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.NewFuelStationFragment"
+        android:label="Nowa stacja" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.fuel.ui.fragment.user.ChangePasswordFragment"
+        android:label="Zmień hasło"
+        tools:layout="@layout/fragment_change_password" />
 
 </navigation>
