@@ -1,5 +1,4 @@
-﻿using Domain.Common.Pagination;
-using Domain.Common.Pagination.Request;
+﻿using Domain.Common.Pagination.Request;
 
 namespace Application.Models.Pagination;
 

@@ -63,8 +63,8 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.fuel.ui.fragment.map.MapFragment"
-        android:label="Fuel stations"
-        tools:layout="@layout/fragment_map" >
+        android:label="Stacje paliw"
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_mapFilter3"
             app:destination="@id/mapFilter" />
@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/mapFilter"
         android:name="com.example.fuel.ui.fragment.map.MapFilter"
-        android:label="MapFilter" />
+        android:label="Ustawienia filtra" />
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.fuel.ui.fragment.login.LoginFragment"
@@ -101,7 +101,7 @@
     <fragment
         android:id="@+id/fuelStationListFilterFragment"
         android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFilterFragment"
-        android:label="List Filter"
+        android:label="Ustawienia filtra"
         tools:layout="@layout/fragment_fuel_station_list_filter" />
     <fragment
         android:id="@+id/fuelStationDetails"
@@ -152,7 +152,7 @@
     <fragment
         android:id="@+id/userListFilterFragment"
         android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
-        android:label="Filtry"
+        android:label="Ustawienia filtra"
         tools:layout="@layout/fragment_user_list_filter" />
     <fragment
         android:id="@+id/resetPassword"
@@ -198,7 +198,7 @@
     <fragment
         android:id="@+id/fuelStationCalculatorFragment"
         android:name="com.example.fuel.ui.fragment.calculator.FuelStationCalculatorFragment"
-        android:label="fragment_fuel_station_calculator"
+        android:label="Kalkulator"
         tools:layout="@layout/fragment_fuel_station_calculator" />
 
 </navigation>
