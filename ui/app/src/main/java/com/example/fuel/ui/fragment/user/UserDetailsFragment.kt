@@ -20,6 +20,7 @@ import com.example.fuel.enums.Role
 import com.example.fuel.mock.Auth
 import com.example.fuel.viewmodel.UserDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     private lateinit var viewModel: UserDetailsViewModel
@@ -42,6 +43,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         initReviewSection()
         initReviewObserver()
         initDeleteReviewObserver()
+        initDeactivateObserver()
         initPopupMenu()
 
         return binding.root
@@ -84,6 +86,15 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     private fun initBannedObserver() {
         viewModel.blockUser.observe(viewLifecycleOwner) { response ->
             val text = if (response.isSuccessful) getString(R.string.blocked)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initDeactivateObserver() {
+        viewModel.deactivateUser.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.deactivated)
             else resources.getString(R.string.an_error_occurred)
             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
             toast.show()
@@ -167,24 +178,36 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     fun initPopupMenu() {
         val actionButton = binding.acibUserActionButton
 
-        if (Auth.role != Role.ADMIN) {
-            actionButton.visibility = View.GONE
-            return
-        }
-
         actionButton.setOnClickListener {
             val popupMenu = PopupMenu(requireActivity(), actionButton)
-            initPopupMenuItems(popupMenu)
+
+            if (Auth.role == Role.ADMIN) initPopupMenuItemsForAdmin(popupMenu)
+            if (username == Auth.username) initPopupMenuItemsForUser(popupMenu)
 
             popupMenu.show()
         }
     }
 
-    private fun initPopupMenuItems(popupMenu: PopupMenu) {
+    private fun initPopupMenuItemsForAdmin(popupMenu: PopupMenu) {
         val banItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.ban_user))
+        val deactivateItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.delete))
 
         banItem.setOnMenuItemClickListener {
             openBanView()
+            true
+        }
+
+        deactivateItem.setOnMenuItemClickListener {
+            askForDeleteConfirmationOfUser()
+            true
+        }
+    }
+
+    private fun initPopupMenuItemsForUser(popupMenu: PopupMenu) {
+        val changePasswordItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 3, getString(R.string.change_password))
+
+        changePasswordItem.setOnMenuItemClickListener {
+            openChangePasswordView()
             true
         }
     }
@@ -194,6 +217,22 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         bundle.putString("username", username)
 
         Navigation.findNavController(binding.root).navigate(R.id.blockUserEditorFragment, bundle)
+    }
+
+    private fun askForDeleteConfirmationOfUser() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(getString(R.string.ask_if_deactivate_user))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.deactivateUser(username!!)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
+    }
+
+    private fun openChangePasswordView() {
+        val bundle = Bundle()
+        bundle.putString("username", username)
+
     }
 
     override fun onDestroyView() {

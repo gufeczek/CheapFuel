@@ -34,6 +34,7 @@ class UserDetailsViewModel(
     var reviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
     var deleteReview: MutableLiveData<Response<Void>> = MutableLiveData()
     var blockUser: MutableLiveData<Response<BlockUser>> = MutableLiveData()
+    var deactivateUser: MutableLiveData<Response<Void>> = MutableLiveData()
 
     fun getUser(username: String) {
         viewModelScope.launch {
@@ -66,6 +67,12 @@ class UserDetailsViewModel(
     fun blockUser(username: String, reason: String) {
         viewModelScope.launch {
             blockUser.value = blockUserRepository.blockUser(BlockUser(username, reason))
+        }
+    }
+
+    fun deactivateUser(username: String) {
+        viewModelScope.launch {
+            deactivateUser.value = userRepository.deactivateUser(username)
         }
     }
 

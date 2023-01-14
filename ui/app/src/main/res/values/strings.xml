@@ -118,4 +118,7 @@
     <string name="street_number">Numer</string>
     <string name="postal_code">Kod pocztowy</string>
     <string name="add">Dodaj</string>
+    <string name="ask_if_deactivate_user">Jesteś pewnien że chcesz dezaktywować tego użytkownika?</string>
+    <string name="deactivated">Dezaktywowano</string>
+    <string name="change_password">Zmień hasło</string>
 </resources>

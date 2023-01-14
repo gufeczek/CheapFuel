@@ -1,6 +1,7 @@
 package com.example.fuel.api
 
 import com.example.fuel.model.Email
+import com.example.fuel.model.account.ChangePassword
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.model.account.UserPasswordReset
 import com.example.fuel.model.account.UserRegistration
@@ -33,5 +34,16 @@ interface AccountApiService {
         @Body userPasswordReset: UserPasswordReset
     ): Response<Void>
 
+    @Headers("Content-Type:application/json")
+    @POST("api/v1/accounts/change-password")
+    suspend fun postChangePassword(
+        @Body changePassword: ChangePassword,
+        @Header("Authorization") authHeader: String
+    ): Response<Void>
 
+    @DELETE("api/v1/accounts/{username}")
+    suspend fun deactivateAccount(
+        @Path("username") username: String,
+        @Header("Authorization") authHeader: String
+    ): Response<Void>
 }

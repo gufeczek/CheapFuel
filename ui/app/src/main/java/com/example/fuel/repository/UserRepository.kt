@@ -34,6 +34,10 @@ class UserRepository {
         return RetrofitInstance.accountApi.postResetPassword(user)
     }
 
+    suspend fun deactivateUser(username: String): Response<Void> {
+        return RetrofitInstance.accountApi.deactivateAccount(username, Auth.token)
+    }
+
     suspend fun getUserDetails(username: String): Response<UserDetails> {
         return RetrofitInstance.userApiService.getUserDetails(username, Auth.token)
     }
