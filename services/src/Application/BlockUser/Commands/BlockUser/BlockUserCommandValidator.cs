@@ -6,9 +6,8 @@ public sealed class BlockUserCommandValidator : AbstractValidator<BlockUserComma
 {
     public BlockUserCommandValidator()
     {
-        RuleFor(c => c.UserId)
-            .NotNull()
-            .GreaterThanOrEqualTo(1);
+        RuleFor(c => c.Username)
+            .NotEmpty();
 
         RuleFor(c => c.Reason) 
             .NotNull() 

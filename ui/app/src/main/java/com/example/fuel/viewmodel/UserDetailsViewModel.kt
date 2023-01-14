@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.fuel.enums.AccountStatus
 import com.example.fuel.enums.Role
 import com.example.fuel.model.UserDetails
+import com.example.fuel.model.account.ChangePassword
+import com.example.fuel.model.block.BlockUser
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
 import com.example.fuel.model.review.Review
+import com.example.fuel.repository.BlockUserRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.repository.UserRepository
 import com.example.fuel.ui.utils.DateParser
@@ -22,7 +25,8 @@ import java.util.*
 
 class UserDetailsViewModel(
     private val userRepository: UserRepository,
-    private val reviewRepository: ReviewRepository): ViewModel() {
+    private val reviewRepository: ReviewRepository,
+    private val blockUserRepository: BlockUserRepository): ViewModel() {
 
     private val reviewSortBy = "CreatedAt"
     private val reviewSortDirection = "Desc"
@@ -30,6 +34,9 @@ class UserDetailsViewModel(
     var user: MutableLiveData<Response<UserDetails>> = MutableLiveData()
     var reviews: MutableLiveData<Response<Page<Review>>> = MutableLiveData()
     var deleteReview: MutableLiveData<Response<Void>> = MutableLiveData()
+    var blockUser: MutableLiveData<Response<BlockUser>> = MutableLiveData()
+    var deactivateUser: MutableLiveData<Response<Void>> = MutableLiveData()
+    var changePasswordResponse: MutableLiveData<Response<Void>> = MutableLiveData()
 
     fun getUser(username: String) {
         viewModelScope.launch {
@@ -56,6 +63,24 @@ class UserDetailsViewModel(
     fun deleteUserReview(reviewId: Long) {
         viewModelScope.launch {
             deleteReview.value = reviewRepository.deleteFuelStationReview(reviewId)
+        }
+    }
+
+    fun blockUser(username: String, reason: String) {
+        viewModelScope.launch {
+            blockUser.value = blockUserRepository.blockUser(BlockUser(username, reason))
+        }
+    }
+
+    fun deactivateUser(username: String) {
+        viewModelScope.launch {
+            deactivateUser.value = userRepository.deactivateUser(username)
+        }
+    }
+
+    fun changePassword(changePassword: ChangePassword) {
+        viewModelScope.launch {
+            changePasswordResponse.value = userRepository.changePassword(changePassword)
         }
     }
 
@@ -103,5 +128,8 @@ class UserDetailsViewModel(
         user = MutableLiveData()
         reviews = MutableLiveData()
         deleteReview = MutableLiveData()
+        blockUser = MutableLiveData()
+        deactivateUser = MutableLiveData()
+        changePasswordResponse = MutableLiveData()
     }
 }

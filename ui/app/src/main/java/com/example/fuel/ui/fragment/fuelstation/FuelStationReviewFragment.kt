@@ -137,7 +137,7 @@ class FuelStationReviewFragment(private val review: Review) : Fragment() {
         MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
             .setMessage(resources.getString(R.string.ask_if_report_user, review.username))
             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                // TODO: Should be implemented after adding to backend feature to report other users reviews
+                viewModel.reportReview(review.id)
             }
             .setNegativeButton(resources.getString(R.string.no), null)
             .show()

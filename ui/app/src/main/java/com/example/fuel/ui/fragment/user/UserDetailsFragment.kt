@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUserDetailsBinding
 import com.example.fuel.enums.AccountStatus
@@ -19,6 +20,7 @@ import com.example.fuel.enums.Role
 import com.example.fuel.utils.Auth
 import com.example.fuel.viewmodel.UserDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     private lateinit var viewModel: UserDetailsViewModel
@@ -33,7 +35,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserDetailsViewModel::class.java]
         binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        username = requireArguments().getString("username")
+        username = requireArguments().getString("username") ?: Auth.username
 
         setAppBarTitle()
         loadUserData()
@@ -41,6 +43,8 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         initReviewSection()
         initReviewObserver()
         initDeleteReviewObserver()
+        initDeactivateObserver()
+        initChangePasswordObserver()
         initPopupMenu()
 
         return binding.root
@@ -81,7 +85,30 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     }
 
     private fun initBannedObserver() {
-        // TODO: Implement after issue #174
+        viewModel.blockUser.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.blocked)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initDeactivateObserver() {
+        viewModel.deactivateUser.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.deactivated)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initChangePasswordObserver() {
+        viewModel.changePasswordResponse.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.password_changed)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     private fun initReviewSection() {
@@ -161,30 +188,59 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     fun initPopupMenu() {
         val actionButton = binding.acibUserActionButton
 
-        if (Auth.role != Role.ADMIN) {
-            actionButton.visibility = View.GONE
-            return
-        }
-
         actionButton.setOnClickListener {
             val popupMenu = PopupMenu(requireActivity(), actionButton)
-            initPopupMenuItems(popupMenu)
+
+            if (Auth.role == Role.ADMIN && username != Auth.username) initPopupMenuItemsForAdmin(popupMenu)
+            if (username == Auth.username) initPopupMenuItemsForUser(popupMenu)
 
             popupMenu.show()
         }
     }
 
-    private fun initPopupMenuItems(popupMenu: PopupMenu) {
+    private fun initPopupMenuItemsForAdmin(popupMenu: PopupMenu) {
         val banItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.ban_user))
+        val deactivateItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 1, resources.getString(R.string.delete))
 
         banItem.setOnMenuItemClickListener {
             openBanView()
             true
         }
+
+        deactivateItem.setOnMenuItemClickListener {
+            askForDeleteConfirmationOfUser()
+            true
+        }
+    }
+
+    private fun initPopupMenuItemsForUser(popupMenu: PopupMenu) {
+        val changePasswordItem = popupMenu.menu.add(Menu.NONE, Menu.NONE, 3, getString(R.string.change_password))
+
+        changePasswordItem.setOnMenuItemClickListener {
+            openChangePasswordView()
+            true
+        }
     }
 
     private fun openBanView() {
+        val bundle = Bundle()
+        bundle.putString("username", username)
 
+        Navigation.findNavController(binding.root).navigate(R.id.blockUserEditorFragment, bundle)
+    }
+
+    private fun askForDeleteConfirmationOfUser() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog_RoundedCorners)
+            .setMessage(getString(R.string.ask_if_deactivate_user))
+            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                viewModel.deactivateUser(username!!)
+            }
+            .setNegativeButton(resources.getString(R.string.no), null)
+            .show()
+    }
+
+    private fun openChangePasswordView() {
+        Navigation.findNavController(binding.root).navigate(R.id.changePasswordFragment)
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,7 @@
 package com.example.fuel.ui.fragment.calculator
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -197,6 +199,15 @@ class FuelStationCalculatorFragment : Fragment(R.layout.fragment_fuel_station_ca
     private fun unblockLayout() {
         binding.pbCalculatorLoad.visibility = View.GONE
         binding.mbCalculate.isEnabled = true
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val appActivity = (activity as AppCompatActivity)
+        if (!appActivity.supportActionBar?.isShowing!!) {
+            appActivity.supportActionBar?.show()
+        }
     }
 
     override fun onDestroyView() {

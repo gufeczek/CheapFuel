@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.BlockUser.Commands.UnblockUser;
 
-public sealed record UnblockUserCommand(long? UserId) : IRequest<Unit>;
+public sealed record UnblockUserCommand(string? Username) : IRequest<Unit>;

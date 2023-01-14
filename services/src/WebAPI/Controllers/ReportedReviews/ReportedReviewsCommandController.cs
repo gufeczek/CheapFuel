@@ -29,7 +29,7 @@ public sealed class ReportedReviewsCommandController : ControllerBase
 
     [AuthorizeAdmin]
     [HttpPut("{userId}/{reviewId}")]
-    public async Task<ActionResult<UpdateReportedReviewDto>> UpdateFuelStationReportedReview([FromRoute] long reviewId,[FromRoute] long userId,  [FromBody] UpdateReportedReviewDto dto)
+    public async Task<ActionResult<UpdateReportedReviewDto>> UpdateFuelStationReportedReviewStatus([FromRoute] long reviewId, [FromRoute] long userId, [FromBody] UpdateReportedReviewDto dto)
     {
         var result = await _mediator.Send(new UpdateReportedReviewCommand(reviewId, userId, dto));
         return Ok(result);

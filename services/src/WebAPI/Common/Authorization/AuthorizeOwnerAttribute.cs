@@ -7,7 +7,7 @@ public class AuthorizeOwnerAttribute : AuthorizeAttribute
 {
     public AuthorizeOwnerAttribute()
     {
-        Policy = "EmailVerified";
+        Policy = "AccountActive";
         Roles = string.Join(",", Role.Owner, Role.Admin);
     }
 }

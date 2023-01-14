@@ -108,4 +108,22 @@
     <string name="longitude">Długość geograficzna</string>
     <string name="latitude">Szrokość geograficzna</string>
     <string name="your_location_uppercase">TWOJA LOKALIZACJA</string>
+    <string name="reported">Zgłoszono</string>
+    <string name="ban_reason">Podaj powód</string>
+    <string name="block">Zablokuj</string>
+    <string name="blocked">Zablokowano</string>
+    <string name="name">Nazwa</string>
+    <string name="city">Miasto</string>
+    <string name="street">Ulica</string>
+    <string name="street_number">Numer</string>
+    <string name="postal_code">Kod pocztowy</string>
+    <string name="add">Dodaj</string>
+    <string name="ask_if_deactivate_user">Jesteś pewnien że chcesz dezaktywować tego użytkownika?</string>
+    <string name="deactivated">Dezaktywowano</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="old_password">Stare hasło</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="reset">Resetuj</string>
+    <string name="password_changed">Hasło zmiennione</string>
 </resources>
