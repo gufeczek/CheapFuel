@@ -38,11 +38,6 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
             viewModel.navigateToLoginFragment(view)
         }
 
-        // TODO: Remove this, only for testing purposes
-        binding.btnGoToMap.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.userListFragment)
-        }
-
         return binding.root
     }
 

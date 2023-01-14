@@ -10,7 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationDetailsBinding
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.model.FuelStationDetails
 import com.example.fuel.model.FuelStationLocation
 import com.example.fuel.model.FuelStationService

@@ -1,8 +1,8 @@
 package com.example.fuel.repository
 
 import com.example.fuel.api.RetrofitInstance
-import com.example.fuel.mock.Auth
 import com.example.fuel.model.block.BlockUser
+import com.example.fuel.utils.Auth
 import retrofit2.Response
 
 class BlockUserRepository {

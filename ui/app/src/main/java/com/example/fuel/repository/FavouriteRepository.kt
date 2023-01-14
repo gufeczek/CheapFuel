@@ -1,7 +1,7 @@
 package com.example.fuel.repository
 
 import com.example.fuel.api.RetrofitInstance
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.model.favourite.NewFavourite
 import com.example.fuel.model.favourite.UserFavourite
 import com.example.fuel.model.favourite.UserFavouriteDetails

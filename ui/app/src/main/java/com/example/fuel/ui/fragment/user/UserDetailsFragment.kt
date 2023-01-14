@@ -17,7 +17,7 @@ import com.example.fuel.R
 import com.example.fuel.databinding.FragmentUserDetailsBinding
 import com.example.fuel.enums.AccountStatus
 import com.example.fuel.enums.Role
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.viewmodel.UserDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

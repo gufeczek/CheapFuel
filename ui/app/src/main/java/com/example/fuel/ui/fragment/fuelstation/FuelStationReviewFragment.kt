@@ -10,7 +10,7 @@ import android.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationReviewBinding
-import com.example.fuel.mock.Auth
+import com.example.fuel.utils.Auth
 import com.example.fuel.model.review.Review
 import com.example.fuel.viewmodel.FuelStationDetailsViewModel
 import com.example.fuel.viewmodel.ViewModelFactory
