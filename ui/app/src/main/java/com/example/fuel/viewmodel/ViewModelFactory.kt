@@ -2,6 +2,7 @@ package com.example.fuel.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.fuel.repository.BlockUserRepository
 import com.example.fuel.repository.FavouriteRepository
 import com.example.fuel.repository.FuelAtStationRepository
 import com.example.fuel.repository.FuelPriceRepository
@@ -48,7 +49,8 @@ class ViewModelFactory : ViewModelProvider.Factory {
             UserRepository()) as T
         UserDetailsViewModel::class.java -> UserDetailsViewModel(
             UserRepository(),
-            ReviewRepository()) as T
+            ReviewRepository(),
+            BlockUserRepository()) as T
         CalculatorViewModel::class.java -> CalculatorViewModel(
             FuelStationRepository(),
             FuelTypeRepository()) as T

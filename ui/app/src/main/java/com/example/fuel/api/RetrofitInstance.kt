@@ -79,4 +79,7 @@ object RetrofitInstance {
         retrofit.create(ReportApiService::class.java)
     }
 
+    val blockUserApiService: BlockUserApiService by lazy {
+        retrofit.create(BlockUserApiService::class.java)
+    }
 }

@@ -4,5 +4,5 @@ using MediatR;
 namespace Application.BlockUser.Commands.BlockUser;
 
 public sealed record BlockUserCommand(
-    long? UserId,
+    string? Username,
     string Reason) : IRequest<BlockUserDto>;

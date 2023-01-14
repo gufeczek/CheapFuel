@@ -269,5 +269,6 @@ class FuelStationDetailsViewModel(
         addToFavourite = MutableLiveData()
         deleteFavourite = MutableLiveData()
         createNewFuelPrices = MutableLiveData()
+        reportReview = MutableLiveData()
     }
 }

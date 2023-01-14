@@ -109,4 +109,7 @@
     <string name="latitude">Szrokość geograficzna</string>
     <string name="your_location_uppercase">TWOJA LOKALIZACJA</string>
     <string name="reported">Zgłoszono</string>
+    <string name="ban_reason">Podaj powód</string>
+    <string name="block">Zablokuj</string>
+    <string name="blocked">Zablokowano</string>
 </resources>
