@@ -201,6 +201,9 @@
         <action
             android:id="@+id/action_userDetailsFragment_to_blockUserEditorFragment"
             app:destination="@id/blockUserEditorFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/fuelStationCalculatorFragment"
@@ -216,5 +219,10 @@
         android:id="@+id/newFuelStationFragment"
         android:name="com.example.fuel.ui.fragment.fuelstation.NewFuelStationFragment"
         android:label="Nowa stacja" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.fuel.ui.fragment.user.ChangePasswordFragment"
+        android:label="Zmień hasło"
+        tools:layout="@layout/fragment_change_password" />
 
 </navigation>

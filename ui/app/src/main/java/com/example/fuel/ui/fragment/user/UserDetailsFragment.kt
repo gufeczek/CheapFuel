@@ -35,7 +35,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserDetailsViewModel::class.java]
         binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        username = requireArguments().getString("username")
+        username = requireArguments().getString("username") ?: Auth.username
 
         setAppBarTitle()
         loadUserData()
@@ -44,6 +44,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         initReviewObserver()
         initDeleteReviewObserver()
         initDeactivateObserver()
+        initChangePasswordObserver()
         initPopupMenu()
 
         return binding.root
@@ -95,6 +96,15 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     private fun initDeactivateObserver() {
         viewModel.deactivateUser.observe(viewLifecycleOwner) { response ->
             val text = if (response.isSuccessful) getString(R.string.deactivated)
+            else resources.getString(R.string.an_error_occurred)
+            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun initChangePasswordObserver() {
+        viewModel.changePasswordResponse.observe(viewLifecycleOwner) { response ->
+            val text = if (response.isSuccessful) getString(R.string.password_changed)
             else resources.getString(R.string.an_error_occurred)
             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
             toast.show()
@@ -181,7 +191,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         actionButton.setOnClickListener {
             val popupMenu = PopupMenu(requireActivity(), actionButton)
 
-            if (Auth.role == Role.ADMIN) initPopupMenuItemsForAdmin(popupMenu)
+            if (Auth.role == Role.ADMIN && username != Auth.username) initPopupMenuItemsForAdmin(popupMenu)
             if (username == Auth.username) initPopupMenuItemsForUser(popupMenu)
 
             popupMenu.show()
@@ -230,9 +240,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     }
 
     private fun openChangePasswordView() {
-        val bundle = Bundle()
-        bundle.putString("username", username)
-
+        Navigation.findNavController(binding.root).navigate(R.id.changePasswordFragment)
     }
 
     override fun onDestroyView() {

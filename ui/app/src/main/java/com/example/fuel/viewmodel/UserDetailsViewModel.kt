@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fuel.enums.AccountStatus
 import com.example.fuel.enums.Role
 import com.example.fuel.model.UserDetails
+import com.example.fuel.model.account.ChangePassword
 import com.example.fuel.model.block.BlockUser
 import com.example.fuel.model.page.Page
 import com.example.fuel.model.page.PageRequest
@@ -35,6 +36,7 @@ class UserDetailsViewModel(
     var deleteReview: MutableLiveData<Response<Void>> = MutableLiveData()
     var blockUser: MutableLiveData<Response<BlockUser>> = MutableLiveData()
     var deactivateUser: MutableLiveData<Response<Void>> = MutableLiveData()
+    var changePasswordResponse: MutableLiveData<Response<Void>> = MutableLiveData()
 
     fun getUser(username: String) {
         viewModelScope.launch {
@@ -73,6 +75,12 @@ class UserDetailsViewModel(
     fun deactivateUser(username: String) {
         viewModelScope.launch {
             deactivateUser.value = userRepository.deactivateUser(username)
+        }
+    }
+
+    fun changePassword(changePassword: ChangePassword) {
+        viewModelScope.launch {
+            changePasswordResponse.value = userRepository.changePassword(changePassword)
         }
     }
 
@@ -121,5 +129,7 @@ class UserDetailsViewModel(
         reviews = MutableLiveData()
         deleteReview = MutableLiveData()
         blockUser = MutableLiveData()
+        deactivateUser = MutableLiveData()
+        changePasswordResponse = MutableLiveData()
     }
 }
