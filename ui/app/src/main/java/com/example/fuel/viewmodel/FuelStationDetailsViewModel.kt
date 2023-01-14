@@ -19,11 +19,13 @@ import com.example.fuel.model.price.NewFuelPrice
 import com.example.fuel.model.price.NewFuelPriceResponse
 import com.example.fuel.model.price.NewPriceAtFuelStationWithLocation
 import com.example.fuel.model.price.NewPricesAtFuelStation
+import com.example.fuel.model.report.Report
 import com.example.fuel.model.review.NewReview
 import com.example.fuel.model.review.UpdateReview
 import com.example.fuel.repository.FavouriteRepository
 import com.example.fuel.repository.FuelPriceRepository
 import com.example.fuel.repository.FuelStationRepository
+import com.example.fuel.repository.ReportRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.ui.utils.DateParser
 import com.example.fuel.utils.calculateDistance
@@ -41,7 +43,8 @@ class FuelStationDetailsViewModel(
     private val fuelStationRepository: FuelStationRepository,
     private val reviewRepository: ReviewRepository,
     private val favouriteRepository: FavouriteRepository,
-    private val fuelPriceRepository: FuelPriceRepository): ViewModel() {
+    private val fuelPriceRepository: FuelPriceRepository,
+    private val reportRepository: ReportRepository): ViewModel() {
 
     private val allowedDistance = 200
 
@@ -57,6 +60,7 @@ class FuelStationDetailsViewModel(
     var addToFavourite: MutableLiveData<Response<UserFavourite>> = MutableLiveData()
     var deleteFavourite: MutableLiveData<Response<Void>> = MutableLiveData()
     var createNewFuelPrices: MutableLiveData<Response<Array<NewFuelPriceResponse>>> = MutableLiveData()
+    var reportReview: MutableLiveData<Response<Report>> = MutableLiveData()
 
 
     fun getFuelStationDetails(fuelStationId: Long) {
@@ -238,6 +242,12 @@ class FuelStationDetailsViewModel(
 
             MapViewModelMediator.fuelStationChanged()
             ListViewModelMediator.fuelStationChanged()
+        }
+    }
+
+    fun reportReview(reviewId: Long) {
+        viewModelScope.launch {
+            reportReview.value = reportRepository.reportReview(reviewId)
         }
     }
 

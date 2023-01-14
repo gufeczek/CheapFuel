@@ -40,7 +40,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
 
         // TODO: Remove this, only for testing purposes
         binding.btnGoToMap.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.fuelStationCalculatorFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.fuelStationListFragment)
         }
 
         return binding.root

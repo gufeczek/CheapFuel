@@ -8,6 +8,7 @@ import com.example.fuel.repository.FuelPriceRepository
 import com.example.fuel.repository.FuelStationRepository
 import com.example.fuel.repository.FuelStationServiceRepository
 import com.example.fuel.repository.FuelTypeRepository
+import com.example.fuel.repository.ReportRepository
 import com.example.fuel.repository.ReviewRepository
 import com.example.fuel.repository.ServiceAtStationRepository
 import com.example.fuel.repository.StationChainRepository
@@ -29,7 +30,8 @@ class ViewModelFactory : ViewModelProvider.Factory {
             FuelStationRepository(),
             ReviewRepository(),
             FavouriteRepository(),
-            FuelPriceRepository()) as T
+            FuelPriceRepository(),
+            ReportRepository()) as T
         FuelStationEditorViewModel::class.java -> FuelStationEditorViewModel(
             FuelAtStationRepository(),
             ServiceAtStationRepository(),
@@ -41,19 +43,15 @@ class ViewModelFactory : ViewModelProvider.Factory {
             FuelStationServiceRepository(),
             StationChainRepository()) as T
         FavouritesFuelStationsViewModel::class.java -> FavouritesFuelStationsViewModel(
-            FavouriteRepository()
-        ) as T
+            FavouriteRepository()) as T
         UserListViewModel::class.java -> UserListViewModel(
-            UserRepository()
-        ) as T
+            UserRepository()) as T
         UserDetailsViewModel::class.java -> UserDetailsViewModel(
             UserRepository(),
-            ReviewRepository()
-        ) as T
+            ReviewRepository()) as T
         CalculatorViewModel::class.java -> CalculatorViewModel(
             FuelStationRepository(),
-            FuelTypeRepository()
-        ) as T
+            FuelTypeRepository()) as T
         else -> {
             throw NoSuchViewModelException(
                 "Exception in 'ViewModelFactory' class, 'create' method: such ViewModel doesn't exist"

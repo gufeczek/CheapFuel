@@ -108,4 +108,5 @@
     <string name="longitude">Długość geograficzna</string>
     <string name="latitude">Szrokość geograficzna</string>
     <string name="your_location_uppercase">TWOJA LOKALIZACJA</string>
+    <string name="reported">Zgłoszono</string>
 </resources>
