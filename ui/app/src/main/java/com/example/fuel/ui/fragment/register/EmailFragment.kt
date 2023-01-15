@@ -43,7 +43,7 @@ class EmailFragment : Fragment(R.layout.fragment_email) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        //(activity as AppCompatActivity).supportActionBar?.hide()
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     override fun onDestroyView() {

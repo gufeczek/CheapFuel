@@ -50,8 +50,8 @@ class ResetPasswordFragment : Fragment() {
             viewModel.getPasswordResetToken(Email(email))
             viewModel.isTokenGenerated.observe(viewLifecycleOwner) { isTokenGenerated ->
                 if (isTokenGenerated) {
-                    val action = ResetPasswordFragmentDirections.actionResetPasswordToResetPasswordCodeFragment(email)
-                    viewModel.navigateToResetPasswordCodeFragment(view, action)
+                    //val action = ResetPasswordFragmentDirections.actionResetPasswordToResetPasswordCodeFragment(email)
+                    //viewModel.navigateToResetPasswordCodeFragment(view, action)
                 }
             }
         } else {

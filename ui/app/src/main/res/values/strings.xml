@@ -126,4 +126,7 @@
     <string name="confirm_password">Potwierdź hasło</string>
     <string name="reset">Resetuj</string>
     <string name="password_changed">Hasło zmiennione</string>
+    <string name="map">Mapa</string>
+    <string name="station_list">Lista stacji</string>
+    <string name="favourite_stations">Ulubione</string>
 </resources>

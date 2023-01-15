@@ -1,5 +1,7 @@
 package com.example.fuel.ui.fragment.fuelstationlist
 
+import android.app.Activity
+import android.app.FragmentManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +12,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
 import com.example.fuel.databinding.FragmentFuelStationListBinding
+import com.example.fuel.ui.MainActivity
 import com.example.fuel.utils.getUserLocation
 import com.example.fuel.utils.isGpsEnabled
 import com.example.fuel.viewmodel.FuelStationListViewModel

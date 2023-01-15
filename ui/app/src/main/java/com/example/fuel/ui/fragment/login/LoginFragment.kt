@@ -59,13 +59,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             loginUser(username, password)
             viewModel.response.observe(viewLifecycleOwner) { response ->
                 if (response.isSuccessful) {
-                    viewModel.navigateToTBAFragment(view)
-                    Log.d("XD", "XD")
-                } else {
-                    Log.d("XD", response.errorBody()!!.string())
+                    viewModel.navigateToFuelStatonListFragment(view)
                 }
             }
-
         } else if (errorUsername != null) {
             showUsernameError()
             setUsernameErrorTracking()

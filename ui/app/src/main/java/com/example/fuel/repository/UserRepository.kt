@@ -3,6 +3,7 @@ package com.example.fuel.repository
 import com.example.fuel.api.RetrofitInstance
 import com.example.fuel.utils.Auth
 import com.example.fuel.model.Email
+import com.example.fuel.model.Token
 import com.example.fuel.model.UserDetails
 import com.example.fuel.model.UserFilter
 import com.example.fuel.model.account.ChangePassword
@@ -15,7 +16,7 @@ import retrofit2.Response
 
 class UserRepository {
 
-    suspend fun postLogin(user: UserLogin): Response<UserLogin> {
+    suspend fun postLogin(user: UserLogin): Response<Token> {
         return RetrofitInstance.accountApi.postLogin(user)
     }
 
