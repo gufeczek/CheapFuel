@@ -1,6 +1,7 @@
 package com.example.fuel.api
 
 import com.example.fuel.model.Email
+import com.example.fuel.model.Token
 import com.example.fuel.model.account.ChangePassword
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.model.account.UserPasswordReset
@@ -14,7 +15,7 @@ interface AccountApiService {
     @POST("api/v1/accounts/login")
     suspend fun postLogin(
         @Body user: UserLogin
-    ): Response<UserLogin>
+    ): Response<Token>
 
     @Headers("Content-Type:application/json")
     @POST("api/v1/accounts/register")

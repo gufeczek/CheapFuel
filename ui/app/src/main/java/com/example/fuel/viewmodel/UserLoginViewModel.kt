@@ -7,11 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import com.auth0.android.jwt.JWT
 import com.example.fuel.R
+import com.example.fuel.enums.Role
 import com.example.fuel.model.Email
+import com.example.fuel.model.Token
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.model.account.UserPasswordReset
 import com.example.fuel.repository.UserRepository
+import com.example.fuel.utils.Auth
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
 import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.utils.validation.ValidatorPassword
@@ -22,14 +26,25 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
-    var response: MutableLiveData<Response<UserLogin>> = MutableLiveData()
+    var response: MutableLiveData<Response<Token>> = MutableLiveData()
+    var token: MutableLiveData<String> = MutableLiveData()
     var isTokenGenerated: MutableLiveData<Boolean> = MutableLiveData()
     var isPasswordReset: MutableLiveData<Boolean> = MutableLiveData()
 
     fun postLogin(user: UserLogin) {
         viewModelScope.launch {
             response.value = repository.postLogin(user)
+            token.value = response.value!!.body()?.token
+            Log.d("XD", "AAAAAAAAAAA" + token.value.toString())
+            setupAuth()
         }
+    }
+
+    private fun setupAuth() {
+        val jwt = JWT(token.value.toString())
+        Auth.username = jwt.getClaim("nameid").asString()!!
+        Auth.role = Role.fromString(jwt.getClaim("role").asString()!!)
+        Auth.token = "Bearer $jwt"
     }
 
     fun getPasswordResetToken(email: Email) {
@@ -86,8 +101,8 @@ class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
         Navigation.findNavController(view).navigate(R.id.LoginFragment)
     }
 
-    fun navigateToTBAFragment(view: View) {
-
+    fun navigateToFuelStatonListFragment(view: View) {
+        Navigation.findNavController(view).navigate(R.id.fuelStationListFragment)
     }
 
     fun setupCodeInputLogic(codes: Array<TextInputEditText>) {
