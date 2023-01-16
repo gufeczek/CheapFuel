@@ -35,7 +35,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         viewModel = ViewModelProvider(requireActivity(), ViewModelFactory())[UserDetailsViewModel::class.java]
         binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        username = requireArguments().getString("username") ?: Auth.username
+        username = Auth.username
 
         setAppBarTitle()
         loadUserData()

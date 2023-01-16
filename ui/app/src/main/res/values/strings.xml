@@ -129,4 +129,5 @@
     <string name="map">Mapa</string>
     <string name="station_list">Lista stacji</string>
     <string name="favourite_stations">Ulubione</string>
+    <string name="input_incorrect_username_or_password">Podano nieprawidłową nazwę użytkownika lub hasło</string>
 </resources>
