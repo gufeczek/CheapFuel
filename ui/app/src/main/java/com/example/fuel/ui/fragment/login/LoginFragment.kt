@@ -1,11 +1,15 @@
 package com.example.fuel.ui.fragment.login
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fuel.R
@@ -13,8 +17,6 @@ import com.example.fuel.databinding.FragmentLoginBinding
 import com.example.fuel.model.account.UserLogin
 import com.example.fuel.utils.extension.ContextExtension.Companion.hideKeyboard
 import com.example.fuel.utils.extension.EditTextExtension.Companion.afterTextChanged
-import com.example.fuel.utils.extension.TextViewExtension.Companion.removeLinksUnderline
-import com.example.fuel.utils.validation.ValidatorEmail
 import com.example.fuel.utils.validation.ValidatorPassword
 import com.example.fuel.utils.validation.ValidatorUsername
 import com.example.fuel.viewmodel.UserLoginViewModel
@@ -68,6 +70,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         } else if (errorPassword != null) {
             showPasswordError()
             setPasswordErrorTracking()
+        }
+
+        viewModel.token.observe(viewLifecycleOwner) { token ->
+            if (token == null) {
+                showIncorrectCredentialsError()
+            }
         }
     }
 
@@ -126,5 +134,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun stopPasswordErrorTracking() {
         binding.etPassword.afterTextChanged {}
+    }
+
+    private fun showIncorrectCredentialsError() {
+        binding.tvIncorrectCredentials.visibility = View.VISIBLE
     }
 }

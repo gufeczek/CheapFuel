@@ -35,8 +35,9 @@ class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
         viewModelScope.launch {
             response.value = repository.postLogin(user)
             token.value = response.value!!.body()?.token
-            Log.d("XD", "AAAAAAAAAAA" + token.value.toString())
-            setupAuth()
+            if (token.value != null) {
+                setupAuth()
+            }
         }
     }
 
