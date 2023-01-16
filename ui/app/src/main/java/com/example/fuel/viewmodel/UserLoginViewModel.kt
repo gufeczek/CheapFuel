@@ -1,6 +1,5 @@
 package com.example.fuel.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,10 +33,13 @@ class UserLoginViewModel(private val repository: UserRepository) : ViewModel() {
     fun postLogin(user: UserLogin) {
         viewModelScope.launch {
             response.value = repository.postLogin(user)
-            token.value = response.value!!.body()?.token
-            if (token.value != null) {
-                setupAuth()
-            }
+        }
+    }
+
+    fun afterLogin() {
+        token.value = response.value!!.body()?.token
+        if (token.value != null) {
+            setupAuth()
         }
     }
 

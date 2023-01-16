@@ -61,6 +61,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             loginUser(username, password)
             viewModel.response.observe(viewLifecycleOwner) { response ->
                 if (response.isSuccessful) {
+                    viewModel.afterLogin()
                     viewModel.navigateToFuelStatonListFragment(view)
                 }
             }
@@ -87,7 +88,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun loginUser(username: String, password: String) {
         val user = UserLogin(username, password)
         viewModel.postLogin(user)
-
     }
 
     private fun showUsernameError() {
