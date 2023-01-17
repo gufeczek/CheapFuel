@@ -1,7 +1,6 @@
 package com.example.fuel.ui
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -56,16 +55,14 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private val updateMenuOptions = NavController.OnDestinationChangedListener { _, destination, _ ->
-        if (destination.id == R.id.fuelStationListFragment) {
-            val navigationView = findViewById<NavigationView>(R.id.navigationView)
-            if (Auth.role == Role.USER) {
-                navigationView.menu.clear()
-                navigationView.inflateMenu(R.menu.user_drawer_menu)
-            } else {
-                navigationView.menu.clear()
-                navigationView.inflateMenu(R.menu.admin_drawer_menu)
-            }
+    private val updateMenuOptions = NavController.OnDestinationChangedListener { _, _, _ ->
+        val navigationView = findViewById<NavigationView>(R.id.navigationView)
+        if (Auth.role == Role.ADMIN) {
+            navigationView.menu.clear()
+            navigationView.inflateMenu(R.menu.admin_drawer_menu)
+        } else {
+            navigationView.menu.clear()
+            navigationView.inflateMenu(R.menu.user_drawer_menu)
         }
     }
 }
