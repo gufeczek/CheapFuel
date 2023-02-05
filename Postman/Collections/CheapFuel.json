@@ -1,0 +1,672 @@
+{
+	"info": {
+		"_postman_id": "4562a08a-2ab2-4993-a4b9-fb16978d8621",
+		"name": "CheapFuel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\",\r\n  \"confirmPassword\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"User\",\r\n  \"role\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/change-role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"change-role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/test/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"test",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Owner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ownerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/test/owner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"test",
+								"owner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/test/admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"test",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Anonymous",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/test/anonymous",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"test",
+								"anonymous"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fuel Station Service",
+			"item": [
+				{
+					"name": "Create Fuel Station Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Fuel Station Service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "id",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fuel Station Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/services?PageNumber=&PageSize=&Sort.SortBy=&Sort.SortDirection=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"services"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": ""
+								},
+								{
+									"key": "PageSize",
+									"value": ""
+								},
+								{
+									"key": "Sort.SortBy",
+									"value": ""
+								},
+								{
+									"key": "Sort.SortDirection",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fuel Type",
+			"item": [
+				{
+					"name": "Create Fuel Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/FuelTypes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"FuelTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Fuel Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "id",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/FuelTypes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"FuelTypes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fuel Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "PageNumber",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "PageSize",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "SortBy",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "SortDirection",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/FuelTypes?PageNumber=&PageSize=&Sort.SortBy=&Sort.SortDirection=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"FuelTypes"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": ""
+								},
+								{
+									"key": "PageSize",
+									"value": ""
+								},
+								{
+									"key": "Sort.SortBy",
+									"value": ""
+								},
+								{
+									"key": "Sort.SortDirection",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Station Chain",
+			"item": [
+				{
+					"name": "Create Station Chain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/station-chains",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"station-chains"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Station Chain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "id",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/station-chains/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"station-chains",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Station Chain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/station-chains?PageNumber&PageSize&Sort.SortBy&Sort.SortDirection",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"station-chains"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": null
+								},
+								{
+									"key": "PageSize",
+									"value": null
+								},
+								{
+									"key": "Sort.SortBy",
+									"value": null
+								},
+								{
+									"key": "Sort.SortDirection",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:5001/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "userToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjExIiwibmFtZWlkIjoiVXNlciIsInJvbGUiOiJVc2VyIiwibmJmIjoxNjY2NDQ1MDExLCJleHAiOjE2Njc3NDQ2MTEsImlhdCI6MTY2NjQ0NTAxMSwiaXNzIjoiSldUQXV0aGVudGljYXRpb25TZXJ2ZXIiLCJhdWQiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciJ9.cG0_JghXqVkTn-0W1mMmBvbrUkvaMPPU8Fk3igsRhys",
+			"type": "string"
+		},
+		{
+			"key": "ownerToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEzIiwibmFtZWlkIjoiT3duZXIiLCJyb2xlIjoiT3duZXIiLCJuYmYiOjE2NjY0NDUwODYsImV4cCI6MTY2Nzc0NDY4NiwiaWF0IjoxNjY2NDQ1MDg2LCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIn0.Ma1-JNT8inEd0nrrTOhEzqgOY7tVLIe4E5KUBGYTPZ8",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEyIiwibmFtZWlkIjoiQWRtaW4iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE2NjY0NDUxMDEsImV4cCI6MTY2Nzc0NDcwMSwiaWF0IjoxNjY2NDQ1MTAxLCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIn0.O6NusnHZQJ4U4OQ6RLzFr87dzIK8kqMfMETJBMWwwAM",
+			"type": "string"
+		}
+	]
+}

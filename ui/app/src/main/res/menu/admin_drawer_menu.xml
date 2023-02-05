@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="all">
+        <item android:title="@string/station_list" android:id="@id/fuelStationListFragment"/>
+        <item android:title="@string/map" android:id="@id/mapFragment" />
+        <item android:title="@string/favourite_stations" android:id="@id/favoritesFuelStationsFragment"/>
+        <item android:title="Mój profil" android:id="@id/userDetailsFragment"/>
+        <item android:title="Kalkulator" android:id="@id/fuelStationCalculatorFragment"/>
+        <item android:title="Użytkownicy" android:id="@id/userListFragment"/>
+        <item android:title="Nowa stacja" android:id="@id/newFuelStationFragment"/>
+    </group>
+</menu>

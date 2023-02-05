@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+	    <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Services" />
+      <Folder Include="Persistence\Migrations\MsSql" />
+      <Folder Include="Persistence\Migrations\MySql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

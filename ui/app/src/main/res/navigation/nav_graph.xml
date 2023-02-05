@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/EmailFragment">
+
+    <fragment
+        android:id="@+id/EmailFragment"
+        android:name="com.example.fuel.ui.fragment.register.EmailFragment"
+        android:label="Register method"
+        tools:layout="@layout/fragment_email" >
+        <action
+            android:id="@+id/navigate_to_username_fragment"
+            app:destination="@id/UsernameFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_favoritesFuelStationsFragment"
+            app:destination="@id/favoritesFuelStationsFragment" />
+        <action
+            android:id="@+id/action_setRegisterMethodFragment_to_userListFragment"
+            app:destination="@id/userListFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_fuelStationCalculatorFragment"
+            app:destination="@id/fuelStationCalculatorFragment" />
+        <action
+            android:id="@+id/action_EmailFragment_to_newFuelStationFragment"
+            app:destination="@id/newFuelStationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/UsernameFragment"
+        android:name="com.example.fuel.ui.fragment.register.UsernameFragment"
+        android:label="Username"
+        tools:layout="@layout/fragment_username" >
+        <action
+            android:id="@+id/navigate_to_password_fragment"
+            app:destination="@id/PasswordFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/PasswordFragment"
+        android:name="com.example.fuel.ui.fragment.register.PasswordFragment"
+        android:label="Password"
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_setPasswordFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.fuel.ui.fragment.BlankFragment"
+        android:label="BlankFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.fuel.ui.fragment.map.MapFragment"
+        android:label="Stacje paliw"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_mapFilter3"
+            app:destination="@id/mapFilter" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFilter"
+        android:name="com.example.fuel.ui.fragment.map.MapFilter"
+        android:label="Ustawienia filtra" />
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.fuel.ui.fragment.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/navigate_to_reset_password_fragment"
+            app:destination="@+id/resetPassword" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fuelStationListFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFragment"
+        android:label="Cheap Fuel"
+        tools:layout="@layout/fragment_fuel_station_list">
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_fuelStationListFilterFragment"
+            app:destination="@id/fuelStationListFilterFragment" />
+        <action
+            android:id="@+id/action_fuelStationListFragment_to_fuelStationDetails"
+            app:destination="@id/fuelStationDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fuelStationListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstationlist.FuelStationListFilterFragment"
+        android:label="Ustawienia filtra"
+        tools:layout="@layout/fragment_fuel_station_list_filter" />
+    <fragment
+        android:id="@+id/fuelStationDetails"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationDetailsFragment"
+        android:label="Fuel station details"
+        tools:layout="@layout/fragment_fuel_station_details" >
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelPriceEditorFragment"
+            app:destination="@id/fuelPriceEditorFragment" />
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelStationEditorFragment"
+            app:destination="@id/fuelStationEditorFragment" />
+        <action
+            android:id="@+id/action_fuelStationDetails_to_fuelStationReviewEditorFragment"
+            app:destination="@id/fuelStationReviewEditorFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/fuelPriceEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelPriceEditorFragment"
+        android:label="fragment_fuel_price_editor"
+        tools:layout="@layout/fragment_fuel_price_editor" />
+    <dialog
+        android:id="@+id/fuelStationEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationEditorFragment"
+        android:label="fragment_fuel_station_editor"
+        tools:layout="@layout/fragment_fuel_station_editor" />
+    <dialog
+        android:id="@+id/fuelStationReviewEditorFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.FuelStationReviewEditorFragment"
+        android:label="fragment_fuel_station_review_editor"
+        tools:layout="@layout/fragment_fuel_station_review_editor" />
+    <fragment
+        android:id="@+id/favoritesFuelStationsFragment"
+        android:name="com.example.fuel.ui.fragment.favorites.FavoritesFuelStationsFragment"
+        android:label="Ulubione"
+        tools:layout="@layout/fragment_favorites_fuel_stations" />
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFragment"
+        android:label="Użytkownicy">
+        <action
+            android:id="@+id/action_userListFragment_to_userListFilterFragment"
+            app:destination="@id/userListFilterFragment" />
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userListFilterFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserListFilterFragment"
+        android:label="Ustawienia filtra"
+        tools:layout="@layout/fragment_user_list_filter" />
+    <fragment
+        android:id="@+id/resetPassword"
+        android:name="com.example.fuel.ui.fragment.login.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPassword_to_resetPasswordCodeFragment"
+            app:destination="@id/resetPasswordCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordCodeFragment"
+        android:name="com.example.fuel.ui.fragment.login.ResetPasswordCodeFragment"
+        android:label="fragment_reset_password_code"
+        tools:layout="@layout/fragment_reset_password_code" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_resetPasswordCodeFragment_to_newPasswordFragment"
+            app:destination="@id/newPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPasswordFragment"
+        android:name="com.example.fuel.ui.fragment.login.ResetPasswordFragment"
+        android:label="fragment_new_password"
+        tools:layout="@layout/fragment_password" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_newPasswordFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.fuel.ui.fragment.user.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" >
+        <action
+            android:id="@+id/action_userDetailsFragment_to_blockUserEditorFragment"
+            app:destination="@id/blockUserEditorFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fuelStationCalculatorFragment"
+        android:name="com.example.fuel.ui.fragment.calculator.FuelStationCalculatorFragment"
+        android:label="Kalkulator"
+        tools:layout="@layout/fragment_fuel_station_calculator" />
+    <fragment
+        android:id="@+id/blockUserEditorFragment"
+        android:name="com.example.fuel.ui.fragment.user.BlockUserEditorFragment"
+        android:label="Zablokuj"
+        tools:layout="@layout/fragment_block_user_editor" />
+    <fragment
+        android:id="@+id/newFuelStationFragment"
+        android:name="com.example.fuel.ui.fragment.fuelstation.NewFuelStationFragment"
+        android:label="Nowa stacja" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.fuel.ui.fragment.user.ChangePasswordFragment"
+        android:label="Zmień hasło"
+        tools:layout="@layout/fragment_change_password" />
+
+</navigation>
